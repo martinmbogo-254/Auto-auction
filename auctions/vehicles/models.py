@@ -1,3 +1,4 @@
 from django.db import models
 
-# Create your models here.
+class Vehicle(models.Model):
+    make = models.ForeignKey(VehicleMake, on_delete=models.CASCADE)
