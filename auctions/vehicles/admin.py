@@ -1,26 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from django.contrib.auth.admin import UserAdmin
-# admin.py in your accounts app
-from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
-
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
     ManufactureYear, FuelType, VehicleBody, Vehicle, Bid
 )
-
-
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    list_display = [ 'phone_number', 'address',]
-    fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('phone_number', 'address')}),
-    )
-
-admin.site.register(CustomUser, CustomUserAdmin)
 
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
