@@ -1,9 +1,26 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+
+from django.contrib.auth.admin import UserAdmin
+# admin.py in your accounts app
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import CustomUser
+
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
-    ManufactureYear, FuelType, VehicleBody, 
-    User, Vehicle, Bid
+    ManufactureYear, FuelType, VehicleBody, Vehicle, Bid
 )
+
+
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+    list_display = [ 'phone_number', 'address',]
+    fieldsets = UserAdmin.fieldsets + (
+        (None, {'fields': ('phone_number', 'address')}),
+    )
+
+admin.site.register(CustomUser, CustomUserAdmin)
 
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
@@ -15,7 +32,7 @@ class BidInline(admin.TabularInline):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'created_by', 'get_bid_status_display', 'reserve_price', 'created_at', 'updated_at')
+    list_display = ('id', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'get_bid_status_display', 'reserve_price', 'created_at', 'updated_at')
     search_fields = ('make__name', 'model__name', 'YOM__year', 'created_by__email', 'bid_status')
     list_filter = ('make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline]
@@ -47,10 +64,10 @@ class VehicleBodyAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'phone_number', 'id_number', 'name', 'is_admin', 'created_at')
-    search_fields = ('email', 'phone_number', 'id_number', 'name')
-    list_filter = ('is_admin', 'created_at')
+# @admin.register(CustomUser)
+# class CustomUserAdmin(admin.ModelAdmin):
+#     # list_display = ('email', 'phone_number', 'id_number', 'name', 'is_admin', 'created_at')
+#     # search_fields = ('email', 'phone_number', 'id_number', 'name')
+#     # list_filter = ('is_admin', 'created_at')
 
 

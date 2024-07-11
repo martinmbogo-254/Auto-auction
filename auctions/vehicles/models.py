@@ -1,5 +1,33 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.core.validators import RegexValidator
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
+from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.db import models
+
+class CustomUser(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    groups = models.ManyToManyField(
+        Group,
+        related_name='customuser_set', 
+        blank=True,
+        help_text='The groups this user belongs to.',
+        verbose_name='groups',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='customuser_permissions_set',  
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions',
+    )
+
+    def __str__(self):
+        return self.username
 
 
 class VehicleMake(models.Model):
@@ -38,21 +66,11 @@ class VehicleBody(models.Model):
     def __str__(self):
             return self.name
 
-class User(models.Model):
-    email = models.EmailField()
-    phone_number = models.CharField(max_length=15)
-    id_number = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    name = models.CharField(max_length=255)
-    is_admin = models.BooleanField(default=False)
-
 class Vehicle(models.Model):
     BID_STATUS_CHOICES = [
         ('open', 'Open'),
         ('closed', 'Closed'),
         ('pending', 'Pending'),
-        ('won', 'Won'),
-        ('lost', 'Lost'),
     ]
     make = models.ForeignKey(VehicleMake, on_delete=models.CASCADE)
     model = models.ForeignKey(VehicleModel, on_delete=models.CASCADE)
@@ -63,7 +81,6 @@ class Vehicle(models.Model):
     engine_cc = models.IntegerField()
     body_type = models.ForeignKey(VehicleBody, on_delete=models.CASCADE)
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     bid_status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='open')
     reserve_price = models.IntegerField()
 
@@ -74,7 +91,6 @@ class VehicleImage(models.Model):
         verbose_name_plural = "Images"
 
 class Bid(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
