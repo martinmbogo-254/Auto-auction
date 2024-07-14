@@ -1,0 +1,27 @@
+{% extends 'vehicles/base.html'%}
+<html>
+{% block content%}
+<div class="jumbotron center">
+
+    <h3 class="text-center">
+        <p>Vehicles Page</p>
+    </h3>
+    <div class="row">
+      {% for vehicle in vehicles %}
+      <div class="col-md-4">
+        <div class="card text-start">
+        
+            <img class="card-img-top" src="{{vehicle.file.url}}"/>
+            <div class="card-body">
+                <h4 class="card-title">{{vehicle.YOM}}, {{vehicle.make}} {{vehicle.model}}</h4>
+                <p class="card-text">{{vehicle.reserve_price}}</p> 
+            </div>
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="col-md-3"></div>
+</div>
+</div>{% endblock content%}
+
+</html>

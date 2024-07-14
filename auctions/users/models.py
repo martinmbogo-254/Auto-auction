@@ -12,7 +12,8 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE
     )
-    
+    id_number = models.IntegerField(max_length=10,blank=True)
+    phone_number = models.IntegerField(max_length=10,blank=True)
 
     def __str__(self):
         return f"{self.user.username}'s profile"

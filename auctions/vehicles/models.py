@@ -58,6 +58,7 @@ class Vehicle(models.Model):
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
     bid_status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='open')
     reserve_price = models.IntegerField()
+    file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
 
 class VehicleImage(models.Model):
     vehicle= models.ForeignKey(Vehicle, on_delete=models.CASCADE)
