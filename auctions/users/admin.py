@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib import admin
 from .models import Profile
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = ( 'user','id_number','phone_number')
-    search_fields = ('user','id_number','phone_number')
+admin.site.register(Profile)
+class VehicleMakeAdmin(admin.ModelAdmin):
+    list_display = ( 'id_number',)
+    search_fields = ('id_number',)

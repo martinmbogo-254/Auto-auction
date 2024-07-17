@@ -15,5 +15,7 @@ class Profile(models.Model):
     id_number = models.IntegerField(max_length=10,blank=True)
     phone_number = models.IntegerField(max_length=10,blank=True)
 
+    
+
     def __str__(self):
         return f"{self.user.username}'s profile"

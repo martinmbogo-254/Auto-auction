@@ -67,3 +67,7 @@ class VehicleBodyAdmin(admin.ModelAdmin):
 #     # list_filter = ('is_admin', 'created_at')
 
 
+
+admin.site.site_header = "RSVA Admin"
+admin.site.site_title = "RSVA"
+admin.site.index_title = "Welcome to RSVA Admin"
