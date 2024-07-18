@@ -9,7 +9,29 @@
         <div class="card p-3">
             <h4 class="m-3">REGISTER</h4>
             <form action="" method="POST">
-                {% csrf_token %} {{ form|crispy}}
+                {% csrf_token %} 
+
+                <div class="row">
+<div class="col-md-6">
+    {{form.username|as_crispy_field}}
+</div>
+<div class="col-md-6">
+    {{form.email|as_crispy_field}}
+</div>
+<div class="col-md-5">
+    {{p_form.id_number|as_crispy_field}}
+</div>
+<div class="col-md-5">
+    {{p_form.phone_number|as_crispy_field}}
+</div>
+<div class="col-md-6 required">
+{{form.password1|as_crispy_field}}
+</div>
+<div class="col-md-6">
+    {{form.password2|as_crispy_field}}
+    </div>
+                </div>
+                
                 <div>
                     <button class="btn btn-outline-success" type="submit">signup</button>
                 </div>

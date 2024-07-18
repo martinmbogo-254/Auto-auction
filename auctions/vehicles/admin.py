@@ -7,16 +7,16 @@ from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
     ManufactureYear, FuelType, VehicleBody, Vehicle, Bid
 )
-class ProfileInline(admin.StackedInline):
-    model = Profile
-    can_delete = False
-    verbose_name_plural = 'Profiles'
+# class ProfileInline(admin.StackedInline):
+#     model = Profile
+#     can_delete = False
+#     verbose_name_plural = 'Profiles'
 
-class MyUser (UserAdmin):
-    inlines = (ProfileInline,)
+# class MyUser (UserAdmin):
+#     inlines = (ProfileInline,)
 
-admin.site.unregister(User)
-admin.site.register(User,MyUser)
+# admin.site.unregister(User)
+# admin.site.register(User,MyUser)
 
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
