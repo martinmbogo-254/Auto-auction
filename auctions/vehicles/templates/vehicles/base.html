@@ -23,9 +23,10 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <li class="navbar-nav nav-item">
-            {% if user.is_authenticated %}
-                <a class="nav-link" href="{% url 'vehicles' %}">Vehicles</a>
+             <a class="nav-link" href="{% url 'vehicles' %}">Vehicles</a>
                 <a class="nav-link" href="">How It Works</a>
+            {% if user.is_authenticated %}
+               
                 <!-- <p class="nav-link">Logged in as:-</p> -->
                   {% if user.is_staff %}
                      

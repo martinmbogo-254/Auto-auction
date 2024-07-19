@@ -24,7 +24,7 @@ def vehicledetail(request, pk):
     return render(request, 'vehicles/details.html', context)
 
 
-@login_required
+@login_required(login_url='login')
 def Bid(request, pk):
     # getting post objects by their id
     vehicle = get_object_or_404(Vehicle, id=pk)
