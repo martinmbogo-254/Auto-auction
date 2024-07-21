@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
-    ManufactureYear, FuelType, VehicleBody, Vehicle, Bid
+    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding
 )
 # class ProfileInline(admin.StackedInline):
 #     model = Profile
@@ -23,7 +23,7 @@ class VehicleImageInline(admin.TabularInline):
     extra = 1  # Number of empty forms to display
 
 class BidInline(admin.TabularInline):
-    model = Bid
+    model = Bidding
     extra = 1  # Number of empty forms to display
 
 @admin.register(Vehicle)

@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .models import Vehicle
+from .models import Vehicle, Bidding
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import BidForm
@@ -18,8 +18,10 @@ def vehiclespage(request):
 
 def vehicledetail(request, pk):
     vehicle = Vehicle.objects.get(id=pk)
+    biddings = Bidding.objects.filter(vehicle=vehicle)
     context = {
-       'vehicle': vehicle
+       'vehicle': vehicle,
+       'biddings':biddings
     }
     return render(request, 'vehicles/details.html', context)
 

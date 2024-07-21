@@ -27,6 +27,19 @@
         
     </div>
     </div>
+    <div class="row">
+
+      <div class="jumbotron">
+        <h4>All Bids</h4>
+        {% for bidding in biddings %}
+        <p> {{bidding.user.username}}</p>
+        <p> {{bidding.amount}}</p>
+        <p> {{bidding.created_at}}</p>
+        {% empty %}
+        
+        {% endfor %}
+      </div>
+    </div>
     
 </div>
 

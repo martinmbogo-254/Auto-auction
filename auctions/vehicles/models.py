@@ -67,8 +67,8 @@ class VehicleImage(models.Model):
     class Meta:
         verbose_name_plural = "Images"
 
-class Bid(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+class Bidding(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='bidding')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
