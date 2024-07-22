@@ -1,4 +1,5 @@
 {% extends 'vehicles/base.html'%}
+{% load crispy_forms_tags%}
 <html>
 {% block content%}
 <div class="jumbotron center">
@@ -6,6 +7,27 @@
     <h3 class="text-center">
         <p>Vehicles Page</p>
     </h3>
+    <form method="get" class="form-inline my-2 my-lg-0 p-2 m-2 p-3" >
+      {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    {{ vehiclefilter.form.make|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ vehiclefilter.form.model|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ vehiclefilter.form.YOM|as_crispy_field }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+     {% comment %} <form class="form-inline my-2 my-lg-0 p-2 m-2 p-3" method="GET">
+   
+            {{vehiclefilter.form|crispy}}
+
+            <button type="submit" class="btn btn-info m-2">Filter</button>
+        </form> {% endcomment %}
     <div class="row">
       {% for vehicle in vehicles %}
       <div class="col-md-4">

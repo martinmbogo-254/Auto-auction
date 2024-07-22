@@ -5,14 +5,19 @@ from django.contrib.auth.decorators import login_required
 from .forms import BidForm
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
+from .filters import VehicleFilter
 # Create your views here.
 def homepage(request):
     return render(request, 'vehicles/home.html')
 
 def vehiclespage(request):
     vehicles = Vehicle.objects.all()
+    vehiclefilter = VehicleFilter(request.GET, queryset=vehicles)
+    vehicles = vehiclefilter.qs
+    
     context = {
-        'vehicles': vehicles
+        'vehicles': vehicles,
+        'vehiclefilter':vehiclefilter
     }
     return render(request, 'vehicles/vehicles.html',context)
 
