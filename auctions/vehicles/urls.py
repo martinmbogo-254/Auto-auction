@@ -7,5 +7,5 @@ urlpatterns = [
     path('vehicles/',views.vehiclespage, name='vehicles'),
     path('logout/', views.logout_view, name='logout'),
     path('vehicle/<int:pk>/',views.vehicledetail, name='detail' ),
-    path('vehicle/<int:pk>/bid',views.Bid, name='bid' ),
+    path('place_bid/<int:vehicle_id>/', views.place_bid, name='place_bid'),
 ]

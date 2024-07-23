@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm ,ProfileForm
 from django.contrib.auth import logout
 from .models import Profile
+from vehicles.models import Bidding
 
 
 def register(request):
@@ -38,4 +39,9 @@ def register(request):
 @login_required
 def profile_page(request):
     profile = Profile.objects.get(user=request.user)
-    return render(request, 'users/profile.html', {'profile': profile})
+    user_bids = Bidding.objects.filter(user=request.user).select_related('vehicle')
+    context = {
+        'user_bids':user_bids,
+        'profile': profile
+    }
+    return render(request, 'users/profile.html', context)
