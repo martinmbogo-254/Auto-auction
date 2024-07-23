@@ -61,9 +61,12 @@ class Vehicle(models.Model):
     reserve_price = models.IntegerField()
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
 
+    def __str__(self):
+            return self.make.name
+
 class VehicleImage(models.Model):
     vehicle= models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    image = models.CharField(max_length=255)
+    image = models.FileField(upload_to='vehicleimages/',default='images/default-vehicle.png',blank=True)
     class Meta:
         verbose_name_plural = "Images"
 

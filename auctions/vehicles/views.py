@@ -6,6 +6,8 @@ from .forms import BidForm
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from .filters import VehicleFilter
+from django.contrib import messages
+
 # Create your views here.
 def homepage(request):
     return render(request, 'vehicles/home.html')
@@ -45,6 +47,7 @@ def Bid(request, pk):
             bid.vehicle = vehicle
             bid.user = user
             bid.save()
+            messages.success(request, 'Your bid has been placed successfully!')
             return HttpResponseRedirect(reverse('detail', args=[pk]))
     else:
         form = BidForm()
