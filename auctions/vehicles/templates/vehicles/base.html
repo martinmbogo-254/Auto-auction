@@ -34,7 +34,7 @@
                 
                       {% endif %}
                 
-                <a class="nav-link" href="">Hello, {{user.username}}</a>
+                <a class="nav-link" href="{% url 'profile' %}">Hello, {{user.username}}</a>
                 <a class="nav-link " href="/logout ">Logout</a>  {% else %}
                 <div class="navbar-nav ">
                     <a class="nav-link ml-auto " href="/login">Login</a>

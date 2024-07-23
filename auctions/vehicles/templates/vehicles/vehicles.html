@@ -38,7 +38,11 @@
 
             <button type="submit" class="btn btn-info m-2">Filter</button>
         </form> {% endcomment %}
+        <div class="text-center row">
+            <p>{{vehicles_count}} Vehicles on Auction.</p>
+        </div>
     <div class="row">
+        
       {% for vehicle in vehicles %}
       <div class="col-md-4">
         <div class="card text-start rounded">

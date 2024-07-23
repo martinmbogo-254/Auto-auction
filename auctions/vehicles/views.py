@@ -14,21 +14,25 @@ def homepage(request):
 
 def vehiclespage(request):
     vehicles = Vehicle.objects.all()
+    vehicles_count = vehicles.count()
     vehiclefilter = VehicleFilter(request.GET, queryset=vehicles)
     vehicles = vehiclefilter.qs
     
     context = {
         'vehicles': vehicles,
-        'vehiclefilter':vehiclefilter
+        'vehiclefilter':vehiclefilter,
+        'vehicles_count':vehicles_count
     }
     return render(request, 'vehicles/vehicles.html',context)
 
 def vehicledetail(request, pk):
     vehicle = Vehicle.objects.get(id=pk)
+    
     biddings = Bidding.objects.filter(vehicle=vehicle)
     context = {
        'vehicle': vehicle,
-       'biddings':biddings
+       'biddings':biddings,
+       
     }
     return render(request, 'vehicles/details.html', context)
 
