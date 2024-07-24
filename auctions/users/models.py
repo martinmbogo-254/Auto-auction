@@ -12,8 +12,8 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE
     )
-    id_number = models.IntegerField(max_length=10,blank=False,null=True)
-    phone_number = models.IntegerField(max_length=10,blank=False,null=True)
+    id_number = models.IntegerField(max_length=10,blank=False,null=True,unique=True)
+    phone_number = models.IntegerField(max_length=10,blank=False,null=True,unique=True)
 
     
 

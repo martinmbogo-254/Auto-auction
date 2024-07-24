@@ -31,6 +31,8 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-info mt-2 ml-2">Filter</button>
+            <a href="{% url 'vehicles' %}" class="btn btn-secondary mt-2 ml-2">Clear Filters</a>
+
         </form>
      {% comment %} <form class="form-inline my-2 my-lg-0 p-2 m-2 p-3" method="GET">
    
@@ -38,9 +40,9 @@
 
             <button type="submit" class="btn btn-info m-2">Filter</button>
         </form> {% endcomment %}
-        <div class="text-center row">
+        <!-- <div class="text-center row">
             <p>{{vehicles_count}} Vehicles on Auction.</p>
-        </div>
+        </div> -->
     <div class="row">
         
       {% for vehicle in vehicles %}

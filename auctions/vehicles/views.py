@@ -35,7 +35,7 @@ def vehicledetail(request, pk):
        
     }
     return render(request, 'vehicles/details.html', context)
-@login_required
+@login_required(login_url='login')
 def place_bid(request, vehicle_id):
     vehicle = get_object_or_404(Vehicle, id=vehicle_id)
     if request.method == 'POST':
@@ -67,7 +67,7 @@ def place_bid(request, vehicle_id):
 #         'form': form,
 #         'vehicle': vehicle,
 #     }
-    return render(request, 'vehicles/bid.html', context)
+    # return render(request, 'vehicles/bid.html', context)
 @login_required
 def logout_view(request):
     logout(request)
