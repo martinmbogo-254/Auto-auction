@@ -5,6 +5,8 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
+
 
 class VehicleMake(models.Model):
     name = models.CharField(max_length=255)
@@ -75,3 +77,12 @@ class Bidding(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Auction(models.Model):
+    auction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    vehicles = models.ManyToManyField('Vehicle', related_name='auctions')
+
+    def __str__(self):
+        return f"Auction {self.auction_id} from {self.start_date} to {self.end_date}"
