@@ -70,20 +70,17 @@
                 <button class="btn btn-dark text-light" type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-              
             </div>
-           
             <div class="modal-body">
                 <div class="image">
-                    <p>{{vehicle.make}}</p>
-                    <img class="card-img-top thumbnail" src="{{vehicle.file.url}}" style="height:250px"/>
-                  
+                    <p>{{ vehicle.make }}</p>
+                    <img class="card-img-top thumbnail" src="{{ vehicle.file.url }}" style="height:250px" />
                 </div>
                 <form method="POST" action="{% url 'place_bid' vehicle.id %}">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="amount">Bid Amount</label>
-                        <input type="number" class="form-control" id="amount" name="amount" placeholder="Enter bid amount" required>
+                        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter bid amount" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Submit Bid</button>
                 </form>
@@ -91,5 +88,25 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var amountInput = document.getElementById('amount');
+
+    amountInput.addEventListener('input', function (e) {
+        var value = amountInput.value;
+        // Remove non-digit characters except commas
+        value = value.replace(/[^\d]/g, '');
+        // Format the value with commas
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        amountInput.value = value;
+    });
+
+    document.querySelector('form').addEventListener('submit', function () {
+        // Remove commas before form submission
+        amountInput.value = amountInput.value.replace(/,/g, '');
+    });
+});
+</script>
 
 {% endblock content %}
