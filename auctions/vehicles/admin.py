@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
-    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction
+    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView
 )
 # class ProfileInline(admin.StackedInline):
 #     model = Profile
@@ -32,6 +32,11 @@ class VehicleAdmin(admin.ModelAdmin):
     search_fields = ('make__name', 'model__name', 'YOM__year', 'created_by__email', 'bid_status')
     list_filter = ('make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline]
+
+@admin.register(VehicleView)
+class VehicleViewAdmin(admin.ModelAdmin):
+    list_display = ( 'id',)
+    search_fields = ('id',)
 
 @admin.register(VehicleMake)
 class VehicleMakeAdmin(admin.ModelAdmin):
