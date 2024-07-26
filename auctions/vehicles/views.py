@@ -27,11 +27,12 @@ def vehiclespage(request):
 
 def vehicledetail(request, pk):
     vehicle = Vehicle.objects.get(id=pk)
-    
+    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model).exclude(id=vehicle.id)
     biddings = Bidding.objects.filter(vehicle=vehicle)
     context = {
        'vehicle': vehicle,
        'biddings':biddings,
+       'similar_vehicles': similar_vehicles,
        
     }
     return render(request, 'vehicles/details.html', context)
