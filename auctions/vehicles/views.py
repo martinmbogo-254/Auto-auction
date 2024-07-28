@@ -36,10 +36,14 @@ def vehicledetail(request, pk):
             VehicleView.objects.create(vehicle=vehicle, user=request.user)
     similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model).exclude(id=vehicle.id)
     biddings = Bidding.objects.filter(vehicle=vehicle)
+    highest_bid = vehicle.bidding.order_by('-amount').first()
     context = {
        'vehicle': vehicle,
        'biddings':biddings,
+       
        'similar_vehicles': similar_vehicles,       
+        'highest_bid': highest_bid,
+       'similar_vehicles': similar_vehicles,
     }
     return render(request, 'vehicles/details.html', context)
 @login_required(login_url='login')

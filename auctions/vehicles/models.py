@@ -50,6 +50,8 @@ class Vehicle(models.Model):
         ('closed', 'Closed'),
         ('pending', 'Pending'),
     ]
+    v_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    registration_no = models.CharField(max_length=255)
     make = models.ForeignKey(VehicleMake, on_delete=models.CASCADE)
     model = models.ForeignKey(VehicleModel, on_delete=models.CASCADE)
     YOM = models.ForeignKey(ManufactureYear, on_delete=models.CASCADE)

@@ -44,6 +44,11 @@
             <p>Model: {{ vehicle.model }}</p>
             <p>Mileage: {{ vehicle.mileage }} km</p>
             <p>Reserved Price: {{ vehicle.reserve_price }} Ksh</p>
+            {% if highest_bid %}
+            <p>Highest Bid: {{ highest_bid.amount }} Ksh</p>
+            {% else %}
+            <p>Highest Bid :No bids yet.</p>
+            {% endif %}
            {% if user.is_authenticated %}
             <button type="button" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
                 Make a bid
@@ -55,6 +60,7 @@
             {% endif %}
         </div>
     </div>
+    {% if user.is_staff %}
     <div class="row">
         <div class="jumbotron">
             <h4>All Bids</h4>
