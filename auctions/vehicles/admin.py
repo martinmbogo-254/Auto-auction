@@ -25,14 +25,22 @@ class VehicleImageInline(admin.TabularInline):
 class BidInline(admin.TabularInline):
     model = Bidding
     extra = 1  # Number of empty forms to display
+class VehicleViewInline(admin.TabularInline):
+    model = VehicleView
+    extra = 1 
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'get_bid_status_display', 'reserve_price', 'created_at', 'updated_at')
+    list_display = ('v_id', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'get_bid_status_display', 'reserve_price', 'created_at', 'updated_at')
     search_fields = ('make__name', 'model__name', 'YOM__year', 'created_by__email', 'bid_status')
     list_filter = ('make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
-    inlines = [VehicleImageInline, BidInline]
+    inlines = [VehicleImageInline, BidInline,VehicleViewInline]
 
+
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6cd49bb (added highest bid for each vehicle and other bids only viewable by admin)
 @admin.register(VehicleMake)
 class VehicleMakeAdmin(admin.ModelAdmin):
     list_display = ( 'name',)

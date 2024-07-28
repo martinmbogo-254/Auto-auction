@@ -29,10 +29,17 @@ def vehicledetail(request, pk):
     vehicle = Vehicle.objects.get(id=pk)
     
     biddings = Bidding.objects.filter(vehicle=vehicle)
+    highest_bid = vehicle.bidding.order_by('-amount').first()
     context = {
        'vehicle': vehicle,
        'biddings':biddings,
+<<<<<<< HEAD
        
+=======
+       'similar_vehicles': similar_vehicles,       
+        'highest_bid': highest_bid,
+
+>>>>>>> 6cd49bb (added highest bid for each vehicle and other bids only viewable by admin)
     }
     return render(request, 'vehicles/details.html', context)
 @login_required(login_url='login')
