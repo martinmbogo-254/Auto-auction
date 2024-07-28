@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
-    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction
+    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView
 )
 # class ProfileInline(admin.StackedInline):
 #     model = Profile

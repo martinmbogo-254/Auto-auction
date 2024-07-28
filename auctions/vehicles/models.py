@@ -64,6 +64,7 @@ class Vehicle(models.Model):
     bid_status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='open')
     reserve_price = models.IntegerField()
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
+    views = models.IntegerField(default=0)
 
     def __str__(self):
             return self.make.name
@@ -88,3 +89,14 @@ class Auction(models.Model):
 
     def __str__(self):
         return f"Auction {self.auction_id} from {self.start_date} to {self.end_date}"
+
+class VehicleView(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    viewed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('vehicle', 'user')
+
+    def __str__(self):
+            return self.vehicle.make.name

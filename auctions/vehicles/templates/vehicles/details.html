@@ -38,6 +38,7 @@
             </div>
         </div>
         <div class="col-md-4">
+          <h4 class="badge rounded-pill">Views: {{ vehicle.views }}</h4> 
             <h4>YOM: {{ vehicle.YOM }}</h4>
             <p>Make: {{ vehicle.make }}</p>
             <p>Model: {{ vehicle.model }}</p>
@@ -54,7 +55,7 @@
             </button>
             {% else %}
             <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
-                Log in to make a bid
+                Login to bid
             </a>
             {% endif %}
         </div>

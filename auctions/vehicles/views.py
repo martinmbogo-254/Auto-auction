@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .models import Vehicle, Bidding
+from .models import Vehicle, Bidding, VehicleView
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import BidForm
@@ -27,7 +27,14 @@ def vehiclespage(request):
 
 def vehicledetail(request, pk):
     vehicle = Vehicle.objects.get(id=pk)
-    
+    if request.user.is_authenticated:
+        # Check if the user has already viewed this vehicle
+        if not VehicleView.objects.filter(vehicle=vehicle, user=request.user).exists():
+            vehicle.views += 1
+            vehicle.save()
+            # Record this view
+            VehicleView.objects.create(vehicle=vehicle, user=request.user)
+    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model).exclude(id=vehicle.id)
     biddings = Bidding.objects.filter(vehicle=vehicle)
     highest_bid = vehicle.bidding.order_by('-amount').first()
     context = {
@@ -36,7 +43,7 @@ def vehicledetail(request, pk):
        
        'similar_vehicles': similar_vehicles,       
         'highest_bid': highest_bid,
-
+       'similar_vehicles': similar_vehicles,
     }
     return render(request, 'vehicles/details.html', context)
 @login_required(login_url='login')
