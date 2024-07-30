@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render,redirect
 from .models import Vehicle, Bidding, VehicleView, Auction
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .forms import BidForm
+from .forms import BidForm, AuctionForm
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from .filters import VehicleFilter
@@ -57,7 +57,23 @@ def place_bid(request, vehicle_id):
         Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
         return HttpResponseRedirect(reverse('detail', args=[vehicle_id]))
-    
+
+def auction_add(request):
+    if request.method == 'POST':
+        form = AuctionForm(request.POST)
+        if form.is_valid():
+            auction = form.save()
+            # Get the selected vehicles from the form
+            selected_vehicles = form.cleaned_data['vehicles']
+            # Update the bid_status of selected vehicles
+            for vehicle in selected_vehicles:
+                vehicle.bid_status = 'in_auction'  # Update this status based on your needs
+                vehicle.save()
+            messages.success(request, 'Auction added successfully!')
+            return redirect('auctions')
+    else:
+        form = AuctionForm()
+    return render(request, 'admin/create_auction.html', {'form': form})   
 
 def auction_list(request):
     auctions = Auction.objects.all()
