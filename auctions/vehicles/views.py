@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render,redirect
 from .models import Vehicle, Bidding, VehicleView
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .forms import BidForm
+from .forms import BidForm, AuctionForm
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from .filters import VehicleFilter
@@ -86,3 +86,5 @@ def place_bid(request, vehicle_id):
 def logout_view(request):
     logout(request)
     return redirect('homepage')
+
+# Admin views

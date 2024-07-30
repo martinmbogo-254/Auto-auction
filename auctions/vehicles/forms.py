@@ -1,5 +1,5 @@
 from django import forms
-from .models import Bidding
+from .models import Bidding, Auction,Vehicle
 from .fields import CommaSeparatedIntegerField
 from .widgets import CommaSeparatedIntegerWidget
 
@@ -9,3 +9,4 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bidding
         fields = ['amount']
+

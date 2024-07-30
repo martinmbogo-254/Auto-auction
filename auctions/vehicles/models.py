@@ -67,7 +67,7 @@ class Vehicle(models.Model):
     views = models.IntegerField(default=0)
 
     def __str__(self):
-            return self.make.name
+            return self.registration_no
 
 class VehicleImage(models.Model):
     vehicle= models.ForeignKey(Vehicle, on_delete=models.CASCADE)
@@ -108,6 +108,9 @@ class AuctionHistory(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     sold = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name_plural = " Auction Histories"
 
     def __str__(self):
         return f"{self.vehicle.make.name} {self.vehicle.model.name} in Auction {str(self.auction.auction_id)[:8]}"
