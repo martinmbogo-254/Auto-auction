@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .models import Vehicle, Bidding, VehicleView
+from .models import Vehicle, Bidding, VehicleView, Auction
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from .forms import BidForm, AuctionForm
+from .forms import BidForm
 from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from .filters import VehicleFilter
@@ -59,29 +59,15 @@ def place_bid(request, vehicle_id):
         return HttpResponseRedirect(reverse('detail', args=[vehicle_id]))
     
 
-# @login_required(login_url='login')
-# def Bid(request, pk):
-#     # getting post objects by their id
-#     vehicle = get_object_or_404(Vehicle, id=pk)
-#     user = request.user
-#     # form method
-#     if request.method == 'POST':
-#         form = BidForm(request.POST)
-#         # validating the form.
-#         if form.is_valid():
-#             bid = form.save(commit=False)
-#             bid.vehicle = vehicle
-#             bid.user = user
-#             bid.save()
-#             messages.success(request, 'Your bid has been placed successfully!')
-#             return HttpResponseRedirect(reverse('detail', args=[pk]))
-#     else:
-#         form = BidForm()
-#     context = {
-#         'form': form,
-#         'vehicle': vehicle,
-#     }
-    # return render(request, 'vehicles/bid.html', context)
+def auction_list(request):
+    auctions = Auction.objects.all()
+    return render(request, 'admin/auctions.html', {'auctions': auctions})
+
+
+def auction_detail(request, pk):
+    auction = get_object_or_404(Auction, pk=pk)
+    return render(request, 'admin/auction_details.html', {'auction': auction})
+
 @login_required
 def logout_view(request):
     logout(request)

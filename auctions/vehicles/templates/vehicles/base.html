@@ -26,7 +26,7 @@
              <a class="nav-link" href="{% url 'vehicles' %}">Vehicles</a>
                 <a class="nav-link" href="">How It Works</a>
             {% if user.is_authenticated %}
-               <a class="nav-link" href="{% url 'auction_add' %}">Add Auction</a>
+               <a class="nav-link" href="{% url 'auction_list'%}">Auctions</a>
 
                 <!-- <p class="nav-link">Logged in as:-</p> -->
                   {% if user.is_staff %}
