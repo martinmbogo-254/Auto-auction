@@ -36,11 +36,6 @@ class VehicleAdmin(admin.ModelAdmin):
     list_filter = ('make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 6cd49bb (added highest bid for each vehicle and other bids only viewable by admin)
 @admin.register(VehicleMake)
 class VehicleMakeAdmin(admin.ModelAdmin):
     list_display = ( 'name',)

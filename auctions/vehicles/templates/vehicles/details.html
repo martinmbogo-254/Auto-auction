@@ -1,5 +1,6 @@
 {% extends 'vehicles/base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 <div class="jumbotron center">
@@ -42,10 +43,10 @@
             <h4>YOM: {{ vehicle.YOM }}</h4>
             <p>Make: {{ vehicle.make }}</p>
             <p>Model: {{ vehicle.model }}</p>
-            <p>Mileage: {{ vehicle.mileage }} km</p>
-            <p>Reserved Price: {{ vehicle.reserve_price }} Ksh</p>
+            <p>Mileage: {{ vehicle.mileage|intcomma }} km</p>
+            <p>Reserved Price: {{ vehicle.reserve_price|intcomma }} Ksh</p>
             {% if highest_bid %}
-            <p>Highest Bid: {{ highest_bid.amount }} Ksh</p>
+            <p>Highest Bid: {{ highest_bid.amount|intcomma }} Ksh</p>
             {% else %}
             <p>Highest Bid :No bids yet.</p>
             {% endif %}
@@ -66,13 +67,14 @@
             <h4>All Bids</h4>
             {% for bidding in biddings %}
             <p>{{ bidding.user.username }}</p>
-            <p>{{ bidding.amount }}</p>
+            <p>{{ bidding.amount|intcomma }}</p>
             <p>{{ bidding.created_at }}</p>
             {% empty %}
             <p>No bids yet.</p>
             {% endfor %}
         </div>
     </div>
+    {% endif %}
       <!-- Similar Vehicles -->
     <div class="row mt-5">
         <h3>Similar Deals</h3>
