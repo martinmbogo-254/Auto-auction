@@ -70,7 +70,7 @@ def auction_add(request):
                 vehicle.bid_status = 'in_auction'  # Update this status based on your needs
                 vehicle.save()
             messages.success(request, 'Auction added successfully!')
-            return redirect('auctions')
+            return redirect('auction_list')
     else:
         form = AuctionForm()
     return render(request, 'admin/create_auction.html', {'form': form})   

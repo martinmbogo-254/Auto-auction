@@ -16,12 +16,9 @@ class AuctionForm(forms.ModelForm):
         model = Auction
         fields = ['start_date', 'end_date', 'vehicles', 'approved']
         widgets = {
-            'vehicles': forms.CheckboxSelectMultiple(),
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super(AuctionForm, self).__init__(*args, **kwargs)
-        # Filter vehicles to only show those that are available
-        self.fields['vehicles'].queryset = Vehicle.objects.filter(status='available')
+    vehicles= forms.ModelMultipleChoiceField(
+        queryset=Vehicle.objects.all(),
+        widget=forms.CheckboxSelectMultiple)

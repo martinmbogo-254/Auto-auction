@@ -1,14 +1,27 @@
+{% extends 'vehicles/base.html'%} {% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Add Auction</title>
-</head>
+{% block content %}
 <body>
     <h1>Add Auction</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+<div class="row">
+        <div class="col-md-6">
+    {{form.start_date|as_crispy_field}}
+</div>
+   <div class="col-md-6">
+    {{form.end_date|as_crispy_field}}
+</div>
+<div class="col-md-6">
+    {{form.vehicles|as_crispy_field}}
+</div>
+<div class="col-md-6">
+    {{form.approved|as_crispy_field}}
+</div>
+</div>
         <button type="submit">Add Auction</button>
     </form>
 </body>
+{% endblock content %}
 </html>
