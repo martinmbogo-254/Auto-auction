@@ -46,12 +46,12 @@ class VehicleBody(models.Model):
 
 class Vehicle(models.Model):
     BID_STATUS_CHOICES = [
-        ('open', 'Open'),
-        ('closed', 'Closed'),
-        ('pending', 'Pending'),
+        ('available', 'available'),
+        ('on_auction', 'on_auction'),
+        ('sold', 'sold'),
     ]
     v_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    registration_no = models.CharField(max_length=255)
+    registration_no = models.CharField(max_length=255,unique=True)
     make = models.ForeignKey(VehicleMake, on_delete=models.CASCADE)
     model = models.ForeignKey(VehicleModel, on_delete=models.CASCADE)
     YOM = models.ForeignKey(ManufactureYear, on_delete=models.CASCADE)
@@ -61,7 +61,7 @@ class Vehicle(models.Model):
     engine_cc = models.IntegerField()
     body_type = models.ForeignKey(VehicleBody, on_delete=models.CASCADE)
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
-    bid_status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='open')
+    status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='open')
     reserve_price = models.IntegerField()
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)
@@ -86,7 +86,7 @@ class Auction(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     vehicles = models.ManyToManyField('Vehicle', related_name='auctions')
-
+    approved = models.BooleanField(default=False)
     def __str__(self):
         return f"Auction {self.auction_id} from {self.start_date} to {self.end_date}"
 
@@ -100,3 +100,14 @@ class VehicleView(models.Model):
 
     def __str__(self):
             return self.vehicle.make.name
+
+
+class AuctionHistory(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='auction_history')
+    auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name='auction_history')
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    sold = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.vehicle.make.name} {self.vehicle.model.name} in Auction {str(self.auction.auction_id)[:8]}"

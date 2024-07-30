@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
-    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView
+    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory
 )
 # class ProfileInline(admin.StackedInline):
 #     model = Profile
@@ -31,8 +31,8 @@ class VehicleViewInline(admin.TabularInline):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('v_id', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'get_bid_status_display', 'reserve_price', 'created_at', 'updated_at')
-    search_fields = ('make__name', 'model__name', 'YOM__year', 'created_by__email', 'bid_status')
+    list_display = ('v_id', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at')
+    search_fields = ('make__name', 'model__name', 'YOM__year', 'created_by__email', 'status')
     list_filter = ('make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
 
@@ -73,7 +73,7 @@ class AuctionAdmin(admin.ModelAdmin):
 #     # search_fields = ('email', 'phone_number', 'id_number', 'name')
 #     # list_filter = ('is_admin', 'created_at')
 
-
+admin.site.register(AuctionHistory)
 
 admin.site.site_header = "RSVA Admin"
 admin.site.site_title = "RSVA"
