@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .models import Vehicle, Bidding, VehicleView, Auction
+from .models import Vehicle, Bidding, VehicleView, Auction, AuctionHistory
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import BidForm, AuctionForm
@@ -13,7 +13,7 @@ def homepage(request):
     return render(request, 'vehicles/home.html')
 
 def vehiclespage(request):
-    vehicles = Vehicle.objects.all()
+    vehicles = Vehicle.objects.filter(status='on_auction')
     vehicles_count = vehicles.count()
     vehiclefilter = VehicleFilter(request.GET, queryset=vehicles)
     vehicles = vehiclefilter.qs
@@ -40,7 +40,7 @@ def vehicledetail(request, pk):
     context = {
        'vehicle': vehicle,
        'biddings':biddings,
-       
+       'days_since_creation': vehicle.days_since_creation(),
        'similar_vehicles': similar_vehicles,       
         'highest_bid': highest_bid,
        'similar_vehicles': similar_vehicles,
@@ -67,8 +67,14 @@ def auction_add(request):
             selected_vehicles = form.cleaned_data['vehicles']
             # Update the bid_status of selected vehicles
             for vehicle in selected_vehicles:
-                vehicle.bid_status = 'in_auction'  # Update this status based on your needs
+                vehicle.status = 'on_auction'  # Update this status based on your needs
                 vehicle.save()
+                AuctionHistory.objects.create(
+                    vehicle=vehicle,
+                    auction=auction,
+                    start_date=auction.start_date,
+                    end_date=auction.end_date,
+                    sold=False)
             messages.success(request, 'Auction added successfully!')
             return redirect('auction_list')
     else:

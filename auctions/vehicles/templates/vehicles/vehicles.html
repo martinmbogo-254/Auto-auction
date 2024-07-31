@@ -51,7 +51,7 @@
         
             <img class="card-img-top thumbnail" src="{{vehicle.file.url}}" style="height:200px"/>
             <div class="card-body">
-                <a href="{% url 'detail' vehicle.id%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}} {{vehicle.model}}</a>
+                <a href="{% url 'detail' vehicle.id%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}}, {{vehicle.registration_no}}</a>
                 <p class="card-text">{{vehicle.reserve_price}}</p> 
             </div>
           </div>

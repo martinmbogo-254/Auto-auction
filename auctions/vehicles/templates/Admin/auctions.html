@@ -4,7 +4,7 @@
 <ul>
     {% for auction in auctions %}
     <li>
-        <a href="{% url 'auction_detail' auction.pk %}">Auction {{ auction.auction_id }}</a> ({{ auction.start_date }} - {{ auction.end_date }})
+        <a href="{% url 'auction_detail' auction.pk %}">Auction {{ auction.auction_id|truncatechars:7 }}</a> ({{ auction.start_date }} - {{ auction.end_date }})
     </li>
     {% endfor %}
 </ul>

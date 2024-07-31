@@ -12,6 +12,9 @@ class BidForm(forms.ModelForm):
 
 
 class AuctionForm(forms.ModelForm):
+    vehicles= forms.ModelMultipleChoiceField(
+        queryset=Vehicle.objects.filter(status='available'),
+        widget=forms.CheckboxSelectMultiple)
     class Meta:
         model = Auction
         fields = ['start_date', 'end_date', 'vehicles', 'approved']
@@ -19,6 +22,4 @@ class AuctionForm(forms.ModelForm):
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
-    vehicles= forms.ModelMultipleChoiceField(
-        queryset=Vehicle.objects.all(),
-        widget=forms.CheckboxSelectMultiple)
+    
