@@ -72,6 +72,9 @@ class Vehicle(models.Model):
     def __str__(self):
             return self.registration_no
 
+    # def is_available(self):
+    #     return self.status == 'available'
+
     def days_since_creation(self):
         now = timezone.now()
         delta = now - self.created_at

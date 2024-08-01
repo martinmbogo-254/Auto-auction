@@ -12,16 +12,7 @@ from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
     ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory
 )
-# class ProfileInline(admin.StackedInline):
-#     model = Profile
-#     can_delete = False
-#     verbose_name_plural = 'Profiles'
 
-# class MyUser (UserAdmin):
-#     inlines = (ProfileInline,)
-
-# admin.site.unregister(User)
-# admin.site.register(User,MyUser)
 
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
@@ -29,14 +20,17 @@ class VehicleImageInline(admin.TabularInline):
 
 class BidInline(admin.TabularInline):
     model = Bidding
+    fields = ('user', 'amount', 'created_at')
+    readonly_fields = ('created_at',)  
     extra = 1  # Number of empty forms to display
+
 class VehicleViewInline(admin.TabularInline):
     model = VehicleView
     extra = 1 
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('registration_no', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at')
+    list_display = ('registration_no', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation')
     search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
@@ -101,6 +95,12 @@ class AuctionAdmin(admin.ModelAdmin):
     filter_horizontal = ('vehicles',)
     list_filter = ('approved',EndedFilter,'start_date', 'end_date','created_at')
 
+    def get_form(self, request, obj=None, **kwargs):
+        # Call the superclass method to get the form class
+        form = super().get_form(request, obj, **kwargs)
+        # Modify the form's vehicle queryset
+        form.base_fields['vehicles'].queryset = Vehicle.objects.filter(status='available')
+        return form
     
     def is_ended(self, obj):
         return obj.ended
@@ -125,15 +125,6 @@ class AuctionAdmin(admin.ModelAdmin):
                 self.message_user(request, f"Auction {auction.auction_id} is not yet ended or not approved ", level=messages.ERROR)
     update_vehicle_status.short_description = "Update Vehicle Statuses for Selected Auctions"
 
-# @admin.register(Auction)
-# class AuctionAdmin(admin.ModelAdmin):
-#     list_display = ('auction_id',)
-#     search_fields = ('auction_id',)
-# @admin.register(CustomUser)
-# class CustomUserAdmin(admin.ModelAdmin):
-#     # list_display = ('email', 'phone_number', 'id_number', 'name', 'is_admin', 'created_at')
-#     # search_fields = ('email', 'phone_number', 'id_number', 'name')
-#     # list_filter = ('is_admin', 'created_at')
 
 @admin.register(AuctionHistory)
 class AuctionHistoryAdmin(admin.ModelAdmin):
