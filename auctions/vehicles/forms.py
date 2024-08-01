@@ -23,3 +23,4 @@ class AuctionForm(forms.ModelForm):
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         }
     
+    

@@ -76,6 +76,8 @@ class Vehicle(models.Model):
         now = timezone.now()
         delta = now - self.created_at
         return delta.days
+    
+    
 
 class VehicleImage(models.Model):
     vehicle= models.ForeignKey(Vehicle, on_delete=models.CASCADE)
@@ -93,12 +95,12 @@ class Auction(models.Model):
     auction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    current_time = models.DateTimeField(default=timezone.now())
+    # current_time = models.DateTimeField(default=timezone.now())
     created_at = models.DateTimeField(auto_now_add=True)
     vehicles = models.ManyToManyField('Vehicle', related_name='auctions')
     approved = models.BooleanField(default=False)
     def __str__(self):
-        return f"Auction {self.auction_id} from {self.start_date} to {self.end_date}"
+        return f"Auction {self.auction_id}"
 
     def check_and_update_status(self):
         if self.end_date < timezone.now():
@@ -110,6 +112,9 @@ class Auction(models.Model):
                 else:
                     vehicle.status = 'available'
                 vehicle.save()
+    @property
+    def ended(self):
+        return self.end_date < timezone.now()
 class VehicleView(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

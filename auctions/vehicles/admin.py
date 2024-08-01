@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django.utils import timezone
 from .models import Auction, Vehicle, AuctionHistory
+from django.contrib import admin, messages
 
 
 from .models import (
@@ -72,12 +73,39 @@ class VehicleBodyAdmin(admin.ModelAdmin):
 from django.contrib import admin
 from django.utils import timezone
 from .models import Auction, Vehicle, AuctionHistory
+from django.contrib import admin
+from django.utils import timezone
+from .models import Auction
+
+class EndedFilter(admin.SimpleListFilter):
+    title = 'ended'
+    parameter_name = 'ended'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('Yes', 'Ended'),
+            ('No', 'Not Ended'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'Yes':
+            return queryset.filter(end_date__lt=timezone.now())
+        if self.value() == 'No':
+            return queryset.filter(end_date__gte=timezone.now())
 
 @admin.register(Auction)
 class AuctionAdmin(admin.ModelAdmin):
-    list_display = ('auction_id', 'start_date', 'end_date','created_at', 'approved')
+    list_display = ('auction_id', 'start_date', 'end_date','created_at', 'approved','is_ended')
     actions = ['update_vehicle_status']
-    search_fields = ('vehicles__registration_no',)
+    search_fields = ('vehicles__registration_no','auction_id')
+    filter_horizontal = ('vehicles',)
+    list_filter = ('approved',EndedFilter,'start_date', 'end_date','created_at')
+
+    
+    def is_ended(self, obj):
+        return obj.ended
+    is_ended.boolean = True
+    is_ended.short_description = 'Ended'
 
     def update_vehicle_status(self, request, queryset):
         now = timezone.now()
@@ -92,9 +120,9 @@ class AuctionAdmin(admin.ModelAdmin):
                         vehicle.status = 'available'
                         AuctionHistory.objects.filter(vehicle=vehicle, auction=auction).update(sold=False, returned_to_available=True)
                     vehicle.save()
-                self.message_user(request, f"Updated vehicle statuses for auction {auction.auction_id}")
+                self.message_user(request, f"Updated vehicle statuses for auction {auction.auction_id}" , level=messages.SUCCESS)
             else:
-                self.message_user(request, f"Auction {auction.auction_id} is not yet ended or not approved")
+                self.message_user(request, f"Auction {auction.auction_id} is not yet ended or not approved ", level=messages.ERROR)
     update_vehicle_status.short_description = "Update Vehicle Statuses for Selected Auctions"
 
 # @admin.register(Auction)
@@ -109,7 +137,17 @@ class AuctionAdmin(admin.ModelAdmin):
 
 @admin.register(AuctionHistory)
 class AuctionHistoryAdmin(admin.ModelAdmin):
-    search_fields = ('vehicle__registration_no',)
+    list_display = ('vehicle', 'auction', 'start_date', 'end_date', 'sold', 'returned_to_available')
+    search_fields = ('vehicle__registration_no', 'auction__auction_id')
+
+    def vehicle_registration_no(self, obj):
+        return obj.vehicle.registration_no
+    vehicle_registration_no.short_description = 'Vehicle Registration No'
+    
+    def auction_id(self, obj):
+        return obj.auction.auction_id
+    auction_id.short_description = 'Auction ID'
+
 admin.site.site_header = "RSVA Admin"
 admin.site.site_title = "RSVA"
 admin.site.index_title = "Welcome to RSVA Admin"
