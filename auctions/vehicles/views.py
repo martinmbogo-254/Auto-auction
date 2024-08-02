@@ -15,7 +15,7 @@ def homepage(request):
     return render(request, 'vehicles/home.html')
 
 def vehiclespage(request):
-    vehicles = Vehicle.objects.filter(status='on_auction')
+    vehicles = Vehicle.objects.all()
     vehicles_count = vehicles.count()
     vehiclefilter = VehicleFilter(request.GET, queryset=vehicles)
     vehicles = vehiclefilter.qs
