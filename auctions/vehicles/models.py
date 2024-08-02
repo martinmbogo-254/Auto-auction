@@ -104,6 +104,11 @@ class Auction(models.Model):
     approved = models.BooleanField(default=False)
     def __str__(self):
         return f"Auction {self.auction_id}"
+    def get_auction_status(self):
+            active_auctions = self.auctions.filter(end_date < timezone.now(), approved=True)
+            if active_auctions.exists():
+                return 'Active'
+            return 'Ended'
 
     def check_and_update_status(self):
         if self.end_date < timezone.now():
@@ -135,7 +140,7 @@ class AuctionHistory(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name='auction_history')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    sold = models.BooleanField(default=False)
+    sold = models.BooleanField(default=False,)
     returned_to_available = models.BooleanField(default=False)
     class Meta:
         verbose_name_plural = " Auction Histories"

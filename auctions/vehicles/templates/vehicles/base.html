@@ -26,12 +26,12 @@
              <a class="nav-link" href="{% url 'vehicles' %}">Vehicles</a>
                 <a class="nav-link" href="">How It Works</a>
             {% if user.is_authenticated %}
-               <a class="nav-link" href="{% url 'auction_list'%}">Auctions</a>
+               {% comment %} <a class="nav-link" href="{% url 'auction_list'%}">Auctions</a> {% endcomment %}
 
                 <!-- <p class="nav-link">Logged in as:-</p> -->
                   {% if user.is_staff %}
                      
-                        <a class="nav-link" href="/admin">Admin</a>
+                        <a class="nav-link" href="{% url 'administration' %}">Admin-Dash</a>
                 
                       {% endif %}
                 

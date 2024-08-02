@@ -7,6 +7,8 @@ from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from .filters import VehicleFilter
 from django.contrib import messages
+from .forms import AuctionForm
+
 
 # Create your views here.
 def homepage(request):
@@ -96,3 +98,14 @@ def logout_view(request):
     return redirect('homepage')
 
 # Admin views
+@login_required
+def admin_dash(request):
+    vehicles = Vehicle.objects.all()
+    auctions = Auction.objects.all()
+    auction_count = auctions.count()
+    vehicle_count = vehicles.count()
+    context = {
+        'vehicle_count': vehicle_count,
+        'auction_count': auction_count,
+    }
+    return render(request, 'admin/dashboard.html', context)

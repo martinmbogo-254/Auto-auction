@@ -18,9 +18,9 @@ class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
         fields = ['start_date', 'end_date', 'vehicles', 'approved']
-        widgets = {
-            'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-            'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
-        }
+        # widgets = {
+        #     'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        #     'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        # }
     
     

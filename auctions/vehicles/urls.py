@@ -11,6 +11,7 @@ urlpatterns = [
     path('add-auction/', views.auction_add, name='auction_add'),
     path('auctions/', views.auction_list, name='auction_list'),
     path('auction/<int:pk>/', views.auction_detail, name='auction_detail'),
+    path('administration/',views.admin_dash, name='administration'),
 
 
 

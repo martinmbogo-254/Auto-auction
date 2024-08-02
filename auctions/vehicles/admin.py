@@ -6,6 +6,8 @@ from django.contrib import admin
 from django.utils import timezone
 from .models import Auction, Vehicle, AuctionHistory
 from django.contrib import admin, messages
+from .forms import AuctionForm
+
 
 
 from .models import (
@@ -94,6 +96,7 @@ class AuctionAdmin(admin.ModelAdmin):
     search_fields = ('vehicles__registration_no','auction_id')
     filter_horizontal = ('vehicles',)
     list_filter = ('approved',EndedFilter,'start_date', 'end_date','created_at')
+    # form = AuctionForm
 
     def get_form(self, request, obj=None, **kwargs):
         # Call the superclass method to get the form class
@@ -106,6 +109,21 @@ class AuctionAdmin(admin.ModelAdmin):
         return obj.ended
     is_ended.boolean = True
     is_ended.short_description = 'Ended'
+
+    def save_model(self, request, obj, form, change):
+            super().save_model(request, obj, form, change)
+            selected_vehicles = form.cleaned_data['vehicles']
+            for vehicle in selected_vehicles:
+                vehicle.status = 'on_auction'  # Update this status based on your needs
+                vehicle.save()
+                AuctionHistory.objects.create(
+                    vehicle=vehicle,
+                    auction=obj,
+                    start_date=obj.start_date,
+                    end_date=obj.end_date,
+                    sold=False
+                )
+
 
     def update_vehicle_status(self, request, queryset):
         now = timezone.now()
