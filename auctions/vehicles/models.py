@@ -51,7 +51,7 @@ class Vehicle(models.Model):
     BID_STATUS_CHOICES = [
         ('available', 'available'),
         ('on_auction', 'on_auction'),
-        ('sold', 'sold'),
+        ('on_bid', 'on_bid'),
     ]
     v_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     registration_no = models.CharField(max_length=255,unique=True)
@@ -142,7 +142,7 @@ class AuctionHistory(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name='auction_history')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
-    sold = models.BooleanField(default=False,)
+    on_bid = models.BooleanField(default=False,)
     returned_to_available = models.BooleanField(default=False)
     class Meta:
         verbose_name_plural = " Auction Histories"

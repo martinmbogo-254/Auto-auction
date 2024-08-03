@@ -91,7 +91,7 @@ class EndedFilter(admin.SimpleListFilter):
 
 @admin.register(Auction)
 class AuctionAdmin(admin.ModelAdmin):
-    list_display = ('auction_id', 'start_date', 'end_date','created_at', 'approved','is_ended')
+    list_display = ('id','auction_id', 'start_date', 'end_date','created_at', 'approved','is_ended')
     actions = ['update_vehicle_status']
     search_fields = ('vehicles__registration_no','auction_id')
     filter_horizontal = ('vehicles',)
@@ -121,7 +121,7 @@ class AuctionAdmin(admin.ModelAdmin):
                     auction=obj,
                     start_date=obj.start_date,
                     end_date=obj.end_date,
-                    sold=False
+                    on_bid=False
                 )
 
 
@@ -132,11 +132,11 @@ class AuctionAdmin(admin.ModelAdmin):
                 for vehicle in auction.vehicles.all():
                     highest_bid = vehicle.bidding.order_by('-amount').first()
                     if highest_bid and highest_bid.amount >= vehicle.reserve_price:
-                        vehicle.status = 'sold'
-                        AuctionHistory.objects.filter(vehicle=vehicle, auction=auction).update(sold=True, returned_to_available=False)
+                        vehicle.status = 'on_bid'
+                        AuctionHistory.objects.filter(vehicle=vehicle, auction=auction).update(on_bid=True, returned_to_available=False)
                     else:
                         vehicle.status = 'available'
-                        AuctionHistory.objects.filter(vehicle=vehicle, auction=auction).update(sold=False, returned_to_available=True)
+                        AuctionHistory.objects.filter(vehicle=vehicle, auction=auction).update(on_bid=False, returned_to_available=True)
                     vehicle.save()
                 self.message_user(request, f"Updated vehicle statuses for auction {auction.auction_id}" , level=messages.SUCCESS)
             else:
@@ -146,7 +146,7 @@ class AuctionAdmin(admin.ModelAdmin):
 
 @admin.register(AuctionHistory)
 class AuctionHistoryAdmin(admin.ModelAdmin):
-    list_display = ('vehicle', 'auction', 'start_date', 'end_date', 'sold', 'returned_to_available')
+    list_display = ('vehicle', 'auction', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
     search_fields = ('vehicle__registration_no', 'auction__auction_id')
 
     def vehicle_registration_no(self, obj):

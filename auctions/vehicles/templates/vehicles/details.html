@@ -47,7 +47,15 @@
           <p>Sold</p>
             
           {% else %}
-           <p>Vehicle on Auction</p>
+          {% if user.is_authenticated %}
+            <button type="button" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
+                Make a bid
+            </button>
+            {% else %}
+            <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
+                Login to bid
+            </a>
+            {% endif %}
           {% endif %}
             <p>Days accumulated: {{ days_since_creation }}</p>
             <h4>YOM: {{ vehicle.YOM }}</h4>
@@ -61,15 +69,7 @@
             {% else %}
             <p>Highest Bid :No bids yet.</p>
             {% endif %}
-           {% if user.is_authenticated %}
-            <button type="button" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
-                Make a bid
-            </button>
-            {% else %}
-            <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
-                Login to bid
-            </a>
-            {% endif %}
+           
         </div>
     </div>
     {% if user.is_staff %}
