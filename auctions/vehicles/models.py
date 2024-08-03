@@ -64,7 +64,7 @@ class Vehicle(models.Model):
     engine_cc = models.IntegerField()
     body_type = models.ForeignKey(VehicleBody, on_delete=models.CASCADE)
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='open')
+    status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='available')
     reserve_price = models.IntegerField()
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)
@@ -72,8 +72,10 @@ class Vehicle(models.Model):
     def __str__(self):
             return self.registration_no
 
-    # def is_available(self):
-    #     return self.status == 'available'
+    def is_available(self):
+        return self.status == 'available'
+    def is_sold(self):
+            return self.status == 'sold'
 
     def days_since_creation(self):
         now = timezone.now()

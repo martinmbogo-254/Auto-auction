@@ -40,7 +40,15 @@
         </div>
         <div class="col-md-4">
           <h4 class="badge rounded-pill">Views: {{ vehicle.views }}</h4> 
-            <p>Auction Status: {{ vehicle.get_auction_status }}</p>
+
+          {% if vehicle.is_available%}
+           <p>Upcoming Auction</p>
+          {% elif vehicle.is_sold%}
+          <p>Sold</p>
+            
+          {% else %}
+           <p>Vehicle on Auction</p>
+          {% endif %}
             <p>Days accumulated: {{ days_since_creation }}</p>
             <h4>YOM: {{ vehicle.YOM }}</h4>
             <p>Reg No: {{ vehicle.registration_no }}</p>

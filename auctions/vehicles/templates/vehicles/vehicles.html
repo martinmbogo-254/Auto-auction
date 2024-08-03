@@ -52,18 +52,18 @@
             <img class="card-img-top thumbnail" src="{{vehicle.file.url}}" style="height:200px"/>
             <div class="card-body">
                 <a href="{% url 'detail' vehicle.id%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}}, {{vehicle.registration_no}}</a>
-                <p class="card-text">{{vehicle.reserve_price}}</p> 
-                {% if vehicle.status ==available %}
-                <p class="card-text">Upcoming Auction</p>
-                {% elif vehicle.status ==sold %}
-                <p class="card-text">Sold</p>
-                {% else %}
-                <p class="card-text">On Active Auction</p>
-                {% endif %} 
+               
+                <p>{{ vehicle.status}}</p>
             </div>
+            
           </div>
       </div>
+      {% empty %}
+            <div class="jumbotron">
+                <p>Sorry, we do could not  find a vehicle with your specifications, please try searching again</p>
+            </div>
       {% endfor %}
+      
     </div>
     <div class="col-md-3"></div>
 </div>
