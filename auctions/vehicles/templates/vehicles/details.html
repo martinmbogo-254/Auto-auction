@@ -41,22 +41,7 @@
         <div class="col-md-4">
           <h4 class="badge rounded-pill">Views: {{ vehicle.views }}</h4> 
 
-          {% if vehicle.is_available%}
-           <p>Upcoming Auction</p>
-          {% elif vehicle.is_sold%}
-          <p>Sold</p>
-            
-          {% else %}
-          {% if user.is_authenticated %}
-            <button type="button" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
-                Make a bid
-            </button>
-            {% else %}
-            <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
-                Login to bid
-            </a>
-            {% endif %}
-          {% endif %}
+        
             <p>Days accumulated: {{ days_since_creation }}</p>
             <h4>YOM: {{ vehicle.YOM }}</h4>
             <p>Reg No: {{ vehicle.registration_no }}</p>
@@ -69,8 +54,63 @@
             {% else %}
             <p>Highest Bid :No bids yet.</p>
             {% endif %}
+            {% if vehicle.current_auction_end_date %}
+            <p>Auction End Date: {{ vehicle.current_auction_end_date }}</p>
+            <div id="countdown"></div>
+            <script>
+                // Pass the auction end date to JavaScript
+                const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
+            </script>
+            {% if user.is_authenticated %}
+            <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
+                Make a bid
+            </button>
+            {% else %}
+            <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
+                Login to bid
+            </a>
+            {% endif %}
+            {% else %}
+                <p>This vehicle is not currently in an auction.</p>
+            {% endif %}
            
         </div>
+        <!-- vehicle_detail.html continued -->
+{% block javascript %}
+<script>
+    function countdownTimer(endDate) {
+        const countDownDate = new Date(endDate).getTime();
+
+        // Update the count down every 1 second
+        const interval = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result in the element with id="countdown"
+            document.getElementById("countdown").innerHTML = 
+                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+            // If the count down is over, write some text 
+            if (distance < 0) {
+                clearInterval(interval);
+                document.getElementById("countdown").innerHTML = "Auction Has Ended";
+                document.getElementById("bidbtn").style.display = 'none';
+
+            }
+        }, 1000);
+    }
+
+    // Initialize the countdown timer
+    countdownTimer(auctionEndDate);
+</script>
+{% endblock %}
+
     </div>
     {% if user.is_staff %}
     <div class="row">

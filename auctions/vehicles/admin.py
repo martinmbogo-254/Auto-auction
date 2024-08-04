@@ -7,6 +7,7 @@ from django.utils import timezone
 from .models import Auction, Vehicle, AuctionHistory
 from django.contrib import admin, messages
 from .forms import AuctionForm
+from django.utils import timezone
 
 
 
@@ -32,10 +33,14 @@ class VehicleViewInline(admin.TabularInline):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('registration_no', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation')
+    list_display = ('registration_no', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation','current_auction_end_date')
     search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
+
+    def current_auction_end_date(self, obj):
+        return obj.current_auction_end_date()
+    current_auction_end_date.short_description = 'Auction End Date'
 
 @admin.register(VehicleMake)
 class VehicleMakeAdmin(admin.ModelAdmin):
@@ -109,6 +114,21 @@ class AuctionAdmin(admin.ModelAdmin):
         return obj.ended
     is_ended.boolean = True
     is_ended.short_description = 'Ended'
+    def save_model(self, request, obj, form, change):
+        if obj.start_date and obj.end_date:
+            overlapping_auctions = Auction.objects.filter(
+                approved=True,
+                end_date__gte=obj.start_date,
+                start_date__lte=obj.end_date
+            )
+            if change:
+                overlapping_auctions = overlapping_auctions.exclude(pk=obj.pk)
+
+            if overlapping_auctions.exists():
+                self.message_user(request, "There is already an active auction during the selected time period.", level=messages.ERROR)
+                return
+
+        super().save_model(request, obj, form, change)
 
     def save_model(self, request, obj, form, change):
             super().save_model(request, obj, form, change)
@@ -143,6 +163,14 @@ class AuctionAdmin(admin.ModelAdmin):
                 self.message_user(request, f"Auction {auction.auction_id} is not yet ended or not approved ", level=messages.ERROR)
     update_vehicle_status.short_description = "Update Vehicle Statuses for Selected Auctions"
 
+    def changelist_view(self, request, extra_context=None):
+        # Check if there is an active auction
+        now = timezone.now()
+        has_active_auction = Auction.objects.filter(end_date__gt=now, approved=True).exists()
+        extra_context = extra_context or {}
+        extra_context['has_active_auction'] = has_active_auction
+
+        return super().changelist_view(request, extra_context=extra_context)
 
 @admin.register(AuctionHistory)
 class AuctionHistoryAdmin(admin.ModelAdmin):
@@ -154,7 +182,7 @@ class AuctionHistoryAdmin(admin.ModelAdmin):
     vehicle_registration_no.short_description = 'Vehicle Registration No'
     
     def auction_id(self, obj):
-        return obj.auction.auction_id
+        return obj.auction.auction_id[:8]
     auction_id.short_description = 'Auction ID'
 
 admin.site.site_header = "RSVA Admin"

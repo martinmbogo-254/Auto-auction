@@ -81,6 +81,12 @@ class Vehicle(models.Model):
         now = timezone.now()
         delta = now - self.created_at
         return delta.days
+
+    def current_auction_end_date(self):
+        current_auction = self.auctions.filter(end_date__gte=timezone.now()).order_by('end_date').first()
+        if current_auction:
+            return current_auction.end_date
+        return None
     
     
 
