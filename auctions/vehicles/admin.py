@@ -8,9 +8,6 @@ from .models import Auction, Vehicle, AuctionHistory
 from django.contrib import admin, messages
 from .forms import AuctionForm
 from django.utils import timezone
-
-
-
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
     ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory
@@ -23,13 +20,16 @@ class VehicleImageInline(admin.TabularInline):
 
 class BidInline(admin.TabularInline):
     model = Bidding
-    fields = ('user', 'amount', 'created_at')
-    readonly_fields = ('created_at',)  
-    extra = 1  # Number of empty forms to display
+    readonly_fields = ('user', 'amount', 'created_at',)  
+    # extra = 1  
+    can_delete = False
 
 class VehicleViewInline(admin.TabularInline):
     model = VehicleView
     extra = 1 
+    readonly_fields=('vehicle','user','viewed_at')
+    can_delete = False
+
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
@@ -94,6 +94,12 @@ class EndedFilter(admin.SimpleListFilter):
         if self.value() == 'No':
             return queryset.filter(end_date__gte=timezone.now())
 
+class AuctionHistoryInline(admin.TabularInline):
+    model = AuctionHistory
+    extra = 0
+    readonly_fields = ('vehicle', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
+    can_delete = False
+
 @admin.register(Auction)
 class AuctionAdmin(admin.ModelAdmin):
     list_display = ('id','auction_id', 'start_date', 'end_date','created_at', 'approved','is_ended')
@@ -101,7 +107,7 @@ class AuctionAdmin(admin.ModelAdmin):
     search_fields = ('vehicles__registration_no','auction_id')
     filter_horizontal = ('vehicles',)
     list_filter = ('approved',EndedFilter,'start_date', 'end_date','created_at')
-    # form = AuctionForm
+    inlines = [AuctionHistoryInline]
 
     def get_form(self, request, obj=None, **kwargs):
         # Call the superclass method to get the form class
@@ -114,21 +120,7 @@ class AuctionAdmin(admin.ModelAdmin):
         return obj.ended
     is_ended.boolean = True
     is_ended.short_description = 'Ended'
-    def save_model(self, request, obj, form, change):
-        if obj.start_date and obj.end_date:
-            overlapping_auctions = Auction.objects.filter(
-                approved=True,
-                end_date__gte=obj.start_date,
-                start_date__lte=obj.end_date
-            )
-            if change:
-                overlapping_auctions = overlapping_auctions.exclude(pk=obj.pk)
-
-            if overlapping_auctions.exists():
-                self.message_user(request, "There is already an active auction during the selected time period.", level=messages.ERROR)
-                return
-
-        super().save_model(request, obj, form, change)
+   
 
     def save_model(self, request, obj, form, change):
             super().save_model(request, obj, form, change)
@@ -172,10 +164,31 @@ class AuctionAdmin(admin.ModelAdmin):
 
         return super().changelist_view(request, extra_context=extra_context)
 
+class VehicleInline(admin.TabularInline):
+    model = AuctionHistory
+    extra = 0
+    readonly_fields = ['vehicle', 'start_date', 'end_date', 'on_bid', 'returned_to_available']
+    # fields = ['vehicle', 'start_date', 'end_date', 'on_bid', 'returned_to_available']
+
+
 @admin.register(AuctionHistory)
 class AuctionHistoryAdmin(admin.ModelAdmin):
     list_display = ('vehicle', 'auction', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
     search_fields = ('vehicle__registration_no', 'auction__auction_id')
+    readonly_fields = ('vehicle', 'auction', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
+    # inlines = [BidInline]
+
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.select_related('vehicle', 'auction').prefetch_related('vehicle__bidding')
+        return queryset
+
+    def vehicle_details(self, obj):
+        highest_bid = obj.vehicle.bidding.order_by('-amount').first()
+        return highest_bid.amount if highest_bid else 'No Bids'
+    
+    vehicle_details.short_description = 'Highest Bid'
 
     def vehicle_registration_no(self, obj):
         return obj.vehicle.registration_no

@@ -8,6 +8,7 @@ from django.urls import reverse
 from .filters import VehicleFilter
 from django.contrib import messages
 from .forms import AuctionForm
+from django.utils import timezone
 
 
 # Create your views here.
@@ -109,3 +110,12 @@ def admin_dash(request):
         'auction_count': auction_count,
     }
     return render(request, 'admin/dashboard.html', context)
+
+
+def auction_status_update(request):
+    now = timezone.now()
+    active_auctions = Auction.objects.filter(end_date__gt=now, approved=True)
+    data = {
+        'active_auctions_count': active_auctions.count()
+    }
+    return JsonResponse(data)
