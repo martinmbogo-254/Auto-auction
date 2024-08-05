@@ -9,6 +9,7 @@ import uuid
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.urls import reverse
 
 
 class VehicleMake(models.Model):
@@ -68,6 +69,14 @@ class Vehicle(models.Model):
     reserve_price = models.IntegerField()
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)
+
+
+    def get_absolute_url(self):
+        return reverse('detail', kwargs={'registration_no': self.registration_no})
+
+    @property
+    def url(self):
+        return self.get_absolute_url()
 
     def __str__(self):
             return self.registration_no

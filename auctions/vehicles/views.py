@@ -16,7 +16,7 @@ def homepage(request):
     return render(request, 'vehicles/home.html')
 
 def vehiclespage(request):
-    vehicles = Vehicle.objects.filter(status='on_auction')
+    vehicles = Vehicle.objects.all()
     vehicles_count = vehicles.count()
     vehiclefilter = VehicleFilter(request.GET, queryset=vehicles)
     vehicles = vehiclefilter.qs
@@ -28,8 +28,8 @@ def vehiclespage(request):
     }
     return render(request, 'vehicles/vehicles.html',context)
 
-def vehicledetail(request, pk):
-    vehicle = Vehicle.objects.get(id=pk)
+def vehicledetail(request, registration_no):
+    vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
     if request.user.is_authenticated:
         # Check if the user has already viewed this vehicle
         if not VehicleView.objects.filter(vehicle=vehicle, user=request.user).exists():

@@ -1,7 +1,7 @@
 {% extends 'vehicles/base.html' %}
 {% load static %}
 {% load humanize %}
-
+{% load social_share %}
 {% block content %}
 <div class="jumbotron center">
     <a href="{% url 'vehicles' %}">Back</a>
@@ -73,7 +73,10 @@
             {% else %}
                 <p>This vehicle is currently not in an auction.</p>
             {% endif %}
-           
+            <div>
+             
+                {% post_to_whatsapp vehicle.url %}
+            </div>
         </div>
         <!-- vehicle_detail.html continued -->
 {% block javascript %}
