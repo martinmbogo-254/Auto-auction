@@ -52,7 +52,12 @@
             <img class="card-img-top thumbnail" src="{{vehicle.file.url}}" style="height:200px"/>
             <div class="card-body">
                 <a href="{% url 'detail' vehicle.registration_no%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}}, {{vehicle.registration_no}}</a>
-               
+                <p>Auction End Date: {{ vehicle.current_auction_end_date }}</p>
+            <div id="countdown"></div>
+            <script>
+                // Pass the auction end date to JavaScript
+                const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
+            </script>
                 <p>{{ vehicle.status}}</p>
             </div>
             
