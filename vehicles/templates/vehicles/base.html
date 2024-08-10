@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RVAS</title>
+
+    <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %} ">
+    <script src="{% static 'vehicles/js/index.js'%}"></script>
+
+    <!--<link rel="stylesheet" href="{% static 'vehicles/css/details_style1.css' %} ">-->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    
+    <link rel="icon" type="image/svg" href="{% static 'images/logo-autobid.svg' %}">
+    <title>RVAS</title>
+  </head>
+
+<body> 
+    <div class="wrapper">    
+        <div class="top_nav">
+            <div class="left">
+              <div class="space"> . </div>
+
+              <div class="call_span">
+                <img src="{% static 'images/telephone.svg' %}" height="14px" width="24px" />
+                <span for="">+254 701856557</span>
+              </div>
+
+              <div class="email_span">
+                <img src="{% static 'images/envelope-at.svg' %}" height="14px" width="24px" />
+                <span for=""> info@riverlong.com</span>
+              </div>
+
+              <div class="opentime_span">
+                <img src="{% static 'images/clock.svg' %}" height="14px" width="24px" />
+                <span for="">  Mon - Fri: 10:00 - 18:00</span>
+              </div>
+              
+              
+          </div> 
+          <div class="right">
+           <!-- <div class="search-span">
+
+            </div>
+            <div class="flag-span">
+                Flag
+            </div>
+            <div class="signin-span">
+                Sign In
+            </div>
+            <div class="signup-span">
+                Sign Up
+            </div>-->
+            <ul>
+              <li>
+                <div class="search-span">                
+                  <label for="">RVAS</label>   
+                                      
+                </div>
+                
+            </li>
+              <li>
+                <div class="flag-span">
+                  <img src="{% static 'images/Kenya.png' %}" height="30px" width="30px" />
+              </div>
+              </li>
+              {% if user.is_authenticated %}              
+                {% if user.is_staff %}
+                  <li>
+                      <div class="signin-span">
+                      <a class="nav-link" href="/admin">Admin</a>                      
+                  </div>
+                </li>
+                {% endif %}
+                <li>
+                  <div class="signin-span">
+                      <a class="nav-link" href="{% url 'profile' %}">
+                        <!--<img src="{% static 'images/person-circle.svg' %}" height="14px" width="24px" />-->
+                        {{user.username}}</a>
+                      
+                  </div>
+                </li>
+                <div class="signin-span">
+                  <a class="nav-link" href="/logout">Logout</a>
+                  
+              </div>
+            </li>               
+
+                {% else %}
+                <li>
+                  <div class="signin-span">
+                    <a class="nav-link" href="/login">SignIn</a>
+                    
+                </div>
+              </li>
+
+              <li>
+                <div class="signup-span">
+                  <a class="nav-link" href="/register">SignUp</a>
+              </div>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+
+
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
+        
+      <a class="navbar navbar-brand" href="{% url 'homepage'%}">
+            <img src="{% static 'images/logo-autobid.svg' %}" height="60px" width="100px" />
+        </i>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <li class="navbar-nav nav-item">
+             <a class="nav-link" href="{% url 'vehicles' %}">Vehicles</a>
+                <a class="nav-link" href="">How It Works</a>
+            {% if user.is_authenticated %}
+               
+               <p class="nav-link">Logged in as:-</p> 
+                  {% if user.is_staff %}
+                     
+                        <a class="nav-link" href="/admin">Admin</a>
+                
+                      {% endif %}
+                
+                <a class="nav-link" href="{% url 'profile' %}">Hello, {{user.username}}</a>
+                <a class="nav-link " href="/logout ">Logout</a>  {% else %}
+                <div class="navbar-nav ">
+                    <a class="nav-link ml-auto " href="/login">Login</a>
+                    <a class="nav-link ml-auto " href="/register ">Register</a>
+    
+                </div>
+              {% endif %}
+            </li>
+            
+            
+        </div>
+  
+    </nav>-->
+
+
+
+        <div class="bottom_nav">           
+            <ul>
+              <li>
+                <div class="logo-span">
+                  <img src="{% static 'images/logo-autobid.svg' %}" height="60px" width="100px" />
+              </div>
+              </li>
+              <li>
+                <a href="{% url 'homepage'%}">Home</a>
+              </li>
+              <li>
+                <a href="">About Us</a>
+              </li>
+              <li>
+                <a href="{% url 'vehicles' %}">Vehicles</a>
+              </li>
+              <li>
+                <a href="">Auctions</a>
+              </li>
+              
+              <li>
+                <a href="">How it Works</a>
+              </li>
+              <li>
+                <a href="">Feedback</a>
+              </li>
+            </ul>
+      </div>
+    
+    </div>
+
+    <div>
+
+        <div class="container text-center">
+            {% if messages%} {% for message in messages%}
+            <div class="alert alert-{{ message.tags}} ">
+                {{ message}}
+            </div>
+            {% endfor %} {% endif %}
+        </div>
+
+        <body class="bg-light">            
+                {% block content%} {% endblock content%}
+            
+            
+                <nav class="navbar navbar-dark bg-dark text-center text-light mt-3 p-3 ">
+                    <p class="text-center ">&copy; 2024 . ALL RIGHTS RESERVERD
+                        <p>RVAS</p>
+                    </p>
+                </nav>
+            
+
+    </div>
+  </body>
+<!-- Include Bootstrap JS and dependencies -->
+<script src="{% static 'vehicles/js/index.js'%}"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    
+
+</html>

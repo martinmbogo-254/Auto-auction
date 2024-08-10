@@ -1,0 +1,17 @@
+{% extends "vehicles/base.html" %}
+{% block content %}
+<h2>Auction {{ auction.auction_id }}</h2>
+<p>Start Date: {{ auction.start_date }}</p>
+<p>End Date: {{ auction.end_date }}</p>
+
+<p>Vehicles:</p>
+<ul>
+    {% for vehicle in auction.vehicles.all %}
+    <li>{{ vehicle }}</li>
+    {% endfor %}
+</ul>
+
+<p>Approved: {{ auction.approved }}</p>
+{% comment %} <a href="{% url 'auction_edit' auction.pk %}">Edit</a> |
+<a href="{% url 'auction_delete' auction.pk %}">Delete</a> {% endcomment %}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'vehicles/base.html'%} {% load crispy_forms_tags %}
+
+<html>
+{% block content%}
+
+<div class="container text-center row">
+    <div class="col-md-3"></div>
+    <div class="col-md-7 m-2">
+        <div class="card p-3">
+            <h4 class="m-3">REGISTER</h4>
+            <form action="" method="POST">
+                {% csrf_token %} 
+
+                <div class="row">
+<div class="col-md-6">
+    {{form.username|as_crispy_field}}
+</div>
+<div class="col-md-6">
+    {{form.email|as_crispy_field}}
+</div>
+<div class="col-md-5">
+    {{p_form.id_number|as_crispy_field}}
+</div>
+<div class="col-md-5">
+    {{p_form.phone_number|as_crispy_field}}
+</div>
+<div class="col-md-6 required">
+{{form.password1|as_crispy_field}}
+</div>
+<div class="col-md-6">
+    {{form.password2|as_crispy_field}}
+    </div>
+                </div>
+                
+                <div>
+                    <button class="btn btn-outline-success" type="submit">signup</button>
+                </div>
+            </form>
+            <div>
+                Already have an account? <a href="/login">login</a>
+            </div>
+            <div class="mt-5">
+                <small> By signing up to RVSA, you agree to our <a href="">terms and conditions</a> </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock content%}
+
+</html>

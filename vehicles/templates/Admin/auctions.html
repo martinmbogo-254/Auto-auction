@@ -1,0 +1,12 @@
+{% extends "vehicles/base.html" %}
+{% block content %}
+<h2>Auctions</h2>
+<ul>
+    {% for auction in auctions %}
+    <li>
+        <a href="{% url 'auction_detail' auction.pk %}">Auction {{ auction.auction_id|truncatechars:7 }}</a> ({{ auction.start_date }} - {{ auction.end_date }})
+    </li>
+    {% endfor %}
+</ul>
+<a class="btn btn-info" href="{% url 'auction_add' %}">Add New Auction</a>
+{% endblock %}
