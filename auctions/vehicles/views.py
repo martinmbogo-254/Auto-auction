@@ -13,10 +13,14 @@ from django.utils import timezone
 
 # Create your views here.
 def homepage(request):
-    return render(request, 'vehicles/home.html')
+    upcoming_auctions = Vehicle.objects.filter(status='available')
+    context = {
+        'upcoming_auctions': upcoming_auctions,
+    }
+    return render(request, 'vehicles/home.html', context)
 
 def vehiclespage(request):
-    vehicles = Vehicle.objects.all()
+    vehicles = Vehicle.objects.filter(status='on_auction')
     vehicles_count = vehicles.count()
     vehiclefilter = VehicleFilter(request.GET, queryset=vehicles)
     vehicles = vehiclefilter.qs
@@ -37,7 +41,7 @@ def vehicledetail(request, registration_no):
             vehicle.save()
             # Record this view
             VehicleView.objects.create(vehicle=vehicle, user=request.user)
-    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model).exclude(id=vehicle.id)
+    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model,status='on_auction').exclude(id=vehicle.id)
     biddings = Bidding.objects.filter(vehicle=vehicle)
     highest_bid = vehicle.bidding.order_by('-amount').first()
     context = {
@@ -50,16 +54,16 @@ def vehicledetail(request, registration_no):
     }
     return render(request, 'vehicles/details.html', context)
 @login_required(login_url='login')
-def place_bid(request, vehicle_id):
-    vehicle = get_object_or_404(Vehicle, id=vehicle_id)
+def place_bid(request, registration_no):
+    vehicle = get_object_or_404(Vehicle, id=registration_no)
     if request.method == 'POST':
         amount = request.POST.get('amount')
         if int(amount) < vehicle.reserve_price:
             messages.warning(request, 'Bid amount must be at higher than the reserved price.')
-            return HttpResponseRedirect(reverse('detail', args=[vehicle_id]))
+            return HttpResponseRedirect(reverse('detail', args=[registration_no]))
         Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
-        return HttpResponseRedirect(reverse('detail', args=[vehicle_id]))
+        return HttpResponseRedirect(reverse('detail', args=[vehicregistration_nole_id]))
 
 def auction_add(request):
     if request.method == 'POST':

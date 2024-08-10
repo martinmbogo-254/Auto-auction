@@ -1,4 +1,4 @@
-{% extends 'vehicles/base.html' %}
+<!-- {% extends 'vehicles/base.html' %} -->
 {% load static %}
 {% load crispy_forms_tags %}
 
@@ -8,20 +8,21 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="https://thumbs.dreamstime.com/b/microphone-icon-fashionable-flat-style-isolated-against-background-logo-application-user-interface-umoja-radio-148364309.jpg" type="image/jpg" style="border-radius:10px;" />
+  <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %} ">
 
-  <title>RSVA LOGIN</title>
+  <title>RVAS LOGIN</title>
 
 </head>
-<body class="">
+<body class="mt-lg-5">
   <div class="container mt-1">
     <div class="row justify-content-center">
       <div class="col-md-6 mt-2">
-        <div class="card mt-2">
+        <div class="card mt-2 login-card">
          
           <div class="card-body shadow-lg">
         
 
-              <h4 class="text-center fw-bold fs-4 m-3">RSVA LOGIN </h4>
+              <h4 class="text-center fw-bold fs-4 m-3">RVAS LOGIN </h4>
             <form method="POST" class="login-form">
               {% csrf_token %}
               {{ form|crispy }}

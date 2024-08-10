@@ -8,12 +8,18 @@ from .models import Auction, Vehicle, AuctionHistory
 from django.contrib import admin, messages
 from .forms import AuctionForm
 from django.utils import timezone
+from django.contrib import admin
+from django.utils import timezone
+from .models import Auction, Vehicle, AuctionHistory
+from django.contrib import admin
+from django.utils import timezone
+from .models import Auction
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
     ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory
 )
 
-
+admin.site.register(Bidding)
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
     extra = 1  # Number of empty forms to display
@@ -26,7 +32,7 @@ class BidInline(admin.TabularInline):
 
 class VehicleViewInline(admin.TabularInline):
     model = VehicleView
-    extra = 1 
+    # extra = 1 
     readonly_fields=('vehicle','user','viewed_at')
     can_delete = False
 
@@ -37,6 +43,7 @@ class VehicleAdmin(admin.ModelAdmin):
     search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
+    readonly_fields = ('views',)
 
     def current_auction_end_date(self, obj):
         return obj.current_auction_end_date()
@@ -70,14 +77,6 @@ class VehicleBodyAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 # vehicles/admin.py
-
-from django.contrib import admin
-from django.utils import timezone
-from .models import Auction, Vehicle, AuctionHistory
-from django.contrib import admin
-from django.utils import timezone
-from .models import Auction
-
 class EndedFilter(admin.SimpleListFilter):
     title = 'ended'
     parameter_name = 'ended'
@@ -198,6 +197,6 @@ class AuctionHistoryAdmin(admin.ModelAdmin):
         return obj.auction.auction_id[:8]
     auction_id.short_description = 'Auction ID'
 
-admin.site.site_header = "RSVA Admin"
-admin.site.site_title = "RSVA"
-admin.site.index_title = "Welcome to RSVA Admin"
+admin.site.site_header = "RVAS Admin"
+admin.site.site_title = "RVAS"
+admin.site.index_title = "Welcome to RVAS Admin"

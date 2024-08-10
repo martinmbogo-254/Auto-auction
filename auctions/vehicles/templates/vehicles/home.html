@@ -1,24 +1,246 @@
 {% extends 'vehicles/base.html'%}
 {% load static %}
+
 <html>
 {% block content%}
-<div class="jumbotron center">
 
-    <h3 class="text-center">
-        <p>Need an affordable vehicle, Look no further..........</p>
-    </h3>
-     <div class="row">
-       
-    </div>
-    <div class="row">
-        <div class="col-md-5"></div>
-        <div class="col-md-4">
-      
+  <!-- Full Page Image Header with Vertically Centered Content -->
+
+<div class="masthead" style="background-image:url('{% static 'images/car3.jpg' %}');">
+    <div class="container h-100">
+      <div class="row h-100 align-items-right">
+        <div class="col-md-12 text-right">
+          <h1 class="fw-bold fs-1 text-white">2019</h1>
+          <h1 class="fw-bold fs-1 text-white">CHEVROLET </h1>
+          <h1 class="fw-bold fs-1 text-white">CAMARO SS</h1>  
+                   
+          
         </div>
-
+        <div class="col-md-12 text-left">
+          <h6 class="fw-bold fs-6 more_ad">Drive home today</h6>
+          <button class="place_bid"><i class="fa fa-gavel"></i> <a class="" href="{% url 'vehicles' %}">Explore</a></button> 
+          <button class="check_car"><i class="fa-solid fa-eye"></i> Check Car</button>
+          <h6 class="fw-bold fs-5 more_ad">Win a bid at your cost</h6>                               
+        </div>
+      </div>
+     
     </div>
-    <div class="col-md-3"></div>
 </div>
-</div>{% endblock content%}
+
+<div class="lower-cont">
+  <div class="row">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item">
+          <img src="{% static 'images/car8.jpg' %}" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'images/car8.jpg' %}" class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item active">
+          <img src="{% static 'images/car8.jpg' %}" class="d-block w-100" alt="...">
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+</div> 
+
+
+</div>
+
+<div class="lower-cont1">
+  <div class="h-auction row m-3">
+    <h3>AUCTIONS</h3>
+  </div>
+  
+  <div class="row">
+   
+   
+    <div class="col-md-3">
+      <div class="card">
+
+        <div class="box">
+            <img class="image" src="{% static 'images/car6.jpg' %}" />
+        </div>
+        
+        <div class="card-body">
+          <h6>Toyota Land Cruiser 300 ZX</h6>
+          <p class="card-text">
+            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+ 
+    <div class="col-md-3">
+      <div class="card">
+
+        <div class="box">
+            <img class="image" src="{% static 'images/car7.jpg' %}" />
+        </div>
+        
+        <div class="card-body">
+          <h6>Toyota Land Cruiser 300 ZX</h6>
+          <p class="card-text">
+            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col-md-3">
+      <div class="card">
+
+        <div class="box">
+          <img class="image" src="{% static 'images/car7.jpg' %}" />
+        </div>
+        
+        <div class="card-body">
+          <h6>Toyota Land Cruiser 300 ZX</h6>
+          <p class="card-text">
+            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
+          </p>
+        </div>
+       
+      </div>
+    </div>
+
+
+    <div class="col-md-3">
+      <div class="card">
+
+        <div class="box">
+          <img class="image" src="{% static 'images/car6.jpg' %}" />
+        </div>
+        
+        <div class="card-body">
+          <h6>Toyota Land Cruiser 300 ZX</h6>
+          <p class="card-text">
+            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row mt-5">
+    <div class="lower-head">
+      <h6 class="text-danger">Start Now</h6>
+      <h2>How it Works </h2>
+    </div>   
+  </div>
+  <div class="row lower-content">
+    <div class="row">
+      <div class="col-lg-3">
+      
+      </div>
+      <div class="col-lg-2">
+        <img class="image" src="{% static 'images/dotted-arrow1.png' %}" />
+      </div>
+      
+      <div class="col-lg-7">
+        
+      </div>
+    </div>
+   
+   <div class="row">
+    <div class="col-lg-4">
+      <img class="image" height="90px" width="90px"  src="{% static 'images/autobid-main_how1.svg' %}" />
+
+      <div class="card">
+        <div class="card-header">
+            <p><label>Step 1. Create your account</label> 
+        </div>  
+        <div class="card-body">
+            <p>You will be required to create an account using your Name, ID, valid email address and Telephone Number.</p>
+        </div>        
+        
+      </div>
+      <div class="card">
+        <div class="card-header">
+            <label>Step 2. Your account profile</label>
+        </div>
+        <div class="card-body">
+            <p> Your profile contains information on the vehicles you have bid, bid amounts and your successful bids.</p>
+        </div>  
+        
+      </div>
+    </div>
+    <div class="col-lg-4 ">
+      <img class="image" height="90px" width="90px"  src="{% static 'images/autobid-main_how3.svg' %}" />
+      <div class="card">
+        <div class="card-header">
+            <label>Step 3. Bid for a vehicle</label> 
+        </div>
+        <div class="card-body">
+            <p>Once you have registered and logged in you can view the vehicle you would like to buy and place your OFFER AMOUNT.You will key in your OFFER AMOUNT. You can bid for as many vehicles as you like but only one bid is accepted per vehicle. The bidding window closes after 14days.</p>
+        </div>  
+        
+      </div>     
+      
+     </div>
+    <div class="col-lg-4 ">
+      <img class="image" height="90px" width="90px"  src="{% static 'images/autobid-main_how3.svg' %}" />
+
+      <div class="card">
+        <div class="card-header">
+            <label>Step 4. Bid acceptance</label> 
+        </div>
+        <div class="card-body">
+            <p>Vehicles are sold on ‘As is, Where is’ basis. Offer letter shall be issued to successful bidder(s) who will be required to pay the full amount within 24 hours. Final allocation will be on a first come first served basis</p>
+        </div>   
+        
+      </div> 
+
+      <div class="card">
+        <div class="card-header">
+            <label>Step 5. Vehicle release</label>
+        </div>
+        <div class="card-body">
+            <p>The Bank will confirm receipt of your payment and immediately issue you a letter authorizing release of the vehicle from the yard. You will thereafter collect the Logbook and necessary documentation to facilitate transfer of the motor vehicle.</p>
+        </div>
+      </div> 
+      
+      
+      
+      
+    </div>
+   </div>
+
+    <div class="row">
+      <div class="col-lg-7">
+      
+      </div>
+      <div class="col-lg-2">
+        <img class="image" src="{% static 'images/dotted-arrow.png' %}" />
+      </div>
+      
+      <div class="col-lg-3">
+        
+      </div>
+    </div>
+    
+
+  </div>
+
+</div>
+
+<script>
+  $('.carousel').carousel({
+  interval: 4000
+})
+</script>
+
+{% endblock content%}
 
 </html>

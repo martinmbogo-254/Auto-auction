@@ -1,32 +1,37 @@
 {% extends 'vehicles/base.html'%}
 {% load crispy_forms_tags%}
 {% load static %}
+{% load humanize %}
+
 <html>
 {% block content%}
+<div class="container cont-vehicles">
 <div class="jumbotron center">
-
-    <h3 class="text-center">
-        <p>Vehicles Page</p>
-    </h3>
-    <form method="get" class="form-inline my-2 my-lg-0 p-2 m-2 p-3" >
     
-            <div class="form-row">
-                <div class="form-group ml-2">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'homepage'%}">Home</a></li>
+            <li>Vehicles</li>
+          </ul>
+    
+    <form method="get" class="form-inline my-2 my-lg-0 p-1 m-2 p-1" >
+    
+            <div class="form-row p-2">
+                <div class="form-group p-2 m-1">
                     {{ vehiclefilter.form.make|as_crispy_field }}
                 </div>
-                <div class="form-group ml-2">
+                <div class="form-group p-2 m-1">
                     {{ vehiclefilter.form.model|as_crispy_field }}
                 </div>
-                <div class="form-group ml-2">
+                <div class="form-group p-2 m-1">
                     {{ vehiclefilter.form.YOM|as_crispy_field }}
                 </div>
-                <div class="form-group ml-2">
+                <div class="form-group p-2 m-1" >
                     {{ vehiclefilter.form.body_type|as_crispy_field }}
                 </div>
-                <div class="form-group ml-2">
+                <div class="form-group p-2 m-1">
                     {{ vehiclefilter.form.engine_cc|as_crispy_field }}
                 </div>
-                <div class="form-group ml-2">
+                <div class="form-group  p-2 m-1">
                     {{ vehiclefilter.form.fuel_type|as_crispy_field }}
                 </div>
             </div>
@@ -34,44 +39,61 @@
             <a href="{% url 'vehicles' %}" class="btn btn-secondary mt-2 ml-2">Clear Filters</a>
 
         </form>
-     {% comment %} <form class="form-inline my-2 my-lg-0 p-2 m-2 p-3" method="GET">
-   
-            {{vehiclefilter.form|crispy}}
-
-            <button type="submit" class="btn btn-info m-2">Filter</button>
-        </form> {% endcomment %}
+    
         <!-- <div class="text-center row">
             <p>{{vehicles_count}} Vehicles on Auction.</p>
         </div> -->
     <div class="row">
         
       {% for vehicle in vehicles %}
-      <div class="col-md-4">
+      <!--<div class="col-md-4">
         <div class="card text-start rounded">
         
             <img class="card-img-top thumbnail" src="{{vehicle.file.url}}" style="height:200px"/>
             <div class="card-body">
-                <a href="{% url 'detail' vehicle.registration_no%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}}, {{vehicle.registration_no}}</a>
-                <p>Auction End Date: {{ vehicle.current_auction_end_date }}</p>
-            <div id="countdown"></div>
-            <script>
-                // Pass the auction end date to JavaScript
-                const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
-            </script>
-                <p>{{ vehicle.status}}</p>
+                <a href="{% url 'detail' vehicle.id%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}} {{vehicle.model}}</a>
+                <p class="card-text">{{vehicle.reserve_price}}</p> 
             </div>
+          </div>
+      </div>-->
+
+
+      <div class="col-md-4">
+        <div class="card car_cad">
+            <div class="car_image">
+                <a href="{% url 'detail' vehicle.registration_no%}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
+            </div>       
             
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="car_name"><a href="{% url 'detail' vehicle.registration_no%}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
+                    </div>
+                    <div class="col-md-12">
+                        <span class="car_info">{{ vehicle.mileage }} KM • {{vehicle.engine_cc}} CC • {{vehicle.fuel_type}} • {{vehicle.registration_no}}</span>
+                    </div>
+                    <div class="col-md-12">
+                        <hr/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Ksh {{vehicle.reserve_price|intcomma}}</label>
+                    </div>
+                 
+                </div>
+                
+            </div>
           </div>
       </div>
-      {% empty %}
-            <div class="jumbotron">
-                <p>Sorry, we do could not  find a vehicle with your specifications, please try searching again</p>
-            </div>
       {% endfor %}
-      
+
     </div>
-    <div class="col-md-3"></div>
+    <div class="col-md-12 text-center">
+        <button type="button" class="btn btn-lg btn-info text-white ">All Vehicles <i class="fa fa-chevron-right fw-normal"></i> </button>
+    </div>
 </div>
-</div>{% endblock content%}
+</div>
+</div>
+
+{% endblock content%}
 
 </html>

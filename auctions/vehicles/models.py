@@ -9,7 +9,6 @@ import uuid
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.urls import reverse
 
 
 class VehicleMake(models.Model):
@@ -54,6 +53,10 @@ class Vehicle(models.Model):
         ('on_auction', 'on_auction'),
         ('on_bid', 'on_bid'),
     ]
+    TRANSMISSION_CHOICES=[
+        ('Automatic','Automatic'),
+        ('Manual','Manual'),
+    ]
     v_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     registration_no = models.CharField(max_length=255,unique=True)
     make = models.ForeignKey(VehicleMake, on_delete=models.CASCADE)
@@ -63,6 +66,7 @@ class Vehicle(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     engine_cc = models.IntegerField()
+    transmission = models.CharField(max_length=255, choices=TRANSMISSION_CHOICES,blank=True)
     body_type = models.ForeignKey(VehicleBody, on_delete=models.CASCADE)
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
     status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='available')
@@ -70,14 +74,8 @@ class Vehicle(models.Model):
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)
 
-
     def get_absolute_url(self):
         return reverse('detail', kwargs={'registration_no': self.registration_no})
-
-    @property
-    def url(self):
-        return self.get_absolute_url()
-
     def __str__(self):
             return self.registration_no
 
@@ -153,8 +151,8 @@ class VehicleView(models.Model):
 
 
 class AuctionHistory(models.Model):
-    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='auction_history')
-    auction = models.ForeignKey(Auction, on_delete=models.CASCADE, related_name='auction_history')
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.RESTRICT, related_name='auction_history')
+    auction = models.ForeignKey(Auction, on_delete=models.RESTRICT, related_name='auction_history')
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     on_bid = models.BooleanField(default=False,)

@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'vehicles',
     'users.apps.UsersConfig',
     'crispy_forms',
-    "crispy_bootstrap5",
-    'django_filters',
-    'django_social_share',
+     "crispy_bootstrap5",
+     'django_filters',
+     'django_social_share'
 ]
 
 MIDDLEWARE = [

@@ -2,15 +2,21 @@
 {% load static %}
 {% load humanize %}
 {% load social_share %}
+
+
 {% block content %}
+<div class="container cont-details">
 <div class="jumbotron center">
-    <a href="{% url 'vehicles' %}">Back</a>
-    <h3 class="text-center">
-        <p>Vehicle Detail Page</p>
-    </h3>
-    <div class="row">
-        <div class="col-md-7">
-            <!-- Bootstrap Carousel -->
+    <div class="breadcram m-4">        
+        <ul class="breadcrumb">
+            <li><a href="{% url 'homepage'%}">Home</a></li>
+            <li><a href="{% url 'vehicles' %}">Vehicles</a></li>
+            <li>{{ vehicle.YOM }} {{ vehicle.model }} {{ vehicle.make }}</li>
+          </ul>
+    </div>
+    
+     <!--<div class="row">
+       <div class="col-md-7">
             <div id="vehicleCarousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     {% for image in vehicle.vehicleimage_set.all %}
@@ -27,24 +33,20 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
-            </div>
+            </div>-->
 
-            <!-- Thumbnails for image preview -->
-            <div class="row mt-3">
+            
+            <!--<div class="row mt-3">
                 {% for image in vehicle.vehicleimage_set.all %}
                 <div class="col-md-3">
                     <img src="{{ image.image.url }}" class="img-thumbnail" alt="Vehicle Image" data-target="#vehicleCarousel" data-slide-to="{{ forloop.counter0 }}">
                 </div>
                 {% endfor %}
-            </div>
-        </div>
+            </div>-->
+        <!--</div>
         <div class="col-md-4">
           <h4 class="badge rounded-pill">Views: {{ vehicle.views }}</h4> 
-
-        
-            <p>Days accumulated: {{ days_since_creation }}</p>
             <h4>YOM: {{ vehicle.YOM }}</h4>
-            <p>Reg No: {{ vehicle.registration_no }}</p>
             <p>Make: {{ vehicle.make }}</p>
             <p>Model: {{ vehicle.model }}</p>
             <p>Mileage: {{ vehicle.mileage|intcomma }} km</p>
@@ -54,66 +56,16 @@
             {% else %}
             <p>Highest Bid :No bids yet.</p>
             {% endif %}
-            {% if vehicle.current_auction_end_date %}
-            <p>Auction End Date: {{ vehicle.current_auction_end_date }}</p>
-            <div id="countdown"></div>
-            <script>
-                // Pass the auction end date to JavaScript
-                const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
-            </script>
-            {% if user.is_authenticated %}
-            <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
+           {% if user.is_authenticated %}
+            <button type="button" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
                 Make a bid
             </button>
             {% else %}
-            <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
+            <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
                 Login to bid
             </a>
             {% endif %}
-            {% else %}
-                <p>This vehicle is currently not in an auction.</p>
-            {% endif %}
-            <div>
-             
-                {% post_to_whatsapp vehicle.url %}
-            </div>
         </div>
-        <!-- vehicle_detail.html continued -->
-{% block javascript %}
-<script>
-    function countdownTimer(endDate) {
-        const countDownDate = new Date(endDate).getTime();
-
-        // Update the count down every 1 second
-        const interval = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = countDownDate - now;
-
-            // Time calculations for days, hours, minutes and seconds
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            // Display the result in the element with id="countdown"
-            document.getElementById("countdown").innerHTML = 
-                days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-
-            // If the count down is over, write some text 
-            if (distance < 0) {
-                clearInterval(interval);
-                document.getElementById("countdown").innerHTML = "Auction Has Ended";
-                document.getElementById("bidbtn").style.display = 'none';
-
-            }
-        }, 1000);
-    }
-
-    // Initialize the countdown timer
-    countdownTimer(auctionEndDate);
-</script>
-{% endblock %}
-
     </div>
     {% if user.is_staff %}
     <div class="row">
@@ -129,26 +81,210 @@
         </div>
     </div>
     {% endif %}
-      <!-- Similar Vehicles -->
-    <div class="row mt-5">
-        <h3>Similar Deals</h3>
-        {% for similar_vehicle in similar_vehicles %}
-        <div class="col-md-3">
-            <div class="card mb-3">
-                <img src="{{ similar_vehicle.file.url }}" class="card-img-top" alt="Similar Vehicle Image">
-                <div class="card-body">
-                    <h5 class="card-title">{{ similar_vehicle.make }} {{ similar_vehicle.model }}</h5>
-                    <p class="card-text">YOM: {{ similar_vehicle.YOM }}</p>
-                    <p class="card-text">Mileage: {{ similar_vehicle.mileage }} km</p>
-                    <a href="{% url 'detail' similar_vehicle.id %}" class="btn btn-primary">View Details</a>
-                </div>
-            </div>
+     
+-->
+
+
+
+
+
+<div class="row">
+    <div class="col-md-2">
+        {% for image in vehicle.vehicleimage_set.all %}
+        <div class="col-md-12">
+            <img src="{{ image.image.url }}" class="img-thumbnail" alt="Vehicle Image" data-target="#vehicleCarousel" data-slide-to="{{ forloop.counter0 }}">
         </div>
-        {% empty %}
-        <p>No similar vehicles found.</p>
         {% endfor %}
     </div>
+    <div class="col-md-6">
+        <div id="vehicleCarousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                {% for image in vehicle.vehicleimage_set.all %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                    <img src="{{ image.image.url }}" class="d-block w-100" alt="Vehicle Image">
+                </div>
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#vehicleCarousel" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#vehicleCarousel" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4 mt-2">
+        
+        <div class="right_box">
+            <span class="badge views-bg pull-right">Views: {{ vehicle.views }}</span>
+            <h4 class="right-header">{{vehicle.YOM}}, {{vehicle.make}} {{vehicle.model}}</h4>
+
+            <div class="vehicle_info">             
+                <h6>Yard Name: <b>Riverlong Storage Yard</b></h6>                
+                <h6>{{vehicle.registration_no}} | {{vehicle.transmission}} | {{vehicle.engine_cc}} CC</h6>  
+            </div>
+
+            <div class="vehicle_more_info">{% if highest_bid %}
+                <span class="badge highest-bid mb-2">Highest Bid: Ksh{{ highest_bid.amount|intcomma }}</span>
+
+                {% else %}
+                <span class="badge highest-bid mb-2" >Highest Bid :No bids yet.</span>
+                {% endif %}
+                </span><br>
+                <h6>Reserved Price: <label>Ksh {{vehicle.reserve_price|intcomma}}</label> </h6>    
+                <!-- <p>Auction Ends: {{ vehicle.current_auction_end_date }}</p> -->
+                {% if vehicle.current_auction_end_date %}
+            <div id="countdown" ></div>
+            <script>
+                // Pass the auction end date to JavaScript
+                const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
+            </script>           
+            </div>
+            <div class="contact-btn">
+                <div class="row">
+                    <div class="col-md-10">
+                    {% if user.is_authenticated %}
+                    <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
+                    <i class="fa fa-gavel"></i> Place a bid
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
+                        Login to bid
+                    </a>
+                    {% endif %}
+                    {% else %}
+                        <p>Vehicle not on Auction.</p>
+                    {% endif %}
+                                         
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="https://wa.me/+254701856557" class="enq-whatsapp p-2 rounded mb-2"><i class="fa-brands fa-whatsapp"></i> Whatsapp</a>
+                        </div>
+                        <div class="col-md-6">                            
+                            <a href="tel:0701856557" class="enq-call p-2 rounded mb-2"><i class="fa fa-phone"></i> Call Now</a>                       
+                        </div>
+                    </div>
+                   
+                </div>   
+            </div>
+            
+        </div>
+        
+        <div class="col-md-11 enq-share">
+            <h6>Share this:</h6>
+            <div class="row">
+                <div class="col-md-12">
+                    <span>
+                        {% post_to_whatsapp vehicle.url %}
+                    </span>
+                    <i class="fa-brands fa-whatsapp icons"></i>
+                    <i class="fa-brands fa-facebook icons"></i>
+                    <i class="fa-brands fa-x-twitter icons"></i>
+                    <i class="fa-brands fa-linkedin icons"></i>
+                    
+                </div>               
+            </div>
+        </div>
+
+        
+    </div>
 </div>
+<div class="row p-5">
+    <hr class="hr_details">
+</div>
+<div class="row additional-info"> 
+    <div class="info_title">
+        <label for="">Additional information</label>
+    </div>    
+    <div class="col-md-6">                
+        <table class="info_table">
+            <tr>
+                <td><span class="info_label"> <i class="fa-solid fa-bus-simple cicon"></i> Model </span></td>
+                <td><span  class="info_data">{{vehicle.model}}</span></td>
+            </tr> 
+            <tr>
+                <td><span class="info_label"> <i class="fa fa-car cicon" aria-hidden="true"></i> Body </span></td>
+                <td><span  class="info_data">{{vehicle.body_type}}</span></td>
+            </tr>  
+            <tr>
+                <td><span class="info_label"><i class="fa-solid fa-gas-pump cicon"></i> Fuel </span></td>
+                <td><span  class="info_data">{{vehicle.fuel_type}}</span></td>
+            </tr>         
+        </table>
+    </div>
+   
+    <div class="col-md-6">
+        <table class="info_table">            
+            <tr>
+                <td><span class="info_label"> <i class="fa-solid fa-cable-car cicon"></i> Transmission </span></td>
+                <td><span  class="info_data">{{vehicle.transmission}}</span></td>
+            </tr>       
+            <tr>
+                <td><span class="info_label"> <i class="fa-solid fa-road cicon"></i> Mileage </span></td>
+                <td><span  class="info_data">{{vehicle.mileage|intcomma}},Km</span></td>
+            </tr>           
+            <tr>
+                <td><span class="info_label"> <i class="fas fa-tachometer-alt cicon"></i> Engine Capacity </span></td>
+                <td><span  class="info_data">{{vehicle.engine_cc}} CC</span></td>
+            </tr>            
+        </table>        
+    </div>
+</div>
+
+<div class="row deals">
+    <h3>Similar Deals</h3>
+    {% for similar_vehicle in similar_vehicles %}
+    <div class="col-md-3">
+        <div class="card mb-3">
+            <img src="{{ similar_vehicle.file.url }}" class="card-img-top" alt="Similar Vehicle Image">
+            <div class="card-body">
+                <h5 class="card-title">{{ similar_vehicle.make }} {{ similar_vehicle.model }}</h5>
+                <p class="card-text">YOM: {{ similar_vehicle.YOM }}</p>
+                <p class="card-text">Mileage: {{ similar_vehicle.mileage }} km</p>
+                <a href="{% url 'detail' similar_vehicle.registration_no %}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No similar vehicles found.</p>
+    {% endfor %}
+</div>
+
+
+<!--<div class="wrapper">
+    <h1>Testing</h1>
+    <div class="gallery">
+        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
+        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
+        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
+        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
+        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
+        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
+    </div>
+</div>
+
+<div class="preview-box">
+    <div class="details">
+        <span class="title">
+            Image <p class="current-img">3</p> out of
+            <p class="total-img">6</p>
+        </span>
+        <span class="icon fas fa-times"></span>
+    </div>
+    <div class="img-box">
+        <div class="slide prev">
+            <i class="fas fa-angle-left"></i>
+        </div>
+        <div class="slide next">
+            <i class="fas fa-angle-right"></i>
+        </div>
+        <img src="{% static 'images/car10.jpeg' %}" alt="Image missing here">
+    </div>
+</div>-->
+
 
 <!-- Bid Modal -->
 <div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="bidModalLabel" aria-hidden="true">
@@ -162,20 +298,24 @@
             </div>
             <div class="modal-body">
                 <div class="image">
-                    <p>{{ vehicle.make }}</p>
+                    <p>{{ vehicle.YOM }} | {{vehicle.make}} | {{vehicle.model}}</p>
                     <img class="card-img-top thumbnail" src="{{ vehicle.file.url }}" style="height:250px" />
                 </div>
-                <form method="POST" action="{% url 'place_bid' vehicle.id %}">
+                <form method="POST" action="{% url 'place_bid' vehicle.registration_no %}">
                     {% csrf_token %}
                     <div class="form-group">
-                        <label for="amount">Bid Amount</label>
+                        <p>Reserve Price :Ksh {{vehicle.reserve_price|intcomma}}</p>
+                       
                         <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter bid amount" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit Bid</button>
+                    <button type="submit" class="btn btn-dark">Submit Bid</button>
                 </form>
             </div>
         </div>
     </div>
+</div>
+</div>
+
 </div>
 
 <script>
