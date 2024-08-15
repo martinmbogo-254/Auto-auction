@@ -30,7 +30,14 @@ def vehiclespage(request):
         'vehiclefilter':vehiclefilter,
         'vehicles_count':vehicles_count
     }
-    return render(request, 'vehicles/vehicles.html',context)
+    return render(request, 'vehicles/on_auction.html',context)
+
+def available_vehiclespage(request):
+    available_vehicles = Vehicle.objects.filter(status='available')
+    context={
+        'available_vehicles' :available_vehicles
+    }
+    return render (request,'vehicles/vehicles.html', context)
 
 def vehicledetail(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
@@ -55,7 +62,7 @@ def vehicledetail(request, registration_no):
     return render(request, 'vehicles/details.html', context)
 @login_required(login_url='login')
 def place_bid(request, registration_no):
-    vehicle = get_object_or_404(Vehicle, id=registration_no)
+    vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
     if request.method == 'POST':
         amount = request.POST.get('amount')
         if int(amount) < vehicle.reserve_price:
@@ -63,7 +70,7 @@ def place_bid(request, registration_no):
             return HttpResponseRedirect(reverse('detail', args=[registration_no]))
         Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
-        return HttpResponseRedirect(reverse('detail', args=[vehicregistration_nole_id]))
+        return HttpResponseRedirect(reverse('detail', args=[registration_no]))
 
 def auction_add(request):
     if request.method == 'POST':

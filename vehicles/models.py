@@ -99,7 +99,7 @@ class Vehicle(models.Model):
 
 class VehicleImage(models.Model):
     vehicle= models.ForeignKey(Vehicle, on_delete=models.CASCADE)
-    image = models.FileField(upload_to='vehicleimages/',default='images/default-vehicle.png',blank=True)
+    image = models.FileField(upload_to='vehicleimages/',default='images/default-vehicle.png')
     class Meta:
         verbose_name_plural = "Images"
 
@@ -108,6 +108,9 @@ class Bidding(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f" Bid for {self.vehicle.registration_no} by {self.user.username} at Ksh {self.amount}"
 
 class Auction(models.Model):
     auction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)

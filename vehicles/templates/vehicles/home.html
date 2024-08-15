@@ -1,12 +1,12 @@
 {% extends 'vehicles/base.html'%}
 {% load static %}
+{% load humanize %}
 
 <html>
 {% block content%}
 
   <!-- Full Page Image Header with Vertically Centered Content -->
-
-<div class="masthead" style="background-image:url('{% static 'images/car3.jpg' %}');">
+  <div class="masthead" style="background-image:url('{% static 'images/car3.jpg' %}');">
     <div class="container h-100">
       <div class="row h-100 align-items-right">
         <div class="col-md-12 text-right">
@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-12 text-left">
           <h6 class="fw-bold fs-6 more_ad">Drive home today</h6>
-          <button class="place_bid"><i class="fa fa-gavel"></i> <a class="" href="{% url 'vehicles' %}">Explore</a></button> 
+          <button class="place_bid"><i class="fa fa-gavel"></i> <a class="text-light" href="{% url 'vehicles' %}">Bid</a></button> 
           <button class="check_car"><i class="fa-solid fa-eye"></i> Check Car</button>
           <h6 class="fw-bold fs-5 more_ad">Win a bid at your cost</h6>                               
         </div>
@@ -27,18 +27,39 @@
     </div>
 </div>
 
+
 <div class="lower-cont">
   <div class="row">
     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
-        <div class="carousel-item">
-          <img src="{% static 'images/car8.jpg' %}" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-          <img src="{% static 'images/car8.jpg' %}" class="d-block w-100" alt="...">
-        </div>
         <div class="carousel-item active">
-          <img src="{% static 'images/car8.jpg' %}" class="d-block w-100" alt="...">
+          <img src="{% static 'images/car11.jpg' %}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            
+            <div class="row">
+              <span class="auction_header">Your Ultimate Auction Car Destination</span>
+              
+              <span class="auction_items"><i class="fa-solid fa-check"></i> Diverse Inventory: Explore a wide range of vehicles, each meticulously</span > <br>
+              <span class="auction_items"><i class="fa-solid fa-check"></i> Live Auctions: Immerse yourself in the excitement of real-time bidding</span ><br>
+              <span class="auction_items"><i class="fa-solid fa-check"></i> Transparency: We believe in openness and provide detailed information</span ><br>
+              <span class="auction_items"><i class="fa-solid fa-check"></i> Secure Transactions: Bid with confidence, knowing that your transactions are secure</span >
+            </div>
+           
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'images/car12.jpg' %}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h2>Second slide label</h2>
+            <p>Some representative placeholder content for the second slide.</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{% static 'images/car9.jpg' %}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+          <h2>Third slide label</h2>
+            <p>Some representative placeholder content for the second slide.</p> 
+          </div>         
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -51,88 +72,36 @@
       </button>
     </div>
 </div> 
-
-
 </div>
 
 <div class="lower-cont1">
   <div class="h-auction row m-3">
-    <h3>AUCTIONS</h3>
+    <h5>UPCOMING AUCTIONS</h5>
   </div>
   
   <div class="row">
+   {% for vehicle in upcoming_auctions %}
    
-   
     <div class="col-md-3">
-      <div class="card">
+      <div class="card rounded">
 
         <div class="box">
-            <img class="image" src="{% static 'images/car6.jpg' %}" />
+            <img class="image" src="{{vehicle.file.url}}" />
         </div>
         
         <div class="card-body">
-          <h6>Toyota Land Cruiser 300 ZX</h6>
-          <p class="card-text">
-            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
+          <p class="mr-2 p-1"><i class="fa fa-calendar text-danger" aria-hidden="true"></i>
+            {{vehicle.YOM}} | <i class="fa fa-car text-danger" aria-hidden="true"></i>
+            {{vehicle.make}} |<i class="fa-solid fa-gas-pump text-danger"></i> {{vehicle.fuel_type}}</p>
+          <p class="card-text mr-2 p-2">
+            <span><i class="fa-solid fa-gears text-danger "></i> {{vehicle.transmission}}</span> <span><i class="fa fa-tachometer text-danger" aria-hidden="true"></i> {{vehicle.mileage|intcomma}} KM </span><label></span>
           </p>
         </div>
       </div>
     </div>
-
- 
-    <div class="col-md-3">
-      <div class="card">
-
-        <div class="box">
-            <img class="image" src="{% static 'images/car7.jpg' %}" />
-        </div>
-        
-        <div class="card-body">
-          <h6>Toyota Land Cruiser 300 ZX</h6>
-          <p class="card-text">
-            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    
-    <div class="col-md-3">
-      <div class="card">
-
-        <div class="box">
-          <img class="image" src="{% static 'images/car7.jpg' %}" />
-        </div>
-        
-        <div class="card-body">
-          <h6>Toyota Land Cruiser 300 ZX</h6>
-          <p class="card-text">
-            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
-          </p>
-        </div>
-       
-      </div>
-    </div>
-
-
-    <div class="col-md-3">
-      <div class="card">
-
-        <div class="box">
-          <img class="image" src="{% static 'images/car6.jpg' %}" />
-        </div>
-        
-        <div class="card-body">
-          <h6>Toyota Land Cruiser 300 ZX</h6>
-          <p class="card-text">
-            <span>2022</span><label> · </label><span>5 500 km </span><label> · </label><span>1 997 cm3</span><label> · </label><span>Hibrid</span>
-          </p>
-        </div>
-      </div>
-    </div>
-
+    {% endfor %}
   </div>
-
+  
   <div class="row mt-5">
     <div class="lower-head">
       <h6 class="text-danger">Start Now</h6>
@@ -155,7 +124,12 @@
    
    <div class="row">
     <div class="col-lg-4">
-      <img class="image" height="90px" width="90px"  src="{% static 'images/autobid-main_how1.svg' %}" />
+        <div class="howitworksicon m-3">
+          <span class="round_icon">
+            <i class="fa-solid fa-chalkboard-user"></i>
+          </span>          
+        </div>
+      
 
       <div class="card">
         <div class="card-header">
@@ -176,8 +150,12 @@
         
       </div>
     </div>
-    <div class="col-lg-4 ">
-      <img class="image" height="90px" width="90px"  src="{% static 'images/autobid-main_how3.svg' %}" />
+    <div class="col-lg-4 ">     
+      <div class="howitworksicon m-3">
+        <span class="round_icon">
+          <i class="fa fa-gavel"></i>
+        </span>          
+      </div>
       <div class="card">
         <div class="card-header">
             <label>Step 3. Bid for a vehicle</label> 
@@ -190,7 +168,12 @@
       
      </div>
     <div class="col-lg-4 ">
-      <img class="image" height="90px" width="90px"  src="{% static 'images/autobid-main_how3.svg' %}" />
+     
+      <div class="howitworksicon m-3">
+        <span class="round_icon">
+          <i class="fa-solid fa-circle-dollar-to-slot"></i>
+        </span>          
+      </div>
 
       <div class="card">
         <div class="card-header">

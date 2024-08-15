@@ -43,7 +43,7 @@ class VehicleAdmin(admin.ModelAdmin):
     search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
-    readonly_fields = ('views',)
+    readonly_fields = ('views','status')
 
     def current_auction_end_date(self, obj):
         return obj.current_auction_end_date()

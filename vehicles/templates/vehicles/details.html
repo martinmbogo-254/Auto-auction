@@ -134,16 +134,17 @@
                 {% endif %}
                 </span><br>
                 <h6>Reserved Price: <label>Ksh {{vehicle.reserve_price|intcomma}}</label> </h6>    
-                <!-- <p>Auction Ends: {{ vehicle.current_auction_end_date }}</p> -->
-                {% if vehicle.current_auction_end_date %}
-            <div id="countdown" ></div>
-            <script>
-                // Pass the auction end date to JavaScript
-                const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
-            </script>           
+               
+                      
             </div>
             <div class="contact-btn">
                 <div class="row">
+                    {% if vehicle.current_auction_end_date %}
+                    <p id="countdown" ></p>
+                    <script>
+                        // Pass the auction end date to JavaScript
+                        const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
+                    </script>     
                     <div class="col-md-10">
                     {% if user.is_authenticated %}
                     <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
@@ -153,14 +154,13 @@
                     <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
                         Login to bid
                     </a>
-                    {% endif %}
-                    {% else %}
-                        <p>Vehicle not on Auction.</p>
-                    {% endif %}
-                                         
+                    {% endif %}       
                     </div>
+                    {% else %}
+                    <p>Vehicle not on Auction.</p>
+                    {% endif %}
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 mb-2">
                             <a href="https://wa.me/+254701856557" class="enq-whatsapp p-2 rounded mb-2"><i class="fa-brands fa-whatsapp"></i> Whatsapp</a>
                         </div>
                         <div class="col-md-6">                            

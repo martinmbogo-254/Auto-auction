@@ -10,16 +10,39 @@
     
         <ul class="breadcrumb">
             <li><a href="{% url 'homepage'%}">Home</a></li>
-            <li>Available Vehicles</li>
+            <li>Auctions</li>
           </ul>
+    
+        <form method="get" class="form-inline my-2 my-lg-0" >
+    
+            <div class="form-row p-2">
+                <div class="form-group p-1 m-2 ">
+                    {{ vehiclefilter.form|crispy }}
+                </div>
+                
+            </div>
+            <button type="submit" class="btn btn-info mt-2 ml-2">Filter</button>
+            <a href="{% url 'vehicles' %}" class="btn btn-secondary mt-2 ml-2">Clear Filters</a>
 
+        </form>
     
         <!-- <div class="text-center row">
             <p>{{vehicles_count}} Vehicles on Auction.</p>
         </div> -->
     <div class="row">
+        {% if vehicles %}
+      {% for vehicle in vehicles %}
+      <!--<div class="col-md-4">
+        <div class="card text-start rounded">
         
-      {% for vehicle in available_vehicles  %}
+            <img class="card-img-top thumbnail" src="{{vehicle.file.url}}" style="height:200px"/>
+            <div class="card-body">
+                <a href="{% url 'detail' vehicle.id%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}} {{vehicle.model}}</a>
+                <p class="card-text">{{vehicle.reserve_price}}</p> 
+            </div>
+          </div>
+      </div>-->
+
 
       <div class="col-md-4">
         <div class="card car_cad">
@@ -48,11 +71,15 @@
           </div>
       </div>
       {% endfor %}
-      
+       {% else %}
+      <div class="jumbotron bg-info text-center">
+        <p class="text-light">No vehicles on auction currently.</p>
+      </div>
+       {% endif %}
 
     </div>
     <div class="col-md-12 text-center">
-        <a type="button" href="{% url 'vehicles' %}" class="btn btn-lg btn-info text-white ">Vehicles on Auction <i class="fa fa-chevron-right fw-normal"></i> </a>
+        <button type="button" class="btn btn-lg btn-info text-white ">All Vehicles <i class="fa fa-chevron-right fw-normal"></i> </button>
     </div>
 </div>
 </div>
