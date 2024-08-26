@@ -49,6 +49,7 @@ class VehicleBody(models.Model):
 
 class Vehicle(models.Model):
     BID_STATUS_CHOICES = [
+        ('idle', 'idle'),
         ('available', 'available'),
         ('on_auction', 'on_auction'),
         ('on_bid', 'on_bid'),
@@ -69,7 +70,7 @@ class Vehicle(models.Model):
     transmission = models.CharField(max_length=255, choices=TRANSMISSION_CHOICES,blank=True)
     body_type = models.ForeignKey(VehicleBody, on_delete=models.CASCADE)
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
-    status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='available')
+    status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='idle')
     reserve_price = models.IntegerField()
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)

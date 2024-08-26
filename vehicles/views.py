@@ -33,7 +33,7 @@ def vehiclespage(request):
     return render(request, 'vehicles/on_auction.html',context)
 
 def available_vehiclespage(request):
-    available_vehicles = Vehicle.objects.filter(status='available')
+    available_vehicles = Vehicle.objects.filter(status='idle')
     context={
         'available_vehicles' :available_vehicles
     }
