@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'vehicles',
     'users.apps.UsersConfig',
     'crispy_forms',
-     "crispy_bootstrap5",
-     'django_filters',
-     'django_social_share'
+    'crispy_bootstrap5',
+    'django_filters',
+    'django_social_share'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'vehicles.CustomUser'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+# AUTH_USER_MODEL = 'users.CustomUser'

@@ -65,9 +65,9 @@ def place_bid(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
     if request.method == 'POST':
         amount = request.POST.get('amount')
-        if int(amount) < vehicle.reserve_price:
-            messages.warning(request, 'Bid amount must be at higher than the reserved price.')
-            return HttpResponseRedirect(reverse('detail', args=[registration_no]))
+        # if int(amount) < vehicle.reserve_price:
+        #     messages.warning(request, 'Bid amount must be at higher than the reserved price.')
+        #     return HttpResponseRedirect(reverse('detail', args=[registration_no]))
         Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
         return HttpResponseRedirect(reverse('detail', args=[registration_no]))

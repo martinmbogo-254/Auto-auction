@@ -157,7 +157,15 @@
                     {% endif %}       
                     </div>
                     {% else %}
-                    <p>Vehicle not on Auction.</p>
+                    {% if user.is_authenticated %}
+                    <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
+                    <i class="fa fa-gavel"></i> Place a bid
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
+                        Login to bid
+                    </a>
+                    {% endif %}
                     {% endif %}
                     <div class="row">
                         <div class="col-md-6 mb-2">
