@@ -18,11 +18,14 @@
 <div class="col-md-6">
     {{form.email|as_crispy_field}}
 </div>
-<div class="col-md-5">
+<div class="col-md-4">
     {{p_form.id_number|as_crispy_field}}
 </div>
-<div class="col-md-5">
+<div class="col-md-4">
     {{p_form.phone_number|as_crispy_field}}
+</div>
+<div class="col-md-4">
+    {{p_form.location|as_crispy_field}}
 </div>
 <div class="col-md-6 required">
 {{form.password1|as_crispy_field}}
