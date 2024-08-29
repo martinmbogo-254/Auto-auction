@@ -44,7 +44,13 @@ class VehicleAdmin(admin.ModelAdmin):
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
     readonly_fields = ('views','status')
+    actions = ['make_available']
 
+    def make_available(self, request, queryset):
+        updated = queryset.update(status='available')
+        self.message_user(request, f"{updated} vehicle(s) successfully marked as available.")
+    
+    make_available.short_description = "Mark selected vehicles as available"
     def current_auction_end_date(self, obj):
         return obj.current_auction_end_date()
     current_auction_end_date.short_description = 'Auction End Date'
