@@ -184,6 +184,7 @@ label{
     position: fixed;
     width: 100%;
     z-index: 2;
+ 
 }
 
 .wrapper .top_nav .right ul li .search-span, .flag-span, .signin-span, .signup-span{

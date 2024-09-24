@@ -76,7 +76,11 @@
               </div>
               </li>
               {% if user.is_authenticated %}              
-                {% if user.is_staff %}
+                {% if user.is_staff %}<li>
+                  <div class="signin-span">
+                  <a class="nav-link" href="{% url 'reports' %}">Reports</a>                      
+              </div>
+            </li>
                   <li>
                       <div class="signin-span">
                       <a class="nav-link" href="/admin">Admin</a>                      

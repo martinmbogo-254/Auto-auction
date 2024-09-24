@@ -10,7 +10,14 @@ from django.contrib import messages
 from .forms import AuctionForm
 from django.utils import timezone
 
-
+def reports(request):
+    vehicles = Vehicle.objects.all()
+    total_vehicles = vehicles.count()
+    context = {
+        'total_vehicles': total_vehicles,
+       
+    }
+    return render(request, 'Admin/reports.html', context)
 # Create your views here.
 def homepage(request):
     upcoming_auctions = Vehicle.objects.filter(status='available')
