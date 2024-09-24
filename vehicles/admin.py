@@ -19,6 +19,16 @@ from .models import (
     ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory
 )
 
+
+from django.contrib import admin
+from django.http import HttpResponse
+import csv
+
+
+
+# Add a description to the custom action
+
+
 admin.site.register(Bidding)
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
@@ -44,8 +54,34 @@ class VehicleAdmin(admin.ModelAdmin):
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
     readonly_fields = ('views','status')
-    actions = ['make_available']
+    actions = ['make_available', 'generate_vehicle_report']
+    
+    # Custom action for generating reports
+    def generate_vehicle_report(self, request, queryset):
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="vehicle_report.csv"'
 
+        writer = csv.writer(response)
+        writer.writerow(['Registration No', 'Make', 'Model', 'Year of Manufacture', 'Mileage', 'Transmission', 'Fuel Type', 'Reserve Price', 'Status', 'Days Since Creation'])
+
+        # Iterate over the selected vehicles in the admin panel
+        for vehicle in queryset:
+            writer.writerow([
+                vehicle.registration_no,
+                vehicle.make.name,
+                vehicle.model.name,
+                vehicle.YOM.year,
+                vehicle.mileage,
+                vehicle.transmission,
+                vehicle.fuel_type.name,
+                vehicle.reserve_price,
+                vehicle.status,
+                vehicle.days_since_creation(),
+            ])
+
+        return response
+    generate_vehicle_report.short_description = "Generate CSV report for selected vehicles"
     def make_available(self, request, queryset):
         updated = queryset.update(status='available')
         self.message_user(request, f"{updated} vehicle(s) successfully marked as available.")
