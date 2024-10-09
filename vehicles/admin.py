@@ -32,6 +32,25 @@ import csv
 @admin.register(Bidding)
 class BidAdmin(admin.ModelAdmin):
     search_fields = ('vehicle__registration_no','user__username')
+    list_display = ('vehicle', 'user', 'amount', 'created_at')
+    actions = ['generate_bid_report']
+
+    def generate_bid_report(self, request, queryset):
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="bid_report.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['vehicle', 'user', 'amount', 'created_at'])
+
+        for bid in queryset:
+            writer.writerow([
+                bid.vehicle.registration_no,
+                bid.user.username, 
+                bid.amount,
+                bid.created_at])
+        
+        return response
+    generate_bid_report.short_description = "Generate bid report for selected vehicles"
 
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
