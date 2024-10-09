@@ -29,7 +29,10 @@ import csv
 # Add a description to the custom action
 
 
-admin.site.register(Bidding)
+@admin.register(Bidding)
+class BidAdmin(admin.ModelAdmin):
+    search_fields = ('vehicle__registration_no','user__username')
+
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
     extra = 1  # Number of empty forms to display
