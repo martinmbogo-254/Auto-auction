@@ -240,7 +240,27 @@ class AuctionHistoryAdmin(admin.ModelAdmin):
     search_fields = ('vehicle__registration_no', 'auction__auction_id')
     readonly_fields = ('vehicle', 'auction', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
     # inlines = [BidInline]
+    actions = ['generate_auctionhistory_report']
 
+    def generate_auctionhistory_report(self, request, queryset):
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="AuctionHistory_report.csv"'
+        writer = csv.writer(response)
+        writer.writerow(['Registartion_no','Auction Id',' Start Date','End Date', 'On Bid', 'Returned To Available'])
+
+        for auction in queryset:
+            writer.writerow([
+                auction.vehicle.registration_no,
+                auction.auction.auction_id, 
+                auction.start_date,
+                auction.end_date,
+                auction.on_bid,
+                auction.returned_to_available
+                ])
+        
+        return response
+    generate_auctionhistory_report.short_description = "Generate auction history report for selected vehicles"
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
