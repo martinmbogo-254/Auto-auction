@@ -76,7 +76,7 @@ class VehicleAdmin(admin.ModelAdmin):
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
     readonly_fields = ('views','status')
-    actions = ['make_available', 'generate_vehicle_report']
+    actions = ['make_available', 'generate_vehicle_report','sell']
     
     # Custom action for generating reports
     def generate_vehicle_report(self, request, queryset):
@@ -109,6 +109,12 @@ class VehicleAdmin(admin.ModelAdmin):
         self.message_user(request, f"{updated} vehicle(s) successfully marked as available.")
     
     make_available.short_description = "Mark selected vehicles as available"
+
+    def sell(self, request, queryset):
+        updated = queryset.update(status='sold')
+        self.message_user(request, f"{updated} vehicle(s) successfully sold")
+    
+    sell.short_description = "Mark selected vehicles as sold"
     def current_auction_end_date(self, obj):
         return obj.current_auction_end_date()
     current_auction_end_date.short_description = 'Auction End Date'

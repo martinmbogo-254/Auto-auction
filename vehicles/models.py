@@ -54,6 +54,7 @@ class Vehicle(models.Model):
         ('available', 'available'),
         ('on_auction', 'on_auction'),
         ('on_bid', 'on_bid'),
+        ('sold', 'sold'),
     ]
     TRANSMISSION_CHOICES=[
         ('Automatic','Automatic'),
