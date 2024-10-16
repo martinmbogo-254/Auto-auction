@@ -9,6 +9,8 @@ from .filters import VehicleFilter
 from django.contrib import messages
 from .forms import AuctionForm
 from django.utils import timezone
+from django.core.mail import send_mail
+from django.conf import settings
 
 def reports(request):
     vehicles = Vehicle.objects.all()
@@ -40,7 +42,7 @@ def vehiclespage(request):
     return render(request, 'vehicles/on_auction.html',context)
 
 def available_vehiclespage(request):
-    available_vehicles = Vehicle.objects.filter(status='idle')
+    available_vehicles = Vehicle.objects.filter(status='available')
     context={
         'available_vehicles' :available_vehicles
     }
@@ -70,22 +72,43 @@ def vehicledetail(request, registration_no):
 @login_required(login_url='login')
 def place_bid(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
-       # Check if the user has already placed a bid on this vehicle
+    
+    # Check if the user has already placed a bid on this vehicle
     existing_bid = Bidding.objects.filter(vehicle=vehicle, user=request.user).first()
 
     if existing_bid:
-        # If a bid exists, prevent the user from placing another bid
         messages.warning(request, 'You have already placed a bid on this vehicle.')
         return HttpResponseRedirect(reverse('detail', args=[registration_no]))
+
     if request.method == 'POST':
         amount = request.POST.get('amount')
-        # if int(amount) < vehicle.reserve_price:
-        #     messages.warning(request, 'Bid amount must be at higher than the reserved price.')
-        #     return HttpResponseRedirect(reverse('detail', args=[registration_no]))
-        Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
+
+        # Create a new bid if no previous bid exists for this user on this vehicle
+        bid = Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
+
+        # Send email notification after the bid is placed
+        send_bid_notification(bid, vehicle)
+
         return HttpResponseRedirect(reverse('detail', args=[registration_no]))
 
+    return HttpResponseRedirect(reverse('detail', args=[registration_no]))
+
+
+# Function to send email notification when a bid is placed
+def send_bid_notification(bid, vehicle):
+    subject = f"New Bid Placed on {vehicle.registration_no}"
+    message = (
+        f"A new bid has been placed by {bid.user.username} on the vehicle with "
+        f"registration number {vehicle.registration_no}.\n\n"
+        f"Bid Amount: {bid.amount}\n"
+        f"User Email: {bid.user.email}\n"
+        f"Vehicle: {vehicle.make} {vehicle.model}"
+    )
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = ['mbogomartin25@gmail.com','mburum332@gmail.com','fuel@riverlong.com']  # Change to your desired recipient email(s)
+
+    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 def auction_add(request):
     if request.method == 'POST':
         form = AuctionForm(request.POST)
