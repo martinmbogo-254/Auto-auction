@@ -70,6 +70,13 @@ def vehicledetail(request, registration_no):
 @login_required(login_url='login')
 def place_bid(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
+       # Check if the user has already placed a bid on this vehicle
+    existing_bid = Bidding.objects.filter(vehicle=vehicle, user=request.user).first()
+
+    if existing_bid:
+        # If a bid exists, prevent the user from placing another bid
+        messages.warning(request, 'You have already placed a bid on this vehicle.')
+        return HttpResponseRedirect(reverse('detail', args=[registration_no]))
     if request.method == 'POST':
         amount = request.POST.get('amount')
         # if int(amount) < vehicle.reserve_price:
