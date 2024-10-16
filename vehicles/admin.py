@@ -23,7 +23,8 @@ from .models import (
 from django.contrib import admin
 from django.http import HttpResponse
 import csv
-
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 # Add a description to the custom action
@@ -211,19 +212,35 @@ class AuctionAdmin(admin.ModelAdmin):
         for auction in queryset:
             if auction.end_date <= now and auction.approved:
                 for vehicle in auction.vehicles.all():
+                    # Get the highest bid for the vehicle
                     highest_bid = vehicle.bidding.order_by('-amount').first()
                     if highest_bid and highest_bid.amount >= vehicle.reserve_price:
-                        vehicle.status = 'on_bid'
-                        AuctionHistory.objects.filter(vehicle=vehicle, auction=auction).update(on_bid=True, returned_to_available=False)
+                        vehicle.status = 'sold'
+                        # Send an email to the winner
+                        self.send_winner_email(highest_bid)
                     else:
                         vehicle.status = 'available'
-                        AuctionHistory.objects.filter(vehicle=vehicle, auction=auction).update(on_bid=False, returned_to_available=True)
                     vehicle.save()
-                self.message_user(request, f"Updated vehicle statuses for auction {auction.auction_id}" , level=messages.SUCCESS)
+                
+                self.message_user(request, f"Updated vehicle statuses for auction {auction.auction_id}", level=messages.SUCCESS)
             else:
-                self.message_user(request, f"Auction {auction.auction_id} is not yet ended or not approved ", level=messages.ERROR)
+                self.message_user(request, f"Auction {auction.auction_id} is not yet ended or not approved.", level=messages.ERROR)
     update_vehicle_status.short_description = "Update Vehicle Statuses for Selected Auctions"
 
+    # Method to send email notification to the winner
+    def send_winner_email(self, winning_bid):
+        subject = f"Congratulations! You've won the bid for {winning_bid.vehicle.registration_no}"
+        message = (
+            f"Dear {winning_bid.user.username},\n\n"
+            f"Congratulations! You have won the auction for the vehicle {winning_bid.vehicle.registration_no}.\n"
+            f"Your winning bid amount: Ksh {winning_bid.amount}.\n\n"
+            "We will contact you shortly with the next steps.\n\n"
+            "Thank you for participating in our auction.\n\n"
+            "Best regards,\n"
+            "The Auction Team"
+        )
+        recipient_list = [winning_bid.user.email]
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list, fail_silently=False)
     def changelist_view(self, request, extra_context=None):
         # Check if there is an active auction
         now = timezone.now()
