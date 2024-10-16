@@ -242,31 +242,19 @@ class VehicleInline(admin.TabularInline):
 
 @admin.register(AuctionHistory)
 class AuctionHistoryAdmin(admin.ModelAdmin):
-    list_display = ('vehicle', 'auction', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
+    list_display = [
+        'vehicle', 'auction', 'start_date', 'end_date', 'reserve_price', 'total_bids',
+        'top_bid_amount', 'highest_bidder_email',  
+         'on_bid', 'returned_to_available'
+    ]
+    list_filter = (
+        'vehicle', 'start_date', 'end_date',
+         'on_bid', 'returned_to_available'
+    )
     search_fields = ('vehicle__registration_no', 'auction__auction_id')
     readonly_fields = ('vehicle', 'auction', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
     # inlines = [BidInline]
-    actions = ['generate_auctionhistory_report']
-
-    def generate_auctionhistory_report(self, request, queryset):
-        # Create the HttpResponse object with the appropriate CSV header.
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="AuctionHistory_report.csv"'
-        writer = csv.writer(response)
-        writer.writerow(['Registartion_no','Auction Id',' Start Date','End Date', 'On Bid', 'Returned To Available'])
-
-        for auction in queryset:
-            writer.writerow([
-                auction.vehicle.registration_no,
-                auction.auction.auction_id, 
-                auction.start_date,
-                auction.end_date,
-                auction.on_bid,
-                auction.returned_to_available
-                ])
-        
-        return response
-    generate_auctionhistory_report.short_description = "Generate auction history report for selected vehicles"
+    actions =['history_report']
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -286,6 +274,59 @@ class AuctionHistoryAdmin(admin.ModelAdmin):
     def auction_id(self, obj):
         return obj.auction.auction_id[:8]
     auction_id.short_description = 'Auction ID'
+
+
+    def highest_bidder_email(self, obj):
+        return obj.highest_bidder_email()
+
+    def total_bids(self, obj):
+        return obj.total_bids()
+
+    def top_bid_amount(self, obj):
+        return obj.top_bid_amount()
+
+    def reserve_price(self, obj):
+        return obj.reserve_price()
+
+   # Action to export selected AuctionHistory records as CSV
+    def history_report(self, request, queryset):
+        # Define the HTTP response to download the CSV
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=auction_history_report.csv'
+
+        # Create a CSV writer
+        writer = csv.writer(response)
+
+        # Write the header row
+        writer.writerow([
+            'Vehicle', 'Auction ID', 'Start Date', 'End Date', 'Reserve Price', 
+            'Total Bids', 'Top Bid Amount', 'Highest Bidder Email', 'On Bid', 'Returned to Available'
+        ])
+
+        # Write data rows
+        for auction_history in queryset:
+            writer.writerow([
+                auction_history.vehicle.registration_no,
+                auction_history.auction.auction_id,
+                auction_history.start_date,
+                auction_history.end_date,
+                auction_history.reserve_price(),
+                auction_history.total_bids(),
+                auction_history.top_bid_amount(),
+                auction_history.highest_bidder_email(),
+                auction_history.on_bid,
+                auction_history.returned_to_available
+            ])
+
+        return response
+
+    # Set a custom label for the action in the admin interface
+    history_report.short_description = "Generate CSV for the selected vehicles in auctions"
+
+    top_bid_amount.short_description = 'Top Bid'
+    reserve_price.short_description = 'Reserve Price'
+    highest_bidder_email.short_description = 'Highest Bidder Email'
+    total_bids.short_description = 'Total Bids'
 
 admin.site.site_header = "RVAS Admin"
 admin.site.site_title = "RVAS"

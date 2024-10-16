@@ -169,3 +169,21 @@ class AuctionHistory(models.Model):
 
     def __str__(self):
         return f"{self.vehicle.registration_no} {self.vehicle.model.name} in Auction {str(self.auction.auction_id)[:8]}"
+
+     # Method to get the top bid amount
+    def top_bid_amount(self):
+        top_bid = self.vehicle.bidding.order_by('-amount').first()  # Get the highest bid
+        return top_bid.amount if top_bid else "No bids"
+
+    # Method to show the reserve price of the vehicle
+    def reserve_price(self):
+        return self.vehicle.reserve_price
+
+     # Method to get the highest bidder's email
+    def highest_bidder_email(self):
+        top_bid = self.vehicle.bidding.order_by('-amount').first()  # Get the highest bid
+        return top_bid.user.email if top_bid else "No bids"
+
+    # Method to count the total number of bids
+    def total_bids(self):
+        return self.vehicle.bidding.count()
