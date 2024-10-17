@@ -164,6 +164,7 @@ class AuctionHistory(models.Model):
     end_date = models.DateTimeField()
     on_bid = models.BooleanField(default=False,)
     returned_to_available = models.BooleanField(default=False)
+    sold = models.BooleanField(default=False)
     class Meta:
         verbose_name_plural = " Auction Histories"
 

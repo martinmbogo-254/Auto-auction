@@ -87,8 +87,11 @@ def place_bid(request, registration_no):
         bid = Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
 
+        # Check if the vehicle is part of an active auction
+        current_auction = Auction.objects.filter(vehicles=vehicle, end_date__gte=timezone.now(), approved=True).first()
+
         # Send email notification after the bid is placed
-        send_bid_notification(bid, vehicle)
+        send_bid_notification(bid, vehicle, current_auction)
 
         return HttpResponseRedirect(reverse('detail', args=[registration_no]))
 
@@ -96,19 +99,25 @@ def place_bid(request, registration_no):
 
 
 # Function to send email notification when a bid is placed
-def send_bid_notification(bid, vehicle):
+def send_bid_notification(bid, vehicle, auction=None):  # Now accepts an optional auction argument
     subject = f"New Bid Placed on {vehicle.registration_no}"
+
+    # Check if the vehicle is part of an auction and include auction info in the email
+    auction_info = f" (Auction ID: {auction.auction_id})" if auction else ""
+
     message = (
         f"A new bid has been placed by {bid.user.username} on the vehicle with "
-        f"registration number {vehicle.registration_no}.\n\n"
+        f"registration number {vehicle.registration_no}{auction_info}.\n\n"
+        f"Reserved Price: {vehicle.reserve_price}.\n"
         f"Bid Amount: {bid.amount}\n"
         f"User Email: {bid.user.email}\n"
-        f"Vehicle: {vehicle.make} {vehicle.model}"
+        f"Vehicle: {vehicle.make} {vehicle.model}\n"
     )
     from_email = settings.DEFAULT_FROM_EMAIL
-    recipient_list = ['mbogomartin25@gmail.com','mburum332@gmail.com','fuel@riverlong.com']  # Change to your desired recipient email(s)
+    recipient_list = ['mbogomartin25@gmail.com', 'mburum332@gmail.com', 'fuel@riverlong.com']  # Change to your desired recipient email(s)
 
     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
 def auction_add(request):
     if request.method == 'POST':
         form = AuctionForm(request.POST)

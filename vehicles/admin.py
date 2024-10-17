@@ -167,7 +167,7 @@ class EndedFilter(admin.SimpleListFilter):
 class AuctionHistoryInline(admin.TabularInline):
     model = AuctionHistory
     extra = 0
-    readonly_fields = ('vehicle', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
+    readonly_fields = ('vehicle', 'start_date', 'end_date', 'on_bid', 'returned_to_available','sold')
     can_delete = False
 
 @admin.register(Auction)
@@ -237,7 +237,7 @@ class AuctionAdmin(admin.ModelAdmin):
             "We will contact you shortly with the next steps.\n\n"
             "Thank you for participating in our auction.\n\n"
             "Best regards,\n"
-            "The Auction Team"
+            "Riverlong Auction Team"
         )
         recipient_list = [winning_bid.user.email]
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list, fail_silently=False)
@@ -262,16 +262,16 @@ class AuctionHistoryAdmin(admin.ModelAdmin):
     list_display = [
         'vehicle', 'auction', 'start_date', 'end_date', 'reserve_price', 'total_bids',
         'top_bid_amount', 'highest_bidder_email',  
-         'on_bid', 'returned_to_available'
+         'on_bid', 'returned_to_available','sold'
     ]
     list_filter = (
         'vehicle', 'start_date', 'end_date',
-         'on_bid', 'returned_to_available'
+         'on_bid', 'returned_to_available','sold'
     )
     search_fields = ('vehicle__registration_no', 'auction__auction_id')
     readonly_fields = ('vehicle', 'auction', 'start_date', 'end_date', 'on_bid', 'returned_to_available')
     # inlines = [BidInline]
-    actions =['history_report']
+    actions =['history_report','vehicle_details']
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -317,7 +317,7 @@ class AuctionHistoryAdmin(admin.ModelAdmin):
         # Write the header row
         writer.writerow([
             'Vehicle', 'Auction ID', 'Start Date', 'End Date', 'Reserve Price', 
-            'Total Bids', 'Top Bid Amount', 'Highest Bidder Email', 'On Bid', 'Returned to Available'
+            'Total Bids', 'Top Bid Amount', 'Highest Bidder Email', 'On Bid', 'Returned to Available','sold'
         ])
 
         # Write data rows
