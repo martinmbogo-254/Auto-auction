@@ -188,3 +188,11 @@ class AuctionHistory(models.Model):
     # Method to count the total number of bids
     def total_bids(self):
         return self.vehicle.bidding.count()
+
+# Example Recipient model
+class NotificationRecipient(models.Model):
+    email = models.EmailField()
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.email

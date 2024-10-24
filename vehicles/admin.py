@@ -16,7 +16,7 @@ from django.utils import timezone
 from .models import Auction
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
-    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory
+    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory,NotificationRecipient
 )
 
 
@@ -119,6 +119,8 @@ class VehicleAdmin(admin.ModelAdmin):
     def current_auction_end_date(self, obj):
         return obj.current_auction_end_date()
     current_auction_end_date.short_description = 'Auction End Date'
+
+admin.site.register(NotificationRecipient)
 
 @admin.register(VehicleMake)
 class VehicleMakeAdmin(admin.ModelAdmin):

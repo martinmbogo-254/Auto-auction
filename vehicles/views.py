@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .models import Vehicle, Bidding, VehicleView, Auction, AuctionHistory
+from .models import Vehicle, Bidding, VehicleView, Auction, AuctionHistory,NotificationRecipient
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import BidForm, AuctionForm
@@ -27,6 +27,20 @@ def homepage(request):
         'upcoming_auctions': upcoming_auctions,
     }
     return render(request, 'vehicles/home.html', context)
+
+def aboutus(request):
+    context = {
+
+    }
+    return render(request, 'vehicles/aboutus.html', context)
+
+def contactus(request):
+    context = {
+
+    }
+    return render(request, 'vehicles/contactus.html', context)
+
+
 
 def vehiclespage(request):
     vehicles = Vehicle.objects.filter(status='on_auction')
@@ -57,7 +71,7 @@ def vehicledetail(request, registration_no):
             vehicle.save()
             # Record this view
             VehicleView.objects.create(vehicle=vehicle, user=request.user)
-    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model,status='on_auction').exclude(id=vehicle.id)
+    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model).exclude(id=vehicle.id)
     biddings = Bidding.objects.filter(vehicle=vehicle)
     highest_bid = vehicle.bidding.order_by('-amount').first()
     context = {
@@ -114,8 +128,13 @@ def send_bid_notification(bid, vehicle, auction=None):  # Now accepts an optiona
         f"Vehicle: {vehicle.make} {vehicle.model}\n"
     )
     from_email = settings.DEFAULT_FROM_EMAIL
-    recipient_list = ['mbogomartin25@gmail.com', 'mburum332@gmail.com', 'fuel@riverlong.com']  # Change to your desired recipient email(s)
-
+ # Fetch dynamic recipient emails from the database
+    recipient_list = list(NotificationRecipient.objects.values_list('email', flat=True))
+    
+    # Fallback to a default email if no recipients are found
+    if not recipient_list:
+        recipient_list = ['fuel@riverlong.com']  # Replace with a fallback email
+    
     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
 def auction_add(request):

@@ -28,3 +28,13 @@ function countdownTimer(endDate) {
 
 // Initialize the countdown timer
 countdownTimer(auctionEndDate);
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const spinner = document.getElementById('spinner');
+    spinner.classList.remove('d-none');  // Show spinner
+
+    window.addEventListener("load", function() {
+        spinner.classList.add('d-none');  // Hide spinner when page fully loads
+    });
+});

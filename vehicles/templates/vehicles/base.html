@@ -8,6 +8,7 @@
     <title>RVAS</title>
 
     <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %} ">
+    <link rel="stylesheet" href="{% static 'vehicles/css/footer.css' %} ">
     <script src="{% static 'vehicles/js/index.js'%}"></script>
 
     <!--<link rel="stylesheet" href="{% static 'vehicles/css/details_style1.css' %} ">-->
@@ -27,6 +28,27 @@
   </head>
 
 <body> 
+  <style>
+    /* Spinner Styles */
+    #spinner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+        border-width: 0.4rem;
+    }
+</style>
     <div class="wrapper">    
         <div class="top_nav">
             <div class="left">
@@ -171,7 +193,7 @@
                 <a href="{% url 'homepage'%}">Home</a>
               </li>
               <li>
-                <a href="">About Us</a>
+                <a href="{% url 'aboutus' %}">About Us</a>
               </li>
               <li>
                 <a href="{% url 'available_vehicles' %}">Vehicles</a>
@@ -181,18 +203,16 @@
               </li>
               
               <li>
-                <a href="">How it Works</a>
+                <a href="{% url 'contactus' %}">Contact Us</a>
               </li>
-              <li>
-                <a href="">Feedback</a>
-              </li>
+              
             </ul>
       </div>
     
     </div>
 
     <div>
-
+     
         <!-- Bootstrap Modal -->
 <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -228,19 +248,109 @@
 </script>
 
         <body class="bg-light">   
-         
+              <div class="container_body">
                 {% block content%} {% endblock content%}
-            
-                
-                <nav class="navbar navbar-dark bg-dark text-center text-light mt-3 p-3 ">
+              <!-- Loading Spinner -->
+    <div id="spinner" class="d-none">
+      <div class="spinner-border text-primary" role="status">
+          <span class="sr-only">Loading...</span>
+      </div>
+  </div>
+                {% block footer%} {% endblock%}
+              </div>
+                <!-- <nav class="navbar navbar-dark bg-dark text-center text-light mt-3 p-3 ">
                     <p class="text-center ">&copy; 2024 . ALL RIGHTS RESERVERD
                         <p>RVAS</p>
                     </p>
-                </nav>
-            
+                </nav> -->
 
-    </div>
+                <footer>
+                  <div class="footer-top">
+                      <div class="container">
+                          <div class="footer-day-time">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <ul>
+                                          <li>Opening Hours: Mon - Friday: 8AM - 5PM</li>
+                                          <li>Saturday: 8:00 AM - 12:00 PM</li>
+                                      </ul>
+                                    </div>
+                                      <div class="col-md-3">
+                                        <div class="phone-no">
+                                          <a href="tel:+12 34 56 78 90"><i class="fa fa-phone" aria-hidden="true"></i>  Call +254 701 856557</a>
+                                      </div>
+                                    </div>
+                                  
+                                  <div class="col-lg-3">
+                                     
+                                      <div class="footer-icons">
+                                        <h5>Follow us on</h5>
+                                        <li><a href="#"><i class="fa-brands fa-facebook icons" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-instagram icons" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-whatsapp icons" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-x-twitter icons" aria-hidden="true"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-linkedin icons" aria-hidden="true"></i></a></li>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="row">
+                              <div class="col-lg-4">
+                                  
+                                  <h4>About us</h4>
+                                  <p>Riverlong Ltd is offers a bidding and auction for used vehicles all that are in good condition. We are also the best telematics solution provider and extends this to recovery and storage.</p>
+              
+                              </div>
+
+                              <div class="col-md-4">
+                                <h4>Our Services</h4>
+                                <ul class="address1">
+                                    <li><i class="fa fa-check"></i>  Vehicles Sales</li>
+                                    <li><i class="fa fa-check"></i>  Vehicle storage</li>
+                                    <li><i class="fa fa-check"></i>  Recovery of vehicles</li>
+                                    <li><i class="fa fa-check"></i>  Asset tracking</li>
+                                    <li><i class="fa fa-check"></i>  Fleet Management solution</li>
+                                    <li><i class="fa fa-check"></i>  Fuel Monitoring</li>
+                                    <li><i class="fa fa-check"></i>  Video telematics</li>
+                                    <li><i class="fa fa-check"></i>  Cold-chain Management</li>
+                                </ul>
+                            </div>
+              
+                              <div class="col-md-4">
+                                  <h4>Information</h4>
+                                  <ul class="address1">
+                                      <li><i class="fa fa-map-marker"></i> Fourways Junction, Kiambu road near Total Petrol station, Nairobi, Kenya</li>
+                                      <li><i class="fa fa-envelope"></i><a href="mailto:#"> info@riverlong.com</a></li>
+                                      <li><i class="fa fa-phone" aria-hidden="true"></i> <a href="tel:12 34 56 78 90"> +254 701 856557</a></li>
+                                  </ul>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="footer-bottom">
+                      <div class="container">
+                          <div class="row">
+                            <div class="col-md-12 text-center">
+                              <p>© 2024 Riverlong Ltd. All Rights Reserved. Built by Riverlong IT</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </footer>
+            
+              <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const spinner = document.getElementById('spinner');
+                    spinner.classList.remove('d-none');  // Show spinner
+        
+                    window.addEventListener("load", function() {
+                        spinner.classList.add('d-none');  // Hide spinner when page fully loads
+                    });
+                });
+            </script>
+    
   </body>
+  
 <!-- Include Bootstrap JS and dependencies -->
 <script src="{% static 'vehicles/js/index.js'%}"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
