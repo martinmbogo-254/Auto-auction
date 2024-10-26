@@ -47,7 +47,12 @@ class VehicleBody(models.Model):
         verbose_name_plural = " Vehicle Bodies"
     def __str__(self):
             return self.name
+class Yard(models.Model):
+    name = models.CharField(max_length=255)
+    link = models.CharField(max_length=255)
 
+class Financier(models.Model):
+    name = models.CharField(max_length=255)
 class Vehicle(models.Model):
     BID_STATUS_CHOICES = [
         ('idle', 'idle'),
@@ -61,6 +66,7 @@ class Vehicle(models.Model):
         ('Manual','Manual'),
     ]
     v_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    Financier = models.ForeignKey(Financier, null=True, blank=True, on_delete=models.CASCADE)
     registration_no = models.CharField(max_length=255,unique=True)
     make = models.ForeignKey(VehicleMake, on_delete=models.CASCADE)
     model = models.ForeignKey(VehicleModel, on_delete=models.CASCADE)
@@ -74,6 +80,7 @@ class Vehicle(models.Model):
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
     color = models.CharField(max_length=10,default ='white')
     seats = models.IntegerField(default=5)
+    yard = models.ForeignKey(Yard, on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='idle')
     reserve_price = models.IntegerField()
     description = models.TextField(blank=True)
