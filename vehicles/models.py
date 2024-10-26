@@ -72,6 +72,8 @@ class Vehicle(models.Model):
     transmission = models.CharField(max_length=255, choices=TRANSMISSION_CHOICES,blank=True)
     body_type = models.ForeignKey(VehicleBody, on_delete=models.CASCADE)
     fuel_type = models.ForeignKey(FuelType, on_delete=models.CASCADE)
+    color = models.CharField(max_length=10,default ='white')
+    seats = models.IntegerField(default=5)
     status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='idle')
     reserve_price = models.IntegerField()
     description = models.TextField(blank=True)

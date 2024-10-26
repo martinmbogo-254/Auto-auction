@@ -6,6 +6,9 @@
 
 {% block content %}
 <div class="container details_pane">
+    <head>
+       
+    </head>
 <div class="jumbotron center">
     <div class="breadcram m-4">        
         <ul class="breadcrumb">
@@ -180,23 +183,36 @@
             </div>
             
         </div>
-        
         <div class="col-md-11 enq-share">
             <h6>Share this:</h6>
             <div class="row">
                 <div class="col-md-12">
                     <span>
-                        {% post_to_whatsapp vehicle.url %}
+                        {% post_to_facebook vehicle.registration_no object_or_url "Post to Facebook!" %}
                     </span>
                     <i class="fa-brands fa-whatsapp icons"></i>
-                    <i class="fa-brands fa-facebook icons"></i>
+                    <i class="fa-brands fa-facebook icons">
+                        <!-- Assuming `post` is your context variable for a Post model instance -->
+
+                    </i>
                     <i class="fa-brands fa-x-twitter icons"></i>
                     <i class="fa-brands fa-linkedin icons"></i>
                     
                 </div>               
             </div>
         </div>
+<div class="">
+    <h1>Vehicle {{ vehicle.registration_no }}</h1>
+    <img src="{{ vehicle.image.url }}" alt="Vehicle Image" style="width:300px;height:auto;">
+    <p>View this vehicle on our site!</p>
 
+    <!-- Facebook Share Button -->
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
+       target="_blank" 
+       class="btn btn-primary">
+        Share on Facebook
+    </a>
+</div>
         
     </div>
 </div>

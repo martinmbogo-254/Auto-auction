@@ -12,6 +12,15 @@
     <script src="{% static 'vehicles/js/index.js'%}"></script>
 
     <!--<link rel="stylesheet" href="{% static 'vehicles/css/details_style1.css' %} ">-->
+    <meta charset="UTF-8">
+    <title>Vehicle {{ vehicle.registration_no }}</title>
+
+    <!-- Open Graph meta tags for sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Vehicle {{ vehicle.registration_no }}">
+    <meta property="og:description" content="Check out this vehicle: {{ vehicle.registration_no }}!">
+    <meta property="og:image" content="{{ vehicle.image.url }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
