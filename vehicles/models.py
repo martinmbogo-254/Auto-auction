@@ -55,6 +55,8 @@ class Yard(models.Model):
             return self.name
 class Financier(models.Model):
     name = models.CharField(max_length=255)
+    def __str__(self):
+            return self.name
 class Vehicle(models.Model):
     BID_STATUS_CHOICES = [
         ('idle', 'idle'),
