@@ -70,11 +70,11 @@ class Vehicle(models.Model):
         ('Manual','Manual'),
     ]
     v_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    Financier = models.ForeignKey(Financier, null=True, blank=True, on_delete=models.CASCADE)
+    Financier = models.ForeignKey(Financier, null=True, blank=True, on_delete=models.SET_DEFAULT,default='MyCredit Ltd')
     registration_no = models.CharField(max_length=255,unique=True)
-    make = models.ForeignKey(VehicleMake, on_delete=models.CASCADE)
-    model = models.ForeignKey(VehicleModel, on_delete=models.CASCADE)
-    YOM = models.ForeignKey(ManufactureYear, on_delete=models.CASCADE)
+    make = models.ForeignKey(VehicleMake, on_delete=models.SET_DEFAULT,default='Vehicle')
+    model = models.ForeignKey(VehicleModel, on_delete=models.SET_DEFAULT, default='SUV')
+    YOM = models.ForeignKey(ManufactureYear, on_delete=models.SET_DEFAULT, default='2010')
     mileage = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

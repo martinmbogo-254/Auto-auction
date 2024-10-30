@@ -86,13 +86,13 @@ def vehicledetail(request, registration_no):
 @login_required(login_url='login')
 def place_bid(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
-    
+
     # Check if the user has already placed a bid on this vehicle
     existing_bid = Bidding.objects.filter(vehicle=vehicle, user=request.user).first()
 
     if existing_bid:
         messages.warning(request, 'You have already placed a bid on this vehicle.')
-        return HttpResponseRedirect(reverse('detail', args=[registration_no]))
+        return redirect('vehicle_detail', registration_no=registration_no)
 
     if request.method == 'POST':
         amount = request.POST.get('amount')
@@ -101,16 +101,34 @@ def place_bid(request, registration_no):
         bid = Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
 
-        # Check if the vehicle is part of an active auction
-        current_auction = Auction.objects.filter(vehicles=vehicle, end_date__gte=timezone.now(), approved=True).first()
+        # Send "Thank You" email to the bidder
+        send_thank_you_notification(bid, vehicle)
+        
+        # Send notification email to admin or other recipients
+        send_bid_notification(bid, vehicle)
 
-        # Send email notification after the bid is placed
-        send_bid_notification(bid, vehicle, current_auction)
+        return redirect('detail', registration_no=registration_no)
 
-        return HttpResponseRedirect(reverse('detail', args=[registration_no]))
+    return redirect('detail', registration_no=registration_no)
+# Function to send a thank-you email specifically to the bidder
+def send_thank_you_notification(bid, vehicle):
+    subject = "Thank You for Placing Your Bid!"
+    message = (
+        f"Dear {bid.user.username},\n\n"
+        f"Thank you for placing a bid on the vehicle with registration number {vehicle.registration_no}.\n\n"
+        f"Here are the details of your bid:\n"
+        # f"Reserved Price: {vehicle.reserve_price}\n"
+        f"Bid Amount: {bid.amount}\n"
+        f"Vehicle: {vehicle.make} {vehicle.model}\n\n"
+        f"We appreciate your interest, and we will notify you if your bid is successful.\n\n"
+        f"Best regards,\n"
+        f"Riverlong Team"
+    )
+    
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [bid.user.email]
 
-    return HttpResponseRedirect(reverse('detail', args=[registration_no]))
-
+    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
 
 # Function to send email notification when a bid is placed
 def send_bid_notification(bid, vehicle, auction=None):  # Now accepts an optional auction argument
