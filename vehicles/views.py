@@ -92,7 +92,7 @@ def place_bid(request, registration_no):
 
     if existing_bid:
         messages.warning(request, 'You have already placed a bid on this vehicle.')
-        return redirect('vehicle_detail', registration_no=registration_no)
+        return redirect('detail', registration_no=registration_no)
 
     if request.method == 'POST':
         amount = request.POST.get('amount')
