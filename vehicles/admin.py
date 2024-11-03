@@ -72,7 +72,7 @@ class VehicleViewInline(admin.TabularInline):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('registration_no', 'make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type','color','yard', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation','current_auction_end_date')
+    list_display = ('registration_no','Financier','make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type','color','yard', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation','current_auction_end_date')
     search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
@@ -86,18 +86,24 @@ class VehicleAdmin(admin.ModelAdmin):
         response['Content-Disposition'] = 'attachment; filename="vehicle_report.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['Registration No', 'Make', 'Model', 'Year of Manufacture', 'Mileage', 'Transmission', 'Fuel Type', 'Reserve Price', 'Status', 'Days Since Creation'])
+        writer.writerow(['Registration No','Financier', 'Make', 'Model', 'Year of Manufacture', 'Mileage','Transmission',  'Engine CC','Body Type', 'Seats','Color','Fuel Type','Storage Yard', 'Reserve Price', 'Status', 'Days Since Creation'])
 
         # Iterate over the selected vehicles in the admin panel
         for vehicle in queryset:
             writer.writerow([
                 vehicle.registration_no,
+                vehicle.Financier,
                 vehicle.make.name,
                 vehicle.model.name,
                 vehicle.YOM.year,
                 vehicle.mileage,
                 vehicle.transmission,
+                vehicle.engine_cc,
+                vehicle.body_type.name,
+                vehicle.seats,
+                vehicle.color,
                 vehicle.fuel_type.name,
+                vehicle.yard,
                 vehicle.reserve_price,
                 vehicle.status,
                 vehicle.days_since_creation(),

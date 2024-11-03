@@ -135,14 +135,14 @@
                 {% else %}
                 <li>
                   <div class="signin-span">
-                    <a class="nav-link" href="/login">SignIn</a>
+                    <a class="nav-link" href="/login">Login</a>
                     
                 </div>
               </li>
 
               <li>
                 <div class="signup-span">
-                  <a class="nav-link" href="/register">SignUp</a>
+                  <a class="nav-link" href="/register">Register</a>
               </div>
               </li>
               {% endif %}
@@ -267,85 +267,8 @@
   </div>
                 {% block footer%} {% endblock%}
               </div>
-                <!-- <nav class="navbar navbar-dark bg-dark text-center text-light mt-3 p-3 ">
-                    <p class="text-center ">&copy; 2024 . ALL RIGHTS RESERVERD
-                        <p>RVAS</p>
-                    </p>
-                </nav> -->
+               {% include 'vehicles/footer.html' %}
 
-                <footer>
-                  <div class="footer-top">
-                      <div class="container">
-                          <div class="footer-day-time">
-                              <div class="row">
-                                  <div class="col-md-6">
-                                      <ul>
-                                          <li>Opening Hours: Mon - Friday: 8AM - 5PM</li>
-                                          <li>Saturday: 8:00 AM - 12:00 PM</li>
-                                      </ul>
-                                    </div>
-                                      <div class="col-md-3">
-                                        <div class="phone-no">
-                                          <a href="tel:+12 34 56 78 90"><i class="fa fa-phone" aria-hidden="true"></i>  Call +254 701 856557</a>
-                                      </div>
-                                    </div>
-                                  
-                                  <div class="col-lg-3">
-                                     
-                                      <div class="footer-icons">
-                                        <h5>Follow us on</h5>
-                                        <li><a href="#"><i class="fa-brands fa-facebook icons" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa-brands fa-instagram icons" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa-brands fa-whatsapp icons" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa-brands fa-x-twitter icons" aria-hidden="true"></i></a></li>
-                                        <li><a href="#"><i class="fa-brands fa-linkedin icons" aria-hidden="true"></i></a></li>
-                                    </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="row">
-                              <div class="col-lg-4">
-                                  
-                                  <h4>About us</h4>
-                                  <p>Riverlong Ltd is offers a bidding and auction for used vehicles all that are in good condition. We are also the best telematics solution provider and extends this to recovery and storage.</p>
-              
-                              </div>
-
-                              <div class="col-md-4">
-                                <h4>Our Services</h4>
-                                <ul class="address1">
-                                    <li><i class="fa fa-check"></i>  Vehicles Sales</li>
-                                    <li><i class="fa fa-check"></i>  Vehicle storage</li>
-                                    <li><i class="fa fa-check"></i>  Recovery of vehicles</li>
-                                    <li><i class="fa fa-check"></i>  Asset tracking</li>
-                                    <li><i class="fa fa-check"></i>  Fleet Management solution</li>
-                                    <li><i class="fa fa-check"></i>  Fuel Monitoring</li>
-                                    <li><i class="fa fa-check"></i>  Video telematics</li>
-                                    <li><i class="fa fa-check"></i>  Cold-chain Management</li>
-                                </ul>
-                            </div>
-              
-                              <div class="col-md-4">
-                                  <h4>Information</h4>
-                                  <ul class="address1">
-                                      <li><i class="fa fa-map-marker"></i> Fourways Junction, Kiambu road near Total Petrol station, Nairobi, Kenya</li>
-                                      <li><i class="fa fa-envelope"></i><a href="mailto:#"> info@riverlong.com</a></li>
-                                      <li><i class="fa fa-phone" aria-hidden="true"></i> <a href="tel:12 34 56 78 90"> +254 701 856557</a></li>
-                                  </ul>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="footer-bottom">
-                      <div class="container">
-                          <div class="row">
-                            <div class="col-md-12 text-center">
-                              <p>© 2024 Riverlong Ltd. All Rights Reserved. Built by Riverlong IT</p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </footer>
             
               <script>
                 document.addEventListener("DOMContentLoaded", function() {

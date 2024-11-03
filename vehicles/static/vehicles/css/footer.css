@@ -50,10 +50,7 @@ ol, ul {
     text-align: right;
 }
 .footer-day-time {
-    padding-bottom: 30px;
-    border-bottom: 2px solid #7a6f6f;
-    padding-top: 14px;
-    margin-bottom: 55px;
+    
 }
 .footer-day-time ul li {
     display: inline;
@@ -96,12 +93,7 @@ footer p {
     padding: 0px 0 14px 34px;
     line-height: 26px;
 }
-ul.address1 span {
-    position: absolute;
-    width: 40px;
-    max-width: 40px;
-    left: 0;
-}
+
 .address1 li a {
     color: #fff;
     text-decoration: none;
@@ -122,10 +114,7 @@ ul.address1 i.fa-envelope {
 footer ul.social-icon {
     float: left;
 }
-footer .social-icon li i:hover {
-    background: #4b8800;
-    border-color: #4b8800;
-}
+
 
 .footer-bottom {
     background: #000000;
@@ -140,7 +129,7 @@ footer .social-icon li i:hover {
 
 .footer-icons{
     float: right;
-    margin-top: -38px;
+   
 }
 .footer-icons li{
     list-style: none;

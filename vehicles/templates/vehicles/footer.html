@@ -1,77 +1,86 @@
-{% extends 'vehicles/base.html' %}
-{% load static %}
-{% load humanize %}
-{% load social_share %}
 
+{% load static %}
 
 {% block footer %}
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RVAS</title>
 
-<footer>
+    <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %} ">
+    <link rel="stylesheet" href="{% static 'vehicles/css/footer.css' %} ">
+    <script src="{% static 'vehicles/js/index.js'%}"></script>
+
+    <!--<link rel="stylesheet" href="{% static 'vehicles/css/details_style1.css' %} ">-->
+    <meta charset="UTF-8">
+    <title>Vehicle {{ vehicle.registration_no }}</title>
+
+    <!-- Open Graph meta tags for sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Vehicle {{ vehicle.registration_no }}">
+    <meta property="og:description" content="Check out this vehicle: {{ vehicle.registration_no }}!">
+    <meta property="og:image" content="{{ vehicle.image.url }}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    
+    <link rel="icon" type="image/svg" href="{% static 'images/logo-autobid.svg' %}">
+    <title>RVAS</title>
+  </head>
+  <footer>
     <div class="footer-top">
-        <div class="container">
             <div class="footer-day-time">
                 <div class="row">
-                    <div class="col-md-8">
-                        <ul>
-                            <li>Opening Hours: Mon - Friday: 8AM - 5PM</li>
-                            <li>Sunday: 8:00 AM - 12:00 PM</li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="phone-no">
-                            <a href="tel:+12 34 56 78 90"><i class="fa fa-mobile" aria-hidden="true"></i>Call +12 34 56 78 90</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
+                      
+                    <div class="col-md-3">
+                      <ul>
+                          <li>Opening Hours: Mon - Friday: 8AM - 5PM</li>
+                          <li>Saturday: 8:00 AM - 12:00 PM</li>
+                      </ul>
+                  </div>                                   
                     
-                    <h4>About us</h4>
-                    <p>Lorem Ipsum ist einfach Dummy-Text der Druck- und Satzindustrie. Lorem Ipsum war der Standard der Branche Lorem Ipsum ist einfach Dummy-Text der Druck- und Satzindustrie. Lorem Ipsum war der Standard der Branche  </p>
-
-                </div>
-
-                <div class="col-md-4">
-                    <h4>Information</h4>
-                    <ul class="address1">
-                        <li><i class="fa fa-map-marker"></i>Lorem Ipsum 132 xyz Lorem Ipsum</li>
-                        <li><i class="fa fa-envelope"></i><a href="mailto:#">info@test.com</a></li>
-                        <li><i class="fa fa-mobile" aria-hidden="true"></i> <a href="tel:12 34 56 78 90">12 34 56 78 90</a></li>
+                    <div class="col-md-3">                                     
+                      <div class="footer-icons">
+                        <h5>Follow us on</h5>
+                        <li><a href="#"><i class="fa-brands fa-facebook icons" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-instagram icons" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-whatsapp icons" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-x-twitter icons" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa-brands fa-linkedin icons" aria-hidden="true"></i></a></li>
+                    </div>
+                  </div>
+                  <div class="col-md-6"> 
+                    <div class="container">
+                      <ul class="address1">
+                        <li><i class="fa fa-map-marker"></i> Fourways Junction, Kiambu Rd Total Petrol station, Nairobi, Kenya</li><br>
+                        <li><i class="fa fa-envelope"></i><a href="mailto:#"> info@riverlong.com</a></li><br>
+                        <li><i class="fa fa-phone" aria-hidden="true"></i> <a href="tel:12 34 56 78 90"> +254 701 856557</a></li>
                     </ul>
+                    </div>
+                      
+                    </div>
+                  
                 </div>
-
-                <div class="col-md-4">
-                    <h4>Follow us</h4>
-                    <ul class="social-icon">
-                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    </ul>
-                </div>
-
             </div>
-        </div>
+          
     </div>
-    <div class="footer-bottom">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-5">
-                    <p class="copyright text-uppercase">Copyright © 2018
-                    </p>
-                </div>
-                <div class="col-sm-7">
-                    <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Our services</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-            </div>
+    <div class="footer-bottom">                      
+        <div class="row">
+          <div class="col-md-12 text-center">
+            <p>© 2024 Riverlong Ltd. All Rights Reserved. Built by Riverlong IT</p>
+          </div>                          
         </div>
     </div>
 </footer>
+  
 
 {% endblock footer %}
