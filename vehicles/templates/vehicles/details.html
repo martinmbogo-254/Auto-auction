@@ -300,9 +300,9 @@
 <div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="bidModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header ">
+            <div class="modal-header">
                 <h5 class="modal-title" id="bidModalLabel">Place Bid</h5>
-                <button class="btn btn-dark text-light" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button class="btn btn-dark text-light" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -311,22 +311,35 @@
                     <p>{{ vehicle.YOM }} | {{vehicle.make}} | {{vehicle.model}}</p>
                     <img class="card-img-top thumbnail" src="{{ vehicle.file.url }}" style="height:250px" />
                 </div>
-                <form method="POST" action="{% url 'place_bid' vehicle.registration_no %}">
+                <form method="POST" action="{% url 'place_bid' vehicle.registration_no %}" onsubmit="showSpinner(this)">
                     {% csrf_token %}
                     <div class="form-group">
-                        <p>Reserve Price :Ksh {{vehicle.reserve_price|intcomma}}</p>
-                       
+                        <p>Reserve Price: Ksh {{vehicle.reserve_price|intcomma}}</p>
                         <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter bid amount" required>
                     </div>
-                    <button type="submit" class="btn btn-dark">Submit Bid</button>
+                    <button type="submit" class="btn btn-dark">
+                        <span class="spinner-border spinner-border-sm text-light mr-2 d-none" role="status" aria-hidden="true"></span>
+                        Submit Bid
+                    </button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 </div>
 
 </div>
+<script>
+    function showSpinner(form) {
+        const button = form.querySelector('button[type="submit"]');
+        const spinner = button.querySelector('.spinner-border');
+
+        // Show spinner and disable button
+        spinner.classList.remove('d-none');
+        button.disabled = true;
+    }
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
