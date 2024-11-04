@@ -172,10 +172,10 @@
                     {% endif %}
                     <div class="row">
                         <div class="col-md-6 mb-2">
-                            <a href="https://wa.me/+254701856557" class="enq-whatsapp p-2 rounded mb-2"><i class="fa-brands fa-whatsapp"></i> Whatsapp</a>
+                            <a href="https://wa.me/+254701856557" class="enq-whatsapp p-2 rounded mb-2 nav-link text-light"><i class="fa-brands fa-whatsapp"></i> Whatsapp</a>
                         </div>
                         <div class="col-md-6">                            
-                            <a href="tel:0701856557" class="enq-call p-2 rounded mb-2"><i class="fa fa-phone"></i> Call Now</a>                       
+                            <a href="tel:0701856557" class="enq-call p-2 rounded mb-2 nav-link text-light"><i class="fa fa-phone"></i> Call Now</a>                       
                         </div>
                     </div>
                    
@@ -187,33 +187,19 @@
             <h6>Share this:</h6>
             <div class="row">
                 <div class="col-md-12">
-                    <span>
-                        {% post_to_facebook vehicle.registration_no object_or_url "Post to Facebook!" %}
-                    </span>
+                   
                     <i class="fa-brands fa-whatsapp icons"></i>
-                    <i class="fa-brands fa-facebook icons">
-                        <!-- Assuming `post` is your context variable for a Post model instance -->
-
-                    </i>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
+                    target="blank">
+                     <i class="fa-brands fa-facebook icons"></i>
+                    </a>
                     <i class="fa-brands fa-x-twitter icons"></i>
                     <i class="fa-brands fa-linkedin icons"></i>
                     
                 </div>               
             </div>
         </div>
-<div class="">
-    <h1>Vehicle {{ vehicle.registration_no }}</h1>
-    <img src="{{ vehicle.image.url }}" alt="Vehicle Image" style="width:300px;height:auto;">
-    <p>View this vehicle on our site!</p>
-
-    <!-- Facebook Share Button -->
-    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
-       target="_blank" 
-       class="btn btn-primary">
-        Share on Facebook
-    </a>
-</div>
-        
+  
     </div>
 </div>
 <div class="row p-5">

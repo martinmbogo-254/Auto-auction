@@ -26,7 +26,9 @@
     background-repeat: no-repeat;
     padding-top: 10%;
   }
-
+.masthead a{
+  text-decoration: none !important;
+}
 
 
 .img-thumbnail {
@@ -520,6 +522,8 @@ ul.breadcrumb li a:hover {
   color: #000000;
 }
 
+
+
 .place_bid{
   background-color: hsl(354, 84%, 52%);
   color: #ffffff;
@@ -529,7 +533,9 @@ ul.breadcrumb li a:hover {
   background-color: #ffffff;
   color: #000000;
 }
-
+.place_bid a:hover{
+  color: #000000 !important;
+}
 .check_car:hover{
   background-color: hsl(354, 84%, 52%);
   color: #ffffff;
@@ -550,6 +556,7 @@ ul.breadcrumb li a:hover {
   border-radius: 50%;
   color: hsl(354, 84%, 52%);
   background-color: hsl(354, 40%, 90%);
+  margin: 10px !important;
 }
 
 .auction_header{
@@ -717,3 +724,31 @@ color: #3d3c3c;
   }
 }
 
+#howitworks .card{
+  height: 260px !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 22px !important;
+  margin: 10px !important;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+#howitworks .card-header {
+  background-color: #ffffff !important;
+  padding: 10px !important;
+  border-radius: 10px !important;
+}
+#howitworks .card p{
+  line-height: 20px !important;
+  font-size: 12px !important;
+}
+#howitworks #steps{
+  line-height: 20px !important;
+  font-size: 14px !important;
+  color: white !important;
+  background:hsl(354, 84%, 52%) !important;
+  padding: 10px;
+  border-radius: 5px !important;
+}
+#step3 {
+  margin-top: 7.5% !important;
+}

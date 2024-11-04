@@ -6,7 +6,7 @@
 {% block content%}
 
   <!-- Full Page Image Header with Vertically Centered Content -->
-  <div class="masthead" style="background-image:url('{% static 'images/car3.jpg' %}');">
+  <div class="masthead" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.7), rgba(83, 79, 79, 0.2)),url('{% static 'images/car3.jpg' %}');">
     <div class="container h-100">
       <div class="row h-100 align-items-right">
         <div class="col-md-12 text-right">
@@ -16,10 +16,10 @@
                    
           
         </div>
-        <div class="col-md-12 text-left">
+        <div class="col-md-12 text-left cta">
           <h6 class="fw-bold fs-6 more_ad">Drive home today</h6>
           <button class="place_bid"><i class="fa fa-gavel"></i> <a class="text-light" href="{% url 'vehicles' %}">Bid</a></button> 
-          <button class="check_car"><i class="fa-solid fa-eye"></i> Check Car</button>
+          <a class="check_car" href="{% url 'vehicles' %}"><i class="fa-solid fa-eye"></i> Check Cars</a>
           <h6 class="fw-bold fs-5 more_ad">Win a bid at your cost</h6>                               
         </div>
       </div>
@@ -29,14 +29,14 @@
 </div>
 
 <div class="lower-cont1 mb-5">
-  <div class="row mt-5">
+  <div class="row mt-2">
     <div class="lower-head">
       <h3 class="text-danger">Start Now</h3>
       <h2>How it Works </h2>
     </div>   
   </div>
   <div class="row lower-content">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-3">
       
       </div>
@@ -47,20 +47,21 @@
       <div class="col-lg-7">
         
       </div>
-    </div>
+    </div> -->
    
-   <div class="row">
+   <div class="row" id="howitworks">
     <div class="col-lg-4">
-        <div class="howitworksicon m-3">
+        <!-- <div class="howitworksicon m-3">
           <span class="round_icon">
             <i class="fa-solid fa-chalkboard-user"></i>
           </span>          
-        </div>
+        </div> -->
       
 
       <div class="card">
         <div class="card-header">
-            <p><label>Step 1. Create your account</label> 
+          <div class=""><i class="fa-solid fa-1" id="steps"></i></div>
+            <p><label> Create your account</label> 
         </div>  
         <div class="card-body">
             <p>You will be required to create an account using your Name, ID, valid email address and Telephone Number.</p>
@@ -69,7 +70,8 @@
       </div>
       <div class="card">
         <div class="card-header">
-            <label>Step 2. Your account profile</label>
+          <div class=""><i class="fa-solid fa-2" id="steps"></i></div>
+            <label> Your account profile</label>
         </div>
         <div class="card-body">
             <p> Your profile contains information on the vehicles you have bid, bid amounts and your successful bids.</p>
@@ -77,18 +79,19 @@
         
       </div>
     </div>
-    <div class="col-lg-4 ">     
-      <div class="howitworksicon m-3">
-        <span class="round_icon">
+    <div class="col-lg-4 mt-md-1" id="step3">     
+      <!-- <div class="howitworksicon m-3">
+        <span class="round_icon m-2">
           <i class="fa fa-gavel"></i>
         </span>          
-      </div>
-      <div class="card">
+      </div> -->
+      <div class="card mt-5" >
         <div class="card-header">
-            <label>Step 3. Bid for a vehicle</label> 
+          <div class=""><i class="fa-solid fa-3" id="steps"></i></div>
+            <label>Bid for a vehicle</label> 
         </div>
         <div class="card-body">
-            <p>Once you have registered and logged in you can view the vehicle you would like to buy and place your OFFER AMOUNT.You will key in your OFFER AMOUNT. You can bid for as many vehicles as you like but only one bid is accepted per vehicle. The bidding window closes after 14days.</p>
+            <p>Once you have registered and logged in you can view the vehicle you would like to buy and place your OFFER AMOUNT. You can bid for as many vehicles as you like but only one bid is accepted per vehicle. The bidding window closes after 14days.</p>
         </div>  
         
       </div>     
@@ -96,15 +99,16 @@
      </div>
     <div class="col-lg-4 ">
      
-      <div class="howitworksicon m-3">
+      <!-- <div class="howitworksicon m-3">
         <span class="round_icon">
-          <i class="fa-solid fa-circle-dollar-to-slot"></i>
+          <i class="fa-solid fa-circle-dollar-to-slot mb-2"></i>
         </span>          
-      </div>
+      </div> -->
 
       <div class="card">
         <div class="card-header">
-            <label>Step 4. Bid acceptance</label> 
+          <div class=""><i class="fa-solid fa-4" id="steps"></i></div>
+            <label>Bid acceptance</label> 
         </div>
         <div class="card-body">
             <p>Vehicles are sold on ‘As is, Where is’ basis. Offer letter shall be issued to successful bidder(s) who will be required to pay the full amount within 24 hours. Final allocation will be on a first come first served basis</p>
@@ -114,7 +118,8 @@
 
       <div class="card">
         <div class="card-header">
-            <label>Step 5. Vehicle release</label>
+          <div class=""><i class="fa-solid fa-5" id="steps"></i></div>
+            <label> Vehicle release</label>
         </div>
         <div class="card-body">
             <p>The Bank will confirm receipt of your payment and immediately issue you a letter authorizing release of the vehicle from the yard. You will thereafter collect the Logbook and necessary documentation to facilitate transfer of the motor vehicle.</p>
@@ -127,7 +132,7 @@
     </div>
    </div>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-7">
       
       </div>
@@ -139,7 +144,7 @@
         
       </div>
     </div>
-    
+     -->
 
   </div>
 
@@ -152,13 +157,13 @@
       
       <div class="text-center">
         <div class="row">
-          <span class="span_about">
+          <!-- <span class="span_about">
             About Autobid
-          </span>
+          </span> -->
         </div>
         
         <div class="row">
-          <span class="span_abouthead">
+          <span class="span_about">
             Visit Us Today
           </span>
         </div>
