@@ -12,8 +12,50 @@
             <li><a href="{% url 'homepage'%}">Home</a></li>
             <li>Auctions</li>
           </ul>
+
+          <form method="get" class="container my-3">
+            <div class="row gx-2 gy-3">
+                <div class="col-md-2">
+                    <select name="make" class="form-select">
+                        <option value="">Make</option>
+                        {% for choice in vehiclefilter.form.make.field.choices %}
+                            <option value="{{ choice.0 }}" {% if vehiclefilter.form.make.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="model" class="form-select">
+                        <option value="">Model</option>
+                        {% for choice in vehiclefilter.form.model.field.choices %}
+                            <option value="{{ choice.0 }}" {% if vehiclefilter.form.model.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="location" class="form-select">
+                        <option value="">Year of Manufacture</option>
+                        {% for choice in vehiclefilter.form.YOM.field.choices %}
+                            <option value="{{ choice.0 }}" {% if vehiclefilter.form.YOM.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- Add similar blocks for each select field -->
+                <div class="col-md-2">
+                    <input type="text" name="min_price" class="form-control" placeholder="Min Price" value="{{ vehiclefilter.form.min_price.value }}">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" name="max_price" class="form-control" placeholder="Max Price" value="{{ vehiclefilter.form.max_price.value }}">
+                </div>
+                <!-- Continue adding fields like above for mileage, drive type, etc. -->
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <button type="submit" class="btn btn-info me-2">Filter</button>
+                <a href="{% url 'vehicles' %}" class="btn btn-secondary">Clear Filters</a>
+            </div>
+        </form>
+        
     
-        <form method="get" class="form-inline my-2 my-lg-0" >
+        <!-- <form method="get" class="form-inline my-2 my-lg-0" >
     
             <div class="form-row p-2">
                 <div class="form-group p-1 m-2 ">
@@ -25,24 +67,14 @@
             <a href="{% url 'vehicles' %}" class="btn btn-secondary mt-2 ml-2">Clear Filters</a>
 
         </form>
-    
+     -->
         <!-- <div class="text-center row">
             <p>{{vehicles_count}} Vehicles on Auction.</p>
         </div> -->
     <div class="row">
         {% if vehicles %}
       {% for vehicle in vehicles %}
-      <!--<div class="col-md-4">
-        <div class="card text-start rounded">
-        
-            <img class="card-img-top thumbnail" src="{{vehicle.file.url}}" style="height:200px"/>
-            <div class="card-body">
-                <a href="{% url 'detail' vehicle.id%}" class="card-title">{{vehicle.YOM}}, {{vehicle.make}} {{vehicle.model}}</a>
-                <p class="card-text">{{vehicle.reserve_price}}</p> 
-            </div>
-          </div>
-      </div>-->
-
+     
 
       <div class="col-md-4">
         <div class="card car_cad">

@@ -41,24 +41,21 @@ def contactus(request):
     return render(request, 'vehicles/contactus.html', context)
 
 
-
-def vehiclespage(request):
-    vehicles = Vehicle.objects.filter(status='on_auction')
-    vehicles_count = vehicles.count()
-    vehiclefilter = VehicleFilter(request.GET, queryset=vehicles)
-    vehicles = vehiclefilter.qs
-    
+def allvehiclespage(request):
+    all_vehicles = Vehicle.objects.all()
+    vehicles_count = all_vehicles.count()
+    vehiclefilter = VehicleFilter(request.GET, queryset=Vehicle.objects.all())
+    vehicles_on_sale = vehiclefilter.qs.filter(status="available")
+    vehicles_on_auction = vehiclefilter.qs.filter(status='on_auction')
+    on_salecount = vehicles_on_sale.count()
+    on_auctioncount = vehicles_on_auction.count()
     context = {
-        'vehicles': vehicles,
+        'vehicles_on_sale': vehicles_on_sale,
         'vehiclefilter':vehiclefilter,
-        'vehicles_count':vehicles_count
-    }
-    return render(request, 'vehicles/on_auction.html',context)
-
-def available_vehiclespage(request):
-    available_vehicles = Vehicle.objects.filter(status='available')
-    context={
-        'available_vehicles' :available_vehicles
+        'vehicles_count':vehicles_count,
+        'vehicles_on_auction' :vehicles_on_auction,
+        'on_salecount' :on_salecount,
+        'on_auctioncount' :on_auctioncount,
     }
     return render (request,'vehicles/vehicles.html', context)
 

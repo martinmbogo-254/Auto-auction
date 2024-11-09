@@ -287,11 +287,12 @@ label{
 
 /*Vehicles view Page*/
 
-.car_card{
-  border-radius: 10px;
+.car_cad{
+  border-radius: 15px !important;
+
 }
 .car_image{
-  border: #797878 solid 1px;
+  /* border: #797878 solid 1px; */
   border-radius: 4px 4px 0 0;
   margin: 2px;
 }
@@ -300,17 +301,16 @@ label{
   transition: 0.9s;
   width: 100%;
   height: 200px;
-  border-radius: 10px;
-  padding: 2%;
+  border-radius: 15px;
   
 }
 .car_img:hover{ 
   position: relative;
-  transform: scale(1.1);  
+  transform: scale(.95);  
   color:black;
   cursor: pointer;
   opacity: 0.8;
-  z-index: 1;
+  /* z-index: 1; */
 }
 
 .car_info{

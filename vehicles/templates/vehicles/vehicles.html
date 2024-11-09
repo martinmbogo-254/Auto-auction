@@ -5,23 +5,33 @@
 
 <html>
 {% block content%}
-<div class="container vehicles_pane">
+<div class="container-fluid vehicles_pane">
 <div class="jumbotron center">
+    <form method="get" class="form-inline my-2 my-lg-0" >
     
+        <div class="form-row p-2">
+            <div class="form-group p-1 m-2 ">
+                {{ vehiclefilter.form|crispy }}
+            </div>
+            
+        </div>
+        <button type="submit" class="btn btn-info mt-2 ml-2">Filter</button>
+        <a href="{% url 'available_vehicles' %}" class="btn btn-secondary mt-2 ml-2">Clear Filters</a>
+
+    </form>
         <ul class="breadcrumb">
-            <li><a href="{% url 'homepage'%}">Home</a></li>
-            <li>Available Vehicles</li>
+            <!-- <li><a href="{% url 'homepage'%}">Home</a></li> -->
+            <li>  {{on_salecount}} Vehicles for sale</li>
           </ul>
 
     
-        <!-- <div class="text-center row">
-            <p>{{vehicles_count}} Vehicles on Auction.</p>
-        </div> -->
+     
+        
     <div class="row">
         
-      {% for vehicle in available_vehicles  %}
+      {% for vehicle in vehicles_on_sale  %}
 
-      <div class="col-md-4">
+      <div class="col-md-3 col-sm-2">
         <div class="card car_cad">
             <div class="car_image">
                 <a href="{% url 'detail' vehicle.registration_no%}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
@@ -48,12 +58,52 @@
           </div>
       </div>
       {% endfor %}
-      
+      <div class="row">
+        <ul class="breadcrumb">
+           
+            <li>{{on_auctioncount}}  Vehicles on Auctions</li>
+          </ul>
+        {% if vehicles_on_auction %}
+      {% for vehicle in vehicles_on_auction %}
+     
+
+      <div class="col-md-3 col-sm-2">
+        <div class="card car_cad">
+            <div class="car_image">
+                <a href="{% url 'detail' vehicle.registration_no%}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
+            </div>       
+            
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="car_name"><a href="{% url 'detail' vehicle.registration_no%}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
+                    </div>
+                    <div class="col-md-12">
+                        <span class="car_info">{{ vehicle.mileage }} KM • {{vehicle.engine_cc}} CC • {{vehicle.fuel_type}} • {{vehicle.registration_no}}</span>
+                    </div>
+                    <div class="col-md-12">
+                        <hr/>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">Ksh {{vehicle.reserve_price|intcomma}}</label>
+                    </div>
+                 
+                </div>
+                
+            </div>
+          </div>
+      </div>
+      {% endfor %}
+       {% else %}
+      <div class="jumbotron bg-light text-center">
+        <p class="text-light">No vehicles on auction currently.</p>
+      </div>
+       {% endif %}
 
     </div>
-    <div class="col-md-12 text-center">
-        <a type="button" href="{% url 'vehicles' %}" class="btn btn-lg btn-info text-white ">Vehicles on Auction <i class="fa fa-chevron-right fw-normal"></i> </a>
+
     </div>
+  
 </div>
 </div>
 </div>

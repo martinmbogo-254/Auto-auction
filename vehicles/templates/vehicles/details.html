@@ -13,7 +13,7 @@
     <div class="breadcram m-4">        
         <ul class="breadcrumb">
             <li><a href="{% url 'homepage'%}">Home</a></li>
-            <li><a href="{% url 'vehicles' %}">Vehicles</a></li>
+            <li><a href="{% url 'available_vehicles' %}">Vehicles</a></li>
             <li>{{ vehicle.YOM }} {{ vehicle.model }} {{ vehicle.make }}</li>
           </ul>
     </div>
@@ -128,18 +128,7 @@
                 <h6>Yard Name: <b><a class="nav-link" href="{{vehicle.yard.link}}">{{vehicle.yard}}</a></b></h6>                
                 <h6>{{vehicle.registration_no}} | {{vehicle.transmission}} | {{vehicle.engine_cc}} CC</h6>  
             </div>
-<!-- 
-            <div class="vehicle_more_info">{% if highest_bid %}
-                <span class="badge highest-bid mb-2">Highest Bid: Ksh{{ highest_bid.amount|intcomma }}</span>
 
-                {% else %}
-                <span class="badge highest-bid mb-2" >Highest Bid :No bids yet.</span>
-                {% endif %}
-                </span><br>
-                <h6>Reserved Price: <label>Ksh {{vehicle.reserve_price|intcomma}}</label> </h6>    
-               
-                      
-            </div> -->
             <div class="contact-btn">
                 <div class="row">
                     {% if vehicle.current_auction_end_date %}
@@ -262,39 +251,6 @@
     <p>No similar vehicles found.</p>
     {% endfor %}
 </div>
-
-
-<!--<div class="wrapper">
-    <h1>Testing</h1>
-    <div class="gallery">
-        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
-        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
-        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
-        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
-        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
-        <div class="image"><span><img src="{% static 'images/car10.jpeg' %}" alt=""></span></div>
-    </div>
-</div>
-
-<div class="preview-box">
-    <div class="details">
-        <span class="title">
-            Image <p class="current-img">3</p> out of
-            <p class="total-img">6</p>
-        </span>
-        <span class="icon fas fa-times"></span>
-    </div>
-    <div class="img-box">
-        <div class="slide prev">
-            <i class="fas fa-angle-left"></i>
-        </div>
-        <div class="slide next">
-            <i class="fas fa-angle-right"></i>
-        </div>
-        <img src="{% static 'images/car10.jpeg' %}" alt="Image missing here">
-    </div>
-</div>-->
-
 
 <!-- Bid Modal -->
 <div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="bidModalLabel" aria-hidden="true">
