@@ -91,6 +91,18 @@ class Vehicle(models.Model):
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)
 
+    is_approved = models.BooleanField(default=False)
+    approved_by = models.ForeignKey(User, related_name="approved_vehicles", null=True, blank=True, on_delete=models.SET_NULL)
+    approved_at = models.DateTimeField(null=True, blank=True)
+
+    def approve(self, user):
+        """Approve the vehicle and set approved fields."""
+        self.is_approved = True
+        self.approved_by = user
+        self.approved_at = timezone.now()
+        self.status = 'available'  # Automatically set to available if approved
+        self.save()
+        
     def get_absolute_url(self):
         return reverse('detail', kwargs={'registration_no': self.registration_no})
     def __str__(self):

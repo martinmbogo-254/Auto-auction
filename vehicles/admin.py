@@ -72,12 +72,12 @@ class VehicleViewInline(admin.TabularInline):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('registration_no','Financier','make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type','color','yard', 'fuel_type', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation','current_auction_end_date')
+    list_display = ('registration_no','Financier','make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type','color','yard', 'fuel_type','is_approved', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation','current_auction_end_date')
     search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
-    list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at')
+    list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at','is_approved')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
-    readonly_fields = ('views','status')
-    actions = ['make_available', 'generate_vehicle_report','sell']
+    readonly_fields = ('views','status','approved_by', 'approved_at','is_approved')
+    actions = ['make_available', 'generate_vehicle_report','sell','approve_vehicle']
     
     # Custom action for generating reports
     def generate_vehicle_report(self, request, queryset):
@@ -125,6 +125,35 @@ class VehicleAdmin(admin.ModelAdmin):
     def current_auction_end_date(self, obj):
         return obj.current_auction_end_date()
     current_auction_end_date.short_description = 'Auction End Date'
+
+    def get_queryset(self, request):
+        """Limit what different users see based on role."""
+        qs = super().get_queryset(request)
+        if request.user.groups.filter(name='Sales').exists():
+            return qs.filter(is_approved=False)  # Makers see only unapproved vehicles
+        return qs  # Checkers and other users see all vehicles
+
+    def get_readonly_fields(self, request, obj=None):
+        """Make fields read-only for Admins to prevent modification."""
+        if request.user.groups.filter(name='Admins').exists():
+            return self.readonly_fields + tuple(field.name for field in self.model._meta.fields if field.name != 'is_approved')
+        return self.readonly_fields
+
+    # Admin action for Checkers to approve vehicles
+    def approve_vehicle(self, request, queryset):
+        if not request.user.groups.filter(name='Admins').exists():
+            self.message_user(request, "Only Admins can approve vehicles.", level=messages.WARNING)
+            return
+
+        # Update selected vehicles
+        count = 0
+        for vehicle in queryset.filter(is_approved=False):
+            vehicle.approve(request.user)
+            count += 1
+
+        self.message_user(request, f"{count} vehicle(s) have been approved.", level=messages.SUCCESS)
+
+    approve_vehicle.short_description = "Approve selected vehicles"
 
 admin.site.register(NotificationRecipient)
 admin.site.register(Financier)

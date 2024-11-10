@@ -5,7 +5,7 @@
 
 
 {% block content %}
-<div class="container details_pane">
+<div class="container-fluid details_pane">
     <head>
        
     </head>
@@ -137,24 +137,15 @@
                         // Pass the auction end date to JavaScript
                         const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
                     </script>     
-                    <div class="col-md-10">
-                    {% if user.is_authenticated %}
-                    <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
-                    <i class="fa fa-gavel"></i> Place a bid
-                    </button>
-                    {% else %}
-                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
-                        Login to bid
-                    </a>
-                    {% endif %}       
+                    <div class="col-md-10">     
                     </div>
                     {% else %}
                     {% if user.is_authenticated %}
-                    <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
+                    <button type="button" id="bidbtn" class="btn p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
                     <i class="fa fa-gavel"></i> Place a bid
                     </button>
                     {% else %}
-                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
+                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center login2bid">
                         Login to bid
                     </a>
                     {% endif %}
@@ -191,10 +182,10 @@
   
     </div>
 </div>
-<div class="row p-5">
+<div class="row container p-5">
     <hr class="hr_details">
 </div>
-<div class="row additional-info"> 
+<div class="row container additional-info"> 
     <div class="info_title">
         <label for="">Additional information</label>
     </div>    
@@ -237,13 +228,11 @@
     <h3>Similar Deals</h3>
     {% for similar_vehicle in similar_vehicles %}
     <div class="col-md-3">
-        <div class="card mb-3">
+        <div class="card mb-3 car_cad">
             <img src="{{ similar_vehicle.file.url }}" class="card-img-top" alt="Similar Vehicle Image">
             <div class="card-body">
-                <h5 class="card-title">{{ similar_vehicle.make }} {{ similar_vehicle.model }}</h5>
-                <p class="card-text">YOM: {{ similar_vehicle.YOM }}</p>
-                <p class="card-text">Mileage: {{ similar_vehicle.mileage }} km</p>
-                <a href="{% url 'detail' similar_vehicle.registration_no %}" class="btn btn-primary">View Details</a>
+                <p class="card-text">{{ similar_vehicle.YOM }} {{ similar_vehicle.make }}  {{ similar_vehicle.model }}</p>
+                <a href="{% url 'detail' similar_vehicle.registration_no %}" class="btn btn-info">View Details</a>
             </div>
         </div>
     </div>

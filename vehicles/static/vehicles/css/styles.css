@@ -30,7 +30,10 @@
   text-decoration: none !important;
 }
 
-
+.login2bid{
+  width: 90% !important;
+  margin-left :10px !important;
+}
 .img-thumbnail {
     cursor: pointer;
     border: 2px solid #ddd;
@@ -289,7 +292,11 @@ label{
 
 .car_cad{
   border-radius: 15px !important;
+  border:none !important;
 
+}
+.car_cad .cicon{
+  color : #de1e1e !important;
 }
 .car_image{
   /* border: #797878 solid 1px; */
@@ -382,11 +389,11 @@ label{
 }
 .enq-bid{
   font-size: 100%;
-  background-color: #fecd07;
+  background-color: #fecd07 !important;
   border: none;
   padding: 2%;
   margin: 1%;
-  width: 100%;
+  width: 90% !important;
   color: #000000;
 }
 

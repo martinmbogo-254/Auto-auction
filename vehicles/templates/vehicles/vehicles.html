@@ -19,16 +19,17 @@
         <a href="{% url 'available_vehicles' %}" class="btn btn-secondary mt-2 ml-2">Clear Filters</a>
 
     </form>
+      
+    
+     
+        
+    <div class="row">
         <ul class="breadcrumb">
             <!-- <li><a href="{% url 'homepage'%}">Home</a></li> -->
             <li>  {{on_salecount}} Vehicles for sale</li>
           </ul>
 
-    
-     
-        
-    <div class="row">
-        
+        {% if vehicles_on_sale %}
       {% for vehicle in vehicles_on_sale  %}
 
       <div class="col-md-3 col-sm-2">
@@ -43,7 +44,7 @@
                         <label class="car_name"><a href="{% url 'detail' vehicle.registration_no%}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
                     </div>
                     <div class="col-md-12">
-                        <span class="car_info">{{ vehicle.mileage }} KM • {{vehicle.engine_cc}} CC • {{vehicle.fuel_type}} • {{vehicle.registration_no}}</span>
+                        <span class="car_info"> <i class="fa-solid fa-road cicon"></i> {{ vehicle.mileage }} KM • <i class="fas fa-tachometer-alt  cicon"></i> {{vehicle.engine_cc}} CC • <i class="fa-solid fa-gas-pump cicon"></i>  {{vehicle.fuel_type}}</span>
                     </div>
                     <div class="col-md-12">
                         <hr/>
@@ -58,6 +59,11 @@
           </div>
       </div>
       {% endfor %}
+      {% else %}
+      <div class="jumbotron bg-info text-center">
+        <p class="text-light">Sorry, No vehicles available.</p>
+      </div>
+      {% endif %}
       <div class="row">
         <ul class="breadcrumb">
            
@@ -66,7 +72,7 @@
         {% if vehicles_on_auction %}
       {% for vehicle in vehicles_on_auction %}
      
-
+      
       <div class="col-md-3 col-sm-2">
         <div class="card car_cad">
             <div class="car_image">
@@ -95,8 +101,8 @@
       </div>
       {% endfor %}
        {% else %}
-      <div class="jumbotron bg-light text-center">
-        <p class="text-light">No vehicles on auction currently.</p>
+       <div class="jumbotron bg-info text-center">
+        <p class="text-dark">No vehicles on auction currently.</p>
       </div>
        {% endif %}
 
