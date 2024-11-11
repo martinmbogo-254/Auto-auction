@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
+from ckeditor.fields import RichTextField
 
 
 class VehicleMake(models.Model):
@@ -87,7 +88,7 @@ class Vehicle(models.Model):
     yard = models.ForeignKey(Yard, on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default='idle')
     reserve_price = models.IntegerField()
-    description = models.TextField(blank=True)
+    description = RichTextField(blank=True)
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)
 

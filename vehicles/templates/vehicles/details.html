@@ -137,7 +137,16 @@
                         // Pass the auction end date to JavaScript
                         const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
                     </script>     
-                    <div class="col-md-10">     
+                    <div class="col-md-10">
+                        {% if user.is_authenticated %}
+                    <button type="button" id="bidbtn" class="btn btn-info p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
+                    <i class="fa fa-gavel"></i> Place a bid
+                    </button>
+                    {% else %}
+                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
+                        Login to bid
+                    </a>
+                    {% endif %}       
                     </div>
                     {% else %}
                     {% if user.is_authenticated %}
@@ -202,8 +211,14 @@
             <tr>
                 <td><span class="info_label"><i class="fa-solid fa-gas-pump cicon"></i> Fuel </span></td>
                 <td><span  class="info_data">{{vehicle.fuel_type}}</span></td>
-            </tr>         
+            </tr>    
+            <tr>
+                <td><span class="info_label"><i class="fas fa-chair cicon"></i></i> Seats </span></td>
+                <td><span  class="info_data">{{vehicle.seats}}</span></td>
+            </tr>  
+                   
         </table>
+         
     </div>
    
     <div class="col-md-6">
@@ -214,13 +229,21 @@
             </tr>       
             <tr>
                 <td><span class="info_label"> <i class="fa-solid fa-road cicon"></i> Mileage </span></td>
-                <td><span  class="info_data">{{vehicle.mileage|intcomma}},Km</span></td>
+                <td><span  class="info_data">{{vehicle.mileage|intcomma}} Km</span></td>
             </tr>           
             <tr>
                 <td><span class="info_label"> <i class="fas fa-tachometer-alt cicon"></i> Engine Capacity </span></td>
                 <td><span  class="info_data">{{vehicle.engine_cc}} CC</span></td>
-            </tr>            
+            </tr>   
+            <tr>
+                <td><span class="info_label"><i class="fa-solid fa-droplet cicon"></i> Color </span></td>
+                <td><span  class="info_data">{{vehicle.color}}</span></td>
+            </tr>          
         </table>        
+    </div>
+    <div class="jumbotron container">
+        <p>Vehicle Description</p>
+        <p>{{vehicle.description|safe}}</p>
     </div>
 </div>
 

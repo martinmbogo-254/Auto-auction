@@ -126,12 +126,12 @@ class VehicleAdmin(admin.ModelAdmin):
         return obj.current_auction_end_date()
     current_auction_end_date.short_description = 'Auction End Date'
 
-    def get_queryset(self, request):
-        """Limit what different users see based on role."""
-        qs = super().get_queryset(request)
-        if request.user.groups.filter(name='Sales').exists():
-            return qs.filter(is_approved=False)  # Makers see only unapproved vehicles
-        return qs  # Checkers and other users see all vehicles
+    # def get_queryset(self, request):
+    #     """Limit what different users see based on role."""
+    #     qs = super().get_queryset(request)
+    #     if request.user.groups.filter(name='Sales').exists():
+    #         return qs.filter(is_approved=True)  # Makers see only unapproved vehicles
+    #     return qs  # Checkers and other users see all vehicles
 
     def get_readonly_fields(self, request, obj=None):
         """Make fields read-only for Admins to prevent modification."""

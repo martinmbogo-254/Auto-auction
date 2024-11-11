@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_filters',
-    'django_social_share'
+    'django_social_share',
+    'ckeditor',
+    'ckeditor_uploader', 
 ]
 
 MIDDLEWARE = [
@@ -153,3 +155,12 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+CKEDITOR_UPLOAD_PATH = "uploads/"  # Folder where uploaded files will go
+CKEDITOR_IMAGE_BACKEND = 'pillow'  # Required for image processing (pillow is a common dependency)
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',  # Use full toolbar (you can customize this)
+        'height': 300,
+        'width': 800,
+    },
+}
