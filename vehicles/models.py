@@ -91,7 +91,7 @@ class Vehicle(models.Model):
     description = RichTextField(blank=True)
     file = models.FileField(upload_to='images/',default='images/default-vehicle.png',blank=True)
     views = models.IntegerField(default=0)
-
+    is_hotsale = models.BooleanField(default=False)
     is_approved = models.BooleanField(default=False)
     approved_by = models.ForeignKey(User, related_name="approved_vehicles", null=True, blank=True, on_delete=models.SET_NULL)
     approved_at = models.DateTimeField(null=True, blank=True)

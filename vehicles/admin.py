@@ -72,7 +72,7 @@ class VehicleViewInline(admin.TabularInline):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('registration_no','Financier','make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type','color','yard', 'fuel_type','is_approved', 'status', 'reserve_price', 'created_at', 'updated_at','days_since_creation','current_auction_end_date')
+    list_display = ('registration_no','Financier','make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type','color','yard', 'fuel_type','is_approved', 'status', 'reserve_price', 'is_hotsale','created_at', 'updated_at','days_since_creation','current_auction_end_date')
     search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
     list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at','is_approved')
     inlines = [VehicleImageInline, BidInline,VehicleViewInline]
