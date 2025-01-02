@@ -75,7 +75,11 @@
 
               <div class="opentime_span">
                 <img src="{% static 'images/clock.svg' %}" height="14px" width="24px" />
-                <span for="">  Mon - Fri: 10:00 - 18:00</span>
+                <span for="">  Mon - Fri: 08:00 - 17:00</span>
+              </div>
+              <div class="opentime_span">
+                <img src="{% static 'images/clock.svg' %}" height="14px" width="24px" />
+                <span for="">  Sat: 08:00 - 12:00</span>
               </div>
               
               
@@ -95,10 +99,10 @@
             </div>-->
             <ul>
               <li>
-                <div class="search-span">                
+                <!-- <div class="search-span">                
                   <label for="">RVAS</label>   
                                       
-                </div>
+                </div> -->
                 
             </li>
               <li>
@@ -149,47 +153,6 @@
             </ul>
           </div>
         </div>
-
-
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
-        
-      <a class="navbar navbar-brand" href="{% url 'homepage'%}">
-            <img src="{% static 'images/logo-autobid.svg' %}" height="60px" width="100px" />
-        </i>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-    
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <li class="navbar-nav nav-item">
-           
-                <a class="nav-link" href="">How It Works</a>
-            {% if user.is_authenticated %}
-               
-               <p class="nav-link">Logged in as:-</p> 
-                  {% if user.is_staff %}
-                     
-                        <a class="nav-link" href="/admin">Admin</a>
-                
-                      {% endif %}
-                
-                <a class="nav-link" href="{% url 'profile' %}">Hello, {{user.username}}</a>
-                <a class="nav-link " href="/logout ">Logout</a>  {% else %}
-                <div class="navbar-nav ">
-                    <a class="nav-link ml-auto " href="/login">Login</a>
-                    <a class="nav-link ml-auto " href="/register ">Register</a>
-    
-                </div>
-              {% endif %}
-            </li>
-            
-            
-        </div>
-  
-    </nav>-->
-
-
 
         <div class="bottom_nav mb-5">           
             <ul>

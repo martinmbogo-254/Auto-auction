@@ -135,3 +135,7 @@ footer ul.social-icon {
     list-style: none;
     display: inline-block;
 }
+
+.open-text{
+    font-size: 20px;
+  }

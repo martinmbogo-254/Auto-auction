@@ -5,27 +5,79 @@
 <html>
 {% block content%}
 
-  <!-- Full Page Image Header with Vertically Centered Content -->
-  <div class="masthead" style="background-image:linear-gradient(to left, rgba(0, 0, 0, 0.7), rgba(83, 79, 79, 0.2)),url('{% static 'images/car3.jpg' %}');">
-    <div class="container h-100">
-      <div class="row h-100 align-items-right">
-        <div class="col-md-12 text-right">
-          <h1 class="fw-bold fs-1 text-white">2019</h1>
-          <h1 class="fw-bold fs-1 text-white">CHEVROLET </h1>
-          <h1 class="fw-bold fs-1 text-white">CAMARO SS</h1>  
-                   
+    <div class="masthead mt-3">
+      <div class="row container-fluid">
+        
+        {% if hotsale %}
+        
+        <div class="col-md-7" style="background-image:url('{% static 'images/bgimg.png' %}'); background-repeat:no-repeat;">
+          <div class="" id="veh-dets">
+            <h1>HOT SALE <i class="fa-solid fa-fire fa-shake"></i></h1>
+            <!-- <h4>{{hotsale.registration_no}}</h4> -->
+            <h4>{{hotsale.YOM}} . {{hotsale.make}} . {{hotsale.model}}</h4>
+            <h4>{{hotsale.reserve_price|intcomma}} Ksh</h4>
+            <a class="btn" href="{% url 'detail' hotsale.registration_no%}"><i class="fa-solid fa-eye"></i> View Car</a>
+          </div>
+       
+        </div>
+        <div class="col-md-5"  id="veh-img" style="background-image:url('{% static 'images/bgimg.png' %}');">
+          <img src="{{hotsale.file.url}}" alt="">
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="text-center" id="banner">
+      <h1 class="">DRIVE HOME TODAY</h1>
+        <a class="btn explore" href="{% url 'available_vehicles' %}"><i class="fa-solid fa-eye"></i> Explore Vehicles</a> 
+        <a class="btn contactus" href="{% url 'contactus' %}"><i class="fa-solid fa-phone-volume"></i> Contact Us</a>
+        <p class="Top-banner-text2">Win a bid at your Price !</p>  
+    </div>
+
+
+<div class="bottom_container">
+  
+  <div class="row">    
+    <div class="col-lg-6 col-md-12  col-sm-12 text-center p-5">
+      
+        <div class="row">
+          <span class="span_about">
+            Visit Us Today
+          </span>
+        </div>
+        
+        <span class="auction_items_intro text-center">
+          <p>Welcome to <b>AutoBid</b>, where passion meets possibility in every bid.</p> 
+          Explore a world of curated auctions, where treasures await discovery and bidding is an art form.
+          Unleash the thrill of winning as you navigate through our diverse marketplace of unique items.  
+          Join us on the journey where auctions become more than transactions – they become stories.</span>
+      
+    </div>
+
+    <div class="col-lg-6 col-md-12  col-sm-12 mt-5 mt-4">    
+      <div class="text-center">
+        <div class="row">
+         
+          <div class="card-items">
+            <span class="auction_header">Your Ultimate Auction Car Destination</span>          
+            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Diverse Inventory:</b> Explore a wide range of vehicles.</span></div> <br>
+            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Live Auctions:</b> Immerse yourself in the excitement of real-time bidding</span></div><br>
+            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Transparency:</b> We believe in openness and  award on merit.</span></div><br>
+            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Secure Transactions:</b> Bid with confidence, knowing that your transactions are secure</span></div>
+          
+          </div>
           
         </div>
-        <div class="col-md-12 text-left cta">
-          <h6 class="fw-bold fs-6 more_ad">Drive home today</h6>
-          <button class="place_bid"><i class="fa fa-gavel"></i> <a class="text-light" href="{% url 'available_vehicles' %}">Bid</a></button> 
-          <a class="check_car" href="{% url 'available_vehicles' %}"><i class="fa-solid fa-eye"></i> Check Cars</a>
-          <h6 class="fw-bold fs-5 more_ad">Win a bid at your cost</h6>                               
-        </div>
+      
       </div>
-     
     </div>
+  </div>
 </div>
+
+<div class="middle-banner" style="background-image:url('{% static 'images/riverlong.jpg' %}');">
+  <div class="middle-banner-content">
+    <h2 style="font-family: 'Brush Script MT', cursive; ">One Stop Vehicle Solutions</h2>
+    <h1 style="font-family: 'Comic Sans MS', cursive;">Riverlong Ltd</h1>
+  </div>  
 </div>
 
 <div class="lower-cont1 mb-5">
@@ -50,7 +102,7 @@
     </div> -->
    
    <div class="row" id="howitworks">
-    <div class="col-lg-4">
+    <div class="col-lg-4 col-md-12  col-sm-12">
         <!-- <div class="howitworksicon m-3">
           <span class="round_icon">
             <i class="fa-solid fa-chalkboard-user"></i>
@@ -79,7 +131,7 @@
         
       </div>
     </div>
-    <div class="col-lg-4 mt-md-1" id="step3">     
+    <div class="col-lg-4  col-md-12  col-sm-12 mt-md-1" id="step3">     
       <!-- <div class="howitworksicon m-3">
         <span class="round_icon m-2">
           <i class="fa fa-gavel"></i>
@@ -97,7 +149,7 @@
       </div>     
       
      </div>
-    <div class="col-lg-4 ">
+    <div class="col-lg-4  col-md-12  col-sm-12">
      
       <!-- <div class="howitworksicon m-3">
         <span class="round_icon">
@@ -126,84 +178,12 @@
         </div>
       </div> 
       
-      
-      
-      
     </div>
    </div>
 
-    <!-- <div class="row">
-      <div class="col-lg-7">
-      
-      </div>
-      <div class="col-lg-2">
-        <img class="image" src="{% static 'images/dotted-arrow.png' %}" />
-      </div>
-      
-      <div class="col-lg-3">
-        
-      </div>
-    </div>
-     -->
-
   </div>
 
 </div>
-
-<div class="bottom_container">
-  <div class="row">
-    
-    <div class="col-md-6">
-      
-      <div class="text-center">
-        <div class="row">
-          <!-- <span class="span_about">
-            About Autobid
-          </span> -->
-        </div>
-        
-        <div class="row">
-          <span class="span_about">
-            Visit Us Today
-          </span>
-        </div>
-        
-        <span class="auction_items_intro text-center">
-          <p>Welcome to AutoBid, where passion meets possibility in every bid.</p> 
-          Explore a world of curated auctions, where treasures await discovery and bidding is an art form.
-          Unleash the thrill of winning as you navigate through our diverse marketplace of unique items.  
-          Join us on the journey where auctions become more than transactions – they become stories.</span>
-      </div>
-    </div>
-
-    <div class="col-md-6">
-      <img src="{% static 'images/bid2.png' %}" class="d-block w-100" alt="...">
-    </div>
-  </div>
-<hr>
-  <div class="row mt-5">
-    <div class="col-md-6">
-      <img src="{% static 'images/car1.png' %}" class="d-block w-100" alt="...">
-    </div>
-    <div class="col-md-6">
-    
-      <div class="text-center">
-        <div class="row">
-          <span class="auction_header">Your Ultimate Auction Car Destination</span>
-          
-          <div class="auction_items"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Diverse Inventory:</b> Explore a wide range of vehicles, each meticulously</span></div> <br>
-          <div class="auction_items"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Live Auctions:</b> Immerse yourself in the excitement of real-time bidding</span></div><br>
-          <div class="auction_items"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Transparency:</b> We believe in openness and provide detailed information</span></div><br>
-          <div class="auction_items"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Secure Transactions:</b> Bid with confidence, knowing that your transactions are secure</span></div>
-        </div>
-      
-      </div>
-    </div>
-    
-    
-  </div>
-</div>
-<hr>
 
 {% endblock content%}
 
