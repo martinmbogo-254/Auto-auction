@@ -1,0 +1,64 @@
+.body{
+
+}
+
+.login-body .card{
+    background-color: #003032 !important;
+    color: white !important;
+}
+.upload .jumbotron{
+    background: #003032 !important;
+    color: white !important;
+    border-radius: 15px !important;
+}
+.navigation{
+    background-color: #003032 ;
+    color:white;
+    border-top-left-radius:20px;
+    border-top-right-radius: 20px;
+    min-height: 100px;
+}
+.btn-custom{
+    background-color: #fbce60 !important;
+    color: #003032 !important;
+
+}
+.btn-green{
+    color: white !important;
+    background: #003032 !important;
+}
+.btn-green-outline{
+    border: 2px solid #003032 !important;
+    color: #003032 !important;
+}
+.bg-custom{
+    background-color: #003032 !important;
+    color: white !important;
+}
+.profile-pic{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+ 
+}
+.dets-profile{
+    height: 300px;
+    width: 300px;
+    border-radius: 20px;
+}
+.file-img{
+    height: 200px;
+    width: 200px;
+    border-radius: 10px;
+}
+.file-card{
+    border: 2px solid #003032  ;
+    /* column-rule-color: #013d3f; */
+    border-radius: 20px;
+    width: 200px;
+
+}
+.client-files .card img{
+    height: 200px !important;
+    width: 100% !important;
+}
