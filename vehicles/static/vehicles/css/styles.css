@@ -1,5 +1,9 @@
 /* myapp/static/myapp/css/styles.css */
-
+body{
+  
+  transition: all 0.3s ease;
+  scroll-behavior: smooth;
+}
 .card {
   margin-bottom: 2rem;
 }

@@ -134,8 +134,8 @@ class VehicleAdmin(admin.ModelAdmin):
     #     return qs  # Checkers and other users see all vehicles
 
     def get_readonly_fields(self, request, obj=None):
-        """Make fields read-only for Admins to prevent modification."""
-        if request.user.groups.filter(name='Admins').exists():
+        """Make fields read-only for Staff to prevent modification."""
+        if request.user.groups.filter(name='Staff').exists():
             return self.readonly_fields + tuple(field.name for field in self.model._meta.fields if field.name != 'is_approved')
         return self.readonly_fields
 
