@@ -31,7 +31,7 @@ urlpatterns = [
     path('profile/', user_views.profile_page, name='profile'),
     path('ckeditor/upload/', ckeditor_views.upload, name='ckeditor_upload'),
     path('ckeditor/browse/', ckeditor_views.browse, name='ckeditor_browse'),
-    
+    # path('ckeditor/', include('ckeditor_uploader.urls')),
 ]
 
 if settings.DEBUG:

@@ -25,7 +25,9 @@ from django.http import HttpResponse
 import csv
 from django.core.mail import send_mail
 from django.conf import settings
-
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 # Add a description to the custom action
 
@@ -266,19 +268,46 @@ class AuctionAdmin(admin.ModelAdmin):
     update_vehicle_status.short_description = "Update Vehicle Statuses for Selected Auctions"
 
     # Method to send email notification to the winner
+    # def send_winner_email(self, winning_bid):
+    #     subject = f"Congratulations! You've won the bid for {winning_bid.vehicle.registration_no}"
+    #     message = (
+    #         f"Dear {winning_bid.user.username},\n\n"
+    #         f"Congratulations! You have won the auction for the vehicle {winning_bid.vehicle.registration_no}.\n"
+    #         f"Your winning bid amount: Ksh {winning_bid.amount}.\n\n"
+    #         "We will contact you shortly with the next steps.\n\n"
+    #         "Thank you for participating in our auction.\n\n"
+    #         "Best regards,\n"
+    #         "Riverlong Auction Team"
+    #     )
+    #     recipient_list = [winning_bid.user.email]
+    #     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list, fail_silently=False)
+
     def send_winner_email(self, winning_bid):
+        # Context data for the template
+        context = {
+            'username': winning_bid.user.username,
+            'registration_no': winning_bid.vehicle.registration_no,
+            'amount': "{:,.2f}".format(winning_bid.amount),  # Formats number with commas
+            'email': winning_bid.user.email
+        }
+        
+        # Render the HTML content
+        html_message = render_to_string('vehicles/emails/bidwin.html', context)
+        
+        # Create plain text version for email clients that don't support HTML
+        plain_message = strip_tags(html_message)
+        
         subject = f"Congratulations! You've won the bid for {winning_bid.vehicle.registration_no}"
-        message = (
-            f"Dear {winning_bid.user.username},\n\n"
-            f"Congratulations! You have won the auction for the vehicle {winning_bid.vehicle.registration_no}.\n"
-            f"Your winning bid amount: Ksh {winning_bid.amount}.\n\n"
-            "We will contact you shortly with the next steps.\n\n"
-            "Thank you for participating in our auction.\n\n"
-            "Best regards,\n"
-            "Riverlong Auction Team"
+    
+        # Send email with both HTML and plain text versions
+        send_mail(
+            subject=subject,
+            message=plain_message,
+            html_message=html_message,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[winning_bid.user.email],
+            fail_silently=False
         )
-        recipient_list = [winning_bid.user.email]
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list, fail_silently=False)
     def changelist_view(self, request, extra_context=None):
         # Check if there is an active auction
         now = timezone.now()
@@ -383,6 +412,6 @@ class AuctionHistoryAdmin(admin.ModelAdmin):
     highest_bidder_email.short_description = 'Highest Bidder Email'
     total_bids.short_description = 'Total Bids'
 
-admin.site.site_header = "RVAS Admin"
-admin.site.site_title = "RVAS"
-admin.site.index_title = "Welcome to RVAS Admin"
+admin.site.site_header = "Autobid Admin"
+admin.site.site_title = "Riverlong Autobid"
+admin.site.index_title = "Welcome to Autobid Admin"

@@ -11,6 +11,9 @@ from .forms import AuctionForm
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 def reports(request):
     vehicles = Vehicle.objects.all()
@@ -110,25 +113,51 @@ def place_bid(request, registration_no):
 
     return redirect('detail', registration_no=registration_no)
 # Function to send a thank-you email specifically to the bidder
-def send_thank_you_notification(bid, vehicle):
-    subject = "Thank You for Placing Your Bid!"
-    message = (
-        f"Dear {bid.user.username},\n\n"
-        f"Thank you for placing a bid on the vehicle with registration number {vehicle.registration_no}.\n\n"
-        f"Here are the details of your bid:\n"
-        # f"Reserved Price: {vehicle.reserve_price}\n"
-        f"Bid Amount: {bid.amount}\n"
-        f"Vehicle: {vehicle.make} {vehicle.model}\n\n"
-        f"We appreciate your interest, and we will notify you if your bid is successful.\n\n"
-        f"Best regards,\n"
-        f"Riverlong Team"
-    )
+# def send_thank_you_notification(bid, vehicle):
+#     subject = "Thank You for Placing Your Bid!"
+#     message = (
+#         f"Dear {bid.user.username},\n\n"
+#         f"Thank you for placing a bid on the vehicle with registration number {vehicle.registration_no}.\n\n"
+#         f"Here are the details of your bid:\n"
+#         # f"Reserved Price: {vehicle.reserve_price}\n"
+#         f"Bid Amount: {bid.amount}\n"
+#         f"Vehicle: {vehicle.make} {vehicle.model}\n\n"
+#         f"We appreciate your interest, and we will notify you if your bid is successful.\n\n"
+#         f"Best regards,\n"
+#         f"Riverlong Team"
+#     )
     
-    from_email = settings.DEFAULT_FROM_EMAIL
-    recipient_list = [bid.user.email]
+#     from_email = settings.DEFAULT_FROM_EMAIL
+#     recipient_list = [bid.user.email]
 
-    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-
+#     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+def send_thank_you_notification(bid, vehicle):
+    # Context data for the template
+    context = {
+        'username': bid.user.username,
+        'registration_no': vehicle.registration_no,
+        'amount': bid.amount,  # Formats number with commas
+        'make': vehicle.make,
+        'model': vehicle.model
+    }
+    
+    # Render the HTML content
+    html_message = render_to_string('vehicles/emails/bid_confirmation.html', context)
+    
+    # Create plain text version for email clients that don't support HTML
+    plain_message = strip_tags(html_message)
+    
+    subject = "Thank You for Placing Your Bid!"
+    
+    # Send email with both HTML and plain text versions
+    send_mail(
+        subject=subject,
+        message=plain_message,
+        html_message=html_message,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=[bid.user.email],
+        fail_silently=False
+    )
 # Function to send email notification when a bid is placed
 def send_bid_notification(bid, vehicle, auction=None):  # Now accepts an optional auction argument
     subject = f"New Bid Placed on {vehicle.registration_no}"

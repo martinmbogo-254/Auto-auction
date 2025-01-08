@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riverlong Auction Win Notification</title>
+    <style>
+        /* Riverlong brand colors */
+        :root {
+            --primary-orange: #FF6B00;
+            --primary-blue: #00529C;
+            --dark-blue: #003A6F;
+            --light-gray: #F5F5F5;
+            --text-dark: #333333;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--light-gray);
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background: var(--primary-blue);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            padding: 30px;
+            color: var(--text-dark);
+        }
+        .vehicle-details {
+            background: var(--light-gray);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            border-left: 4px solid var(--primary-orange);
+        }
+        .amount {
+            font-size: 24px;
+            color: var(--primary-orange);
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666666;
+            font-size: 14px;
+            border-top: 1px solid var(--light-gray);
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary-orange);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 20px 0;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background: #FF8533;
+        }
+        @media only screen and (max-width: 600px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎉 Congratulations!</h1>
+        </div>
+        
+        <div class="content">
+            <h2>Dear {{ username }},</h2>
+            
+            <p>You've won the auction for:</p>
+            
+            <div class="vehicle-details">
+                <p><strong>Vehicle:</strong> {{ registration_no }}</p>
+                <div class="amount">
+                    Winning Bid: KSH {{ amount }}
+                </div>
+            </div>
+            
+            <p>Our team will contact you within 24 hours with next steps.</p>
+            
+            <center>
+                <a href="#" class="button">View Details</a>
+            </center>
+            
+            <p>Best regards,<br>
+            Riverlong Auction Team</p>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Riverlong Auctions</p>
+        </div>
+    </div>
+</body>
+</html>
