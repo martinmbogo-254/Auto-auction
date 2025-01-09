@@ -159,29 +159,64 @@ def send_thank_you_notification(bid, vehicle):
         fail_silently=False
     )
 # Function to send email notification when a bid is placed
-def send_bid_notification(bid, vehicle, auction=None):  # Now accepts an optional auction argument
+# def send_bid_notification(bid, vehicle, auction=None):  # Now accepts an optional auction argument
+#     subject = f"New Bid Placed on {vehicle.registration_no}"
+
+#     # Check if the vehicle is part of an auction and include auction info in the email
+#     auction_info = f" (Auction ID: {auction.auction_id})" if auction else ""
+
+#     message = (
+#         f"A new bid has been placed by {bid.user.username} on the vehicle with "
+#         f"registration number {vehicle.registration_no}{auction_info}.\n\n"
+#         f"Reserved Price: {vehicle.reserve_price}.\n"
+#         f"Bid Amount: {bid.amount}\n"
+#         f"User Email: {bid.user.email}\n"
+#         f"Vehicle: {vehicle.make} {vehicle.model}\n"
+#     )
+#     from_email = settings.DEFAULT_FROM_EMAIL
+#  # Fetch dynamic recipient emails from the database
+#     recipient_list = list(NotificationRecipient.objects.values_list('email', flat=True))
+    
+#     # Fallback to a default email if no recipients are found
+#     if not recipient_list:
+#         recipient_list = ['fuel@riverlong.com']  # Replace with a fallback email
+    
+#     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.conf import settings
+
+def send_bid_notification(bid, vehicle, auction=None):
     subject = f"New Bid Placed on {vehicle.registration_no}"
 
     # Check if the vehicle is part of an auction and include auction info in the email
     auction_info = f" (Auction ID: {auction.auction_id})" if auction else ""
 
-    message = (
-        f"A new bid has been placed by {bid.user.username} on the vehicle with "
-        f"registration number {vehicle.registration_no}{auction_info}.\n\n"
-        f"Reserved Price: {vehicle.reserve_price}.\n"
-        f"Bid Amount: {bid.amount}\n"
-        f"User Email: {bid.user.email}\n"
-        f"Vehicle: {vehicle.make} {vehicle.model}\n"
-    )
-    from_email = settings.DEFAULT_FROM_EMAIL
- # Fetch dynamic recipient emails from the database
+    # Prepare context for the email template
+    context = {
+        'bid': bid,
+        'vehicle': vehicle,
+        'auction': auction,
+    }
+
+    # Render the HTML message using the template
+    html_message = render_to_string('vehicles/emails/bid_notification.html', context)
+
+    # Fallback email recipients if none are found in the database
     recipient_list = list(NotificationRecipient.objects.values_list('email', flat=True))
-    
-    # Fallback to a default email if no recipients are found
     if not recipient_list:
-        recipient_list = ['fuel@riverlong.com']  # Replace with a fallback email
-    
-    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+        recipient_list = ['fuel@riverlong.com']
+
+    # Send the email
+    from_email = settings.DEFAULT_FROM_EMAIL
+    send_mail(
+        subject,
+        '',  # Plain text message (can be empty or optional)
+        from_email,
+        recipient_list,
+        html_message=html_message,
+        fail_silently=False,
+    )
 
 def auction_add(request):
     if request.method == 'POST':

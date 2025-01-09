@@ -7,7 +7,7 @@
 {% block content %}
 <div class="container-fluid details_pane">
     <head>
-       
+   
     </head>
 <div class="jumbotron center">
     <div class="breadcram m-4">        
@@ -132,6 +132,8 @@
             <div class="contact-btn">
                 <div class="row">
                     {% if vehicle.current_auction_end_date %}
+
+                    
                     <p id="countdown" ></p>
                     <script>
                         // Pass the auction end date to JavaScript
@@ -166,6 +168,9 @@
                         <div class="col-md-6">                            
                             <a href="tel:0701856557" class="enq-call p-2 rounded mb-2 nav-link text-light"><i class="fa fa-phone"></i> Call Now</a>                       
                         </div>
+
+                        {% comment %} <a href="https://wa.me/?text={{ vehicle.registration_no }}%20{{ request.build_absolute_uri(vehicle.get_absolute_url) }}%20Image:%20{{ vehicle.file.url }}" target="_blank">Share on WhatsApp</a> {% endcomment %}
+
                     </div>
                    
                 </div>   
@@ -176,8 +181,10 @@
             <h6>Share this:</h6>
             <div class="row">
                 <div class="col-md-12">
+                    
+
                    
-                    <i class="fa-brands fa-whatsapp icons"></i>
+                
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
                     target="blank">
                      <i class="fa-brands fa-facebook icons"></i>
