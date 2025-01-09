@@ -1,7 +1,8 @@
-{% extends 'vehicles/base.html'%} {% load crispy_forms_tags %}
+{% extends 'vehicles/base.html' %} 
+{% load crispy_forms_tags %}
 
 <html>
-{% block content%}
+{% block content %}
 
 <div class="container-login text-center row">
     <div class="col-md-3"></div>
@@ -12,43 +13,48 @@
                 {% csrf_token %} 
 
                 <div class="row">
-<div class="col-md-6">
-    {{form.username|as_crispy_field}}
-</div>
-<div class="col-md-6">
-    {{form.email|as_crispy_field}}
-</div>
-<div class="col-md-4">
-    {{p_form.ID_number|as_crispy_field}}
-</div>
-<div class="col-md-4">
-    {{p_form.phone_number|as_crispy_field}}
-</div>
-<div class="col-md-4">
-    {{p_form.location|as_crispy_field}}
-</div>
-<div class="col-md-6 required">
-{{form.password1|as_crispy_field}}
-</div>
-<div class="col-md-6">
-    {{form.password2|as_crispy_field}}
-    </div>
+                    <div class="col-md-6">
+                        {{ form.username|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.email|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ p_form.ID_number|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ p_form.phone_number|as_crispy_field }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ p_form.location|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6 required">
+                        {{ form.password1|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.password2|as_crispy_field }}
+                    </div>
                 </div>
-                
-                <div>
+
+                <!-- Terms and Conditions Checkbox -->
+                <div class="form-check mt-3">
+                    <input type="checkbox" class="form-check-input" id="acceptTerms" name="accept_terms" required>
+                    <label class="form-check-label" for="acceptTerms">
+                        I accept the <a href="/terms-and-conditions" target="_blank">Terms and Conditions</a>
+                    </label>
+                </div>
+
+                <div class="mt-3">
                     <button class="btn btn-outline-success" type="submit">Register</button>
                 </div>
             </form>
             <div>
-                Already have an account? <a href="/login">login</a>
-            </div>
-            <div class="mt-5">
-                <small> By signing up to RVAS, you agree to our <a href="">terms and conditions</a> </small>
+                Already have an account? <a href="/login">Login</a>
             </div>
         </div>
     </div>
 </div>
 
-{%endblock content%}
+{% endblock content %}
 
 </html>

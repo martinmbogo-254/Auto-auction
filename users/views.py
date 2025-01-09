@@ -9,31 +9,37 @@ from .models import Profile
 from vehicles.models import Bidding
 
 
+
 def register(request):
-    #redirect a user to the hompage if they are already loged in
+    # Redirect a user to the homepage if they are already logged in
     if request.user.is_authenticated:
         return redirect('vehicles')
     else:
-        #perform this operation if the user is not logged in
+        # Perform this operation if the user is not logged in
         if request.method == 'POST':
             form = UserRegistrationForm(request.POST)
             p_form = ProfileForm(request.POST)
-            if form.is_valid() and p_form.is_valid():
+            accept_terms = request.POST.get('accept_terms')  # Check if checkbox is checked
+
+            if not accept_terms:
+                messages.error(request, "You must accept the Terms and Conditions to register.")
+            elif form.is_valid() and p_form.is_valid():
                 user = form.save()
                 user.refresh_from_db()
                 p_form = ProfileForm(request.POST, instance=user.profile)
                 p_form.full_clean()
                 p_form.save()
                 username = form.cleaned_data.get('username')
-                messages.success(request, f'Hello {username}, Your account has been successfully created.. !! You can now login ')
+                messages.success(request, f'Hello {username}, your account has been successfully created! You can now log in.')
                 return redirect('login')
         else:
             form = UserRegistrationForm()
             p_form = ProfileForm()
+
         context = {
             'form': form,
             'p_form': p_form
-            }
+        }
         return render(request, 'users/register.html', context)
 
 @login_required

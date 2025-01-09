@@ -1,84 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Bid Notification</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .header {
-            background-color: #0044cc;
-            color: white;
-            text-align: center;
-            padding: 20px;
-            border-radius: 8px 8px 0 0;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .content {
-            margin: 20px 0;
-        }
-        .content p {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        .content .important {
-            font-weight: bold;
-            color: #0044cc;
-        }
-        .footer {
-            background-color: #f4f4f4;
-            padding: 10px;
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-        }
-        .footer a {
-            color: #0044cc;
-            text-decoration: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>New Bid Placed on Vehicle</h1>
-        </div>
-        <div class="content">
-            <p>Dear Team,</p>
-            <p>A new bid has been placed by <span class="important">{{ bid.user.username }}</span> on the vehicle with the following details:</p>
-            
-            <p><strong>Vehicle Registration Number:</strong> {{ vehicle.registration_no }}</p>
-            {% if auction %}
-                <p><strong>Auction ID:</strong> {{ auction.auction_id }}</p>
-            {% endif %}
-            <p><strong>Reserved Price:</strong> ${{ vehicle.reserve_price }}</p>
-            <p><strong>Bid Amount:</strong> ${{ bid.amount }}</p>
-            <p><strong>User Email:</strong> {{ bid.user.email }}</p>
-            <p><strong>Vehicle Make and Model:</strong> {{ vehicle.make }} {{ vehicle.model }}</p>
-            
-            <p>Best Regards,<br>The Riverlong Team</p>
-        </div>
-        <div class="footer">
-            <p>If you have any questions, feel free to <a href="mailto:support@riverlong.com">contact us</a>.</p>
-        </div>
+<div style="background-color:#ffffff;max-width:600px;margin:20px auto;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+    <div style="background-color:#00529C;color:#ffffff;text-align:center;padding:20px;border-radius:8px 8px 0 0;">
+        <h1 style="font-size:24px;font-weight:600;">🚗 New Bid Notification</h1>
     </div>
-</body>
-</html>
+    <div style="padding:30px;color:#333333;">
+        <h2 style="font-size:18px;font-weight:600;">Dear Team,</h2>
+        <p style="margin-top:8px;">A new bid has been placed on the vehicle with the following details:</p>
+        <div style="background-color:#F5F5F5;border-left:4px solid #FF6B00;padding:20px;margin-top:16px;border-radius:4px;">
+            <p style="font-size:14px;"><strong>Vehicle:</strong> {{ vehicle.make }} {{ vehicle.model }}</p>
+            <p style="font-size:14px;"><strong>Registration No:</strong> {{ vehicle.registration_no }}</p>
+            <!-- <p style="font-size:14px;"><strong>Reserved Price:</strong> KSH {{ vehicle.reserved_price|floatformat:0 }}</p> -->
+            <p style="font-size:20px;color:#FF6B00;font-weight:600;margin-top:8px;">Bid Amount: KSH {{ bid.amount|floatformat:0 }}</p>
+            <p style="font-size:14px;"><strong>User Email:</strong> {{ bid.user.email }}</p>
+        </div>
+        <!-- <p style="margin-top:16px;">Please log in to the system to review the bid details and take appropriate action.</p> -->
+        <div style="text-align:center;margin-top:24px;">
+            <a href="#" style="display:inline-block;padding:12px 24px;background-color:#FF6B00;color:#ffffff;text-decoration:none;border-radius:4px;font-weight:600;">View Bid Details</a>
+        </div>
+        <p style="margin-top:24px;">Best regards,<br>Riverlong Auction Team</p>
+    </div>
+    <div style="text-align:center;background-color:#F5F5F5;color:#666666;font-size:14px;padding:20px;border-top:1px solid #E5E5E5;border-radius:0 0 8px 8px;">
+        <p>© 2025 Riverlong Auctions</p>
+    </div>
+</div>

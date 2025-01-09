@@ -272,6 +272,7 @@
 </div>
 
 <!-- Bid Modal -->
+<!-- Bid Modal -->
 <div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="bidModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -283,15 +284,35 @@
             </div>
             <div class="modal-body">
                 <div class="image">
-                    <p>{{ vehicle.YOM }} | {{vehicle.make}} | {{vehicle.model}}</p>
+                    <p>{{ vehicle.YOM }} | {{ vehicle.make }} | {{ vehicle.model }}</p>
                     <img class="card-img-top thumbnail" src="{{ vehicle.file.url }}" style="height:250px" />
                 </div>
                 <form method="POST" action="{% url 'place_bid' vehicle.registration_no %}" onsubmit="showSpinner(this)">
                     {% csrf_token %}
                     <div class="form-group">
-                        <p>Reserve Price: Ksh {{vehicle.reserve_price|intcomma}}</p>
-                        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter bid amount" required>
+                        <p>Reserve Price: Ksh {{ vehicle.reserve_price|intcomma }}</p>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="amount" 
+                            name="amount" 
+                            placeholder="Enter bid amount" 
+                            required>
                     </div>
+
+                    <!-- Accept Terms and Conditions Checkbox -->
+                    <div class="form-group form-check">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="acceptTerms" 
+                            name="accept_terms" 
+                            required>
+                        <label class="form-check-label" for="acceptTerms">
+                            I accept the <a href="/terms" target="_blank">Terms and Conditions</a>.
+                        </label>
+                    </div>
+
                     <button type="submit" class="btn btn-dark">
                         <span class="spinner-border spinner-border-sm text-light mr-2 d-none" role="status" aria-hidden="true"></span>
                         Submit Bid
@@ -301,6 +322,7 @@
         </div>
     </div>
 </div>
+
 
 </div>
 

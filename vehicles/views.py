@@ -85,6 +85,7 @@ def vehicledetail(request, registration_no):
        'similar_vehicles': similar_vehicles,
     }
     return render(request, 'vehicles/details.html', context)
+
 @login_required(login_url='login')
 def place_bid(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
@@ -98,6 +99,11 @@ def place_bid(request, registration_no):
 
     if request.method == 'POST':
         amount = request.POST.get('amount')
+        accept_terms = request.POST.get('accept_terms')  # Check if the checkbox is selected
+
+        if not accept_terms:
+            messages.error(request, 'You must accept the Terms and Conditions to place a bid.')
+            return redirect('detail', registration_no=registration_no)
 
         # Create a new bid if no previous bid exists for this user on this vehicle
         bid = Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
@@ -105,13 +111,14 @@ def place_bid(request, registration_no):
 
         # Send "Thank You" email to the bidder
         send_thank_you_notification(bid, vehicle)
-        
+
         # Send notification email to admin or other recipients
         send_bid_notification(bid, vehicle)
 
         return redirect('detail', registration_no=registration_no)
 
     return redirect('detail', registration_no=registration_no)
+
 # Function to send a thank-you email specifically to the bidder
 # def send_thank_you_notification(bid, vehicle):
 #     subject = "Thank You for Placing Your Bid!"
