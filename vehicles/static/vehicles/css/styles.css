@@ -13,7 +13,41 @@ body{
   border: 2px solid #ddd;
   margin-bottom: 10px;
 }
-
+.hero-section {
+  background-color: #fdf0f3;
+  padding: 60px 20px;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.hero-text {
+  color: #000;
+}
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+.hero-subtitle {
+  color: #ff5e63;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+.hero-buttons .btn {
+  border-radius: 30px;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+.btn-primary {
+  background-color: #ff5e63;
+  border: none;
+}
+.btn-outline-primary {
+  border: 2px solid #ff5e63;
+  color: #ff5e63;
+}
+.hero-image img {
+  max-width: 100%;
+  height: auto;
+}
 .container_body{
 padding-top: 100px;
 }

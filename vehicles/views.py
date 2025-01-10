@@ -26,7 +26,7 @@ def reports(request):
 # Create your views here.
 def homepage(request):
     upcoming_auctions = Vehicle.objects.filter(status='available')
-    hotsale = Vehicle.objects.filter(is_hotsale =True).first()
+    hotsale = Vehicle.objects.filter(is_hotsale =True)
     context = {
         'upcoming_auctions': upcoming_auctions,
         'hotsale':hotsale
