@@ -31,37 +31,94 @@ from django.utils.html import strip_tags
 
 # Add a description to the custom action
 
-
 @admin.register(Bidding)
 class BidAdmin(admin.ModelAdmin):
-    search_fields = ('vehicle__registration_no','user__username')
-    list_display = ('vehicle', 'user', 'amount', 'created_at')
+    search_fields = ('vehicle__registration_no', 'user__username')
+    list_display = ('vehicle', 'user_full_name', 'user_email', 'formatted_amount', 'bid_time')
     actions = ['generate_bid_report']
 
+    # Method to extract user's full name (first_name + last_name)
+    def user_full_name(self, obj):
+        return f"{obj.user.first_name} {obj.user.last_name}"
+
+    user_full_name.short_description = 'User Full Name'  # This sets the column name in the admin list view
+
+    # Method to extract user's email
+    def user_email(self, obj):
+        return obj.user.email
+
+    user_email.short_description = 'User Email'  # This sets the column name in the admin list view
+
+    # Method to format the 'amount' field with thousands separator
+    def formatted_amount(self, obj):
+        return '{:,.0f}'.format(obj.amount)
+
+    formatted_amount.short_description = 'Amount'  # This sets the column name in the admin list view
+
+    # CSV export function (modified to include user details)
     def generate_bid_report(self, request, queryset):
-        # Create the HttpResponse object with the appropriate CSV header.
+        # Create the HttpResponse object with the appropriate CSV header
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="bid_report.csv"'
         writer = csv.writer(response)
-        writer.writerow(['vehicle', 'user', 'amount', 'created_at'])
+        
+        # Write header row with columns
+        writer.writerow(['vehicle', 'user_full_name', 'user_email', 'amount', 'bid_time'])
 
+        # Write rows with the relevant data
         for bid in queryset:
             writer.writerow([
-                bid.vehicle.registration_no,
-                bid.user.username, 
-                bid.amount,
-                bid.created_at])
+                bid.vehicle.registration_no,  # Vehicle registration number
+                f"{bid.user.first_name} {bid.user.last_name}",  # User's full name
+                bid.user.email,  # User's email
+                self.formatted_amount(bid),
+                bid.bid_time  # Bid time
+            ])
         
         return response
-    generate_bid_report.short_description = "Generate bid report for selected vehicles"
 
+    generate_bid_report.short_description = "Generate bid report for selected vehicles"
+# @admin.register(Bidding)
+# class BidAdmin(admin.ModelAdmin):
+#     search_fields = ('vehicle__registration_no', 'user__username')
+#     list_display = ('vehicle', 'user', 'formatted_amount', 'bid_time')
+#     actions = ['generate_bid_report']
+#     readonly_fields = ('vehicle', 'user', 'amount')
+
+#     # Format the amount field with thousands separator
+#     def formatted_amount(self, obj):
+#         # Format the amount with thousands separator
+#         return '{:,.0f}'.format(obj.amount)
+
+#     formatted_amount.short_description = 'Amount'  # Column name in the admin interface
+
+#     # CSV export function (without formatting, raw data)
+#     def generate_bid_report(self, request, queryset):
+#         # Create the HttpResponse object with the appropriate CSV header.
+#         response = HttpResponse(content_type='text/csv')
+#         response['Content-Disposition'] = 'attachment; filename="bid_report.csv"'
+#         writer = csv.writer(response)
+#         writer.writerow(['vehicle', 'user', 'amount', 'bid_time'])
+
+#         for bid in queryset:
+#             writer.writerow([
+#                 bid.vehicle.registration_no,
+#                 bid.user.username,
+#                 self.formatted_amount(bid),
+#                 # bid.formatted_amount,  # Raw amount for the CSV file
+#                 bid.bid_time
+#             ])
+        
+#         return response
+
+#     generate_bid_report.short_description = "Generate bid report for selected vehicles"
 class VehicleImageInline(admin.TabularInline):
     model = VehicleImage
     extra = 1  # Number of empty forms to display
 
 class BidInline(admin.TabularInline):
     model = Bidding
-    readonly_fields = ('user', 'amount', 'created_at',)  
+    readonly_fields = ('user', 'amount', 'bid_time',)  
     # extra = 1  
     can_delete = False
 
@@ -74,21 +131,46 @@ class VehicleViewInline(admin.TabularInline):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('registration_no','Financier','make', 'model', 'YOM', 'mileage', 'engine_cc', 'body_type','color','yard', 'fuel_type','is_approved', 'status', 'reserve_price', 'is_hotsale','created_at', 'updated_at','days_since_creation','current_auction_end_date')
-    search_fields = ('make__name', 'registration_no','model__name', 'YOM__year', 'status')
-    list_filter = ('status','make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at','is_approved')
-    inlines = [VehicleImageInline, BidInline,VehicleViewInline]
-    readonly_fields = ('views','status','approved_by', 'approved_at','is_approved')
-    actions = ['make_available', 'generate_vehicle_report','sell','approve_vehicle']
-    
+    # Custom formatted methods
+    def formatted_reserve_price(self, obj):
+        # Format the reserve price with thousands separator
+        return '{:,.0f}'.format(obj.reserve_price)
+    formatted_reserve_price.short_description = 'Reserve Price'
+
+    def formatted_mileage(self, obj):
+        # Format the mileage with thousands separator
+        return '{:,.0f}'.format(obj.mileage) if obj.mileage is not None else 'N/A'
+    formatted_mileage.short_description = 'Mileage'
+
+    def formatted_views(self, obj):
+        # Format the views with thousands separator
+        return '{:,.0f}'.format(obj.views)
+    formatted_views.short_description = 'Views'
+
+    # Ensure you're using the correct method names in list_display
+    list_display = (
+        'registration_no', 'Financier', 'make', 'model', 'YOM', 'formatted_mileage', 'engine_cc', 
+        'body_type', 'color', 'yard', 'fuel_type', 'is_approved', 'status', 'formatted_reserve_price', 
+        'is_hotsale', 'created_at', 'updated_at', 'days_since_creation', 'current_auction_end_date', 'formatted_views'
+    )
+
+    # Other configurations
+    search_fields = ('make__name', 'registration_no', 'model__name', 'YOM__year', 'status')
+    list_filter = ('status', 'make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at', 'is_approved')
+    inlines = [VehicleImageInline, BidInline, VehicleViewInline]
+    readonly_fields = ('views', 'status', 'approved_by', 'approved_at', 'is_approved')
+    actions = ['make_available', 'generate_vehicle_report', 'sell', 'approve_vehicle']
+
     # Custom action for generating reports
     def generate_vehicle_report(self, request, queryset):
-        # Create the HttpResponse object with the appropriate CSV header.
+        from django.http import HttpResponse
+        import csv
+        
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="vehicle_report.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['Registration No','Financier', 'Make', 'Model', 'Year of Manufacture', 'Mileage','Transmission',  'Engine CC','Body Type', 'Seats','Color','Fuel Type','Storage Yard', 'Reserve Price', 'Status', 'Days Since Creation'])
+        writer.writerow(['Registration No', 'Financier', 'Make', 'Model', 'Year of Manufacture', 'Mileage', 'Transmission', 'Engine CC', 'Body Type', 'Seats', 'Color', 'Fuel Type', 'Storage Yard', 'Reserve Price', 'Status', 'Days Since Creation'])
 
         # Iterate over the selected vehicles in the admin panel
         for vehicle in queryset:
@@ -110,52 +192,43 @@ class VehicleAdmin(admin.ModelAdmin):
                 vehicle.status,
                 vehicle.days_since_creation(),
             ])
-
+        
         return response
+
     generate_vehicle_report.short_description = "Generate CSV report for selected vehicles"
+
+    # Admin action for marking vehicles as available
     def make_available(self, request, queryset):
         updated = queryset.update(status='available')
         self.message_user(request, f"{updated} vehicle(s) successfully marked as available.")
-    
     make_available.short_description = "Mark selected vehicles as available"
 
+    # Admin action for selling vehicles
     def sell(self, request, queryset):
         updated = queryset.update(status='sold')
         self.message_user(request, f"{updated} vehicle(s) successfully sold")
-    
     sell.short_description = "Mark selected vehicles as sold"
+
+    # Get auction end date for the vehicle
     def current_auction_end_date(self, obj):
         return obj.current_auction_end_date()
     current_auction_end_date.short_description = 'Auction End Date'
 
-    # def get_queryset(self, request):
-    #     """Limit what different users see based on role."""
-    #     qs = super().get_queryset(request)
-    #     if request.user.groups.filter(name='Sales').exists():
-    #         return qs.filter(is_approved=True)  # Makers see only unapproved vehicles
-    #     return qs  # Checkers and other users see all vehicles
-
-    def get_readonly_fields(self, request, obj=None):
-        """Make fields read-only for Staff to prevent modification."""
-        if request.user.groups.filter(name='Staff').exists():
-            return self.readonly_fields + tuple(field.name for field in self.model._meta.fields if field.name != 'is_approved')
-        return self.readonly_fields
-
-    # Admin action for Checkers to approve vehicles
+    # Admin action for approving vehicles
     def approve_vehicle(self, request, queryset):
         if not request.user.groups.filter(name='Admins').exists():
             self.message_user(request, "Only Admins can approve vehicles.", level=messages.WARNING)
             return
 
-        # Update selected vehicles
         count = 0
         for vehicle in queryset.filter(is_approved=False):
             vehicle.approve(request.user)
             count += 1
 
         self.message_user(request, f"{count} vehicle(s) have been approved.", level=messages.SUCCESS)
-
     approve_vehicle.short_description = "Approve selected vehicles"
+
+# admin.site.register(VehicleAdmin)
 
 admin.site.register(NotificationRecipient)
 admin.site.register(Financier)
@@ -255,7 +328,7 @@ class AuctionAdmin(admin.ModelAdmin):
                     # Get the highest bid for the vehicle
                     highest_bid = vehicle.bidding.order_by('-amount').first()
                     if highest_bid and highest_bid.amount >= vehicle.reserve_price:
-                        vehicle.status = 'sold'
+                        vehicle.status = 'bid_won'
                         # Send an email to the winner
                         self.send_winner_email(highest_bid)
                     else:

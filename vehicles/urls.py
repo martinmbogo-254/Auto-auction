@@ -15,7 +15,7 @@ urlpatterns = [
     path('administration/',views.admin_dash, name='administration'),
     path('admin/auction-status/', views.auction_status_update, name='auction_status_update'),
     path('reports/', views.reports, name='reports'),
-
+    path('terms/',views.aboutus, name='terms'),
     path('aboutus/',views.aboutus, name='aboutus'),
     path('contactus/',views.contactus, name='contactus'),
 

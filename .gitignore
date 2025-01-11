@@ -1,4 +1,6 @@
 # .gitignore
-.env
 db.sqlite3
 settings.py
+db
+.myenv
+

@@ -26,7 +26,7 @@ def reports(request):
 # Create your views here.
 def homepage(request):
     upcoming_auctions = Vehicle.objects.filter(status='available')
-    hotsale = Vehicle.objects.filter(is_hotsale =True)
+    hotsale = Vehicle.objects.filter(is_hotsale =True,status='available')
     context = {
         'upcoming_auctions': upcoming_auctions,
         'hotsale':hotsale
@@ -38,6 +38,12 @@ def aboutus(request):
 
     }
     return render(request, 'vehicles/aboutus.html', context)
+
+def terms(request):
+    context = {
+
+    }
+    return render(request, 'vehicles/t&c.html', context)
 
 def contactus(request):
     context = {

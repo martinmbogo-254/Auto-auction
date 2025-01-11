@@ -11,6 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from ckeditor.fields import RichTextField
+from django.utils.html import format_html
 
 
 class VehicleMake(models.Model):
@@ -64,6 +65,7 @@ class Vehicle(models.Model):
         ('available', 'available'),
         ('on_auction', 'on_auction'),
         ('on_bid', 'on_bid'),
+        ('bid_won','bid_won'),
         ('sold', 'sold'),
     ]
     TRANSMISSION_CHOICES=[
@@ -137,7 +139,7 @@ class Bidding(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='bidding')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    bid_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f" Bid for {self.vehicle.registration_no} by {self.user.username} at Ksh {self.amount}"
