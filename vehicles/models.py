@@ -14,7 +14,8 @@ from ckeditor.fields import RichTextField
 from django.utils.html import format_html
 from django.http import HttpResponseForbidden
 from django.contrib.auth.models import Group
-
+from django.utils import timezone
+from datetime import timedelta
 
 
 class VehicleMake(models.Model):
@@ -148,6 +149,22 @@ class Bidding(models.Model):
     def __str__(self):
         return f" Bid for {self.vehicle.registration_no} by {self.user.username} at Ksh {self.amount}"
 
+    def save(self, *args, **kwargs):
+        # Get the related auction for the vehicle
+        vehicle = self.vehicle
+        auction = vehicle.auctions.filter(end_date__gte=timezone.now()).first()
+
+        # Check if the auction exists and if the bid is placed within the last 5 minutes
+        if auction and not auction.has_extended:
+            time_left = auction.end_date - timezone.now()
+            if time_left <= timedelta(minutes=5):
+                # Add 5 minutes to the auction end time if the bid is placed within the last 5 minutes
+                auction.end_date = auction.end_date + timedelta(minutes=5)
+                auction.has_extended = True  # Mark that the auction has been extended
+                auction.save()  # Save the updated auction with the new end time
+        
+        super(Bidding, self).save(*args, **kwargs)  # Call the original save method
+
 class Auction(models.Model):
     auction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     start_date = models.DateTimeField()
@@ -159,6 +176,7 @@ class Auction(models.Model):
     approved_by = models.ForeignKey(User, related_name="approved_auctions", null=True, blank=True, on_delete=models.SET_NULL)
     approved_at = models.DateTimeField(null=True, blank=True)
     processed = models.BooleanField(default=False)
+    has_extended = models.BooleanField(default=False)  # Flag to track if the end time was extended
     
     
 

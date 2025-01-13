@@ -322,7 +322,7 @@ class AuctionAdmin(admin.ModelAdmin):
         queryset.update(approved=True)
         modeladmin.message_user(request, f"{queryset.count()} auction(s) approved successfully.")
 
-        approve_auction.short_description = "Approve selected auctions"
+    approve_auction.short_description = "Approve selected auctions"
 
     # Custom admin action to disapprove auctions
     def disapprove_auction(modeladmin, request, queryset):
@@ -335,7 +335,7 @@ class AuctionAdmin(admin.ModelAdmin):
         queryset.update(approved=False)
         modeladmin.message_user(request, f"{queryset.count()} auction(s) disapproved successfully.")
 
-        disapprove_auction.short_description = "Disapprove selected auctions"
+    disapprove_auction.short_description = "Disapprove selected auctions"
 
     def update_vehicle_status(self, request, queryset):
         now = timezone.now()
