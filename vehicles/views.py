@@ -228,11 +228,12 @@ def send_outbid_notification(user, vehicle, amount):
 
 
 def send_thank_you_notification(bid, vehicle):
+    formatted_amount = f"{bid.amount:,.0f}"
     # Context data for the template
     context = {
         'username': bid.user.username,
         'registration_no': vehicle.registration_no,
-        'amount': bid.amount,  # Formats number with commas
+        'amount': formatted_amount,  # Formats number with commas
         'make': vehicle.make,
         'model': vehicle.model
     }
