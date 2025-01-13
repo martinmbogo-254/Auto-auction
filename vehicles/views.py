@@ -91,27 +91,32 @@ def vehicledetail(request, registration_no):
        'similar_vehicles': similar_vehicles,
     }
     return render(request, 'vehicles/details.html', context)
-
 @login_required(login_url='login')
 def place_bid(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
-
-    # Check if the user has already placed a bid on this vehicle
-    existing_bid = Bidding.objects.filter(vehicle=vehicle, user=request.user).first()
-
-    if existing_bid:
-        messages.warning(request, 'You have already placed a bid on this vehicle.')
-        return redirect('detail', registration_no=registration_no)
 
     if request.method == 'POST':
         amount = request.POST.get('amount')
         accept_terms = request.POST.get('accept_terms')  # Check if the checkbox is selected
 
-        if not accept_terms:
-            messages.error(request, 'You must accept the Terms and Conditions to place a bid.')
+        # Validate bid amount is numeric
+        try:
+            amount = int(amount)
+        except (ValueError, TypeError):
+            messages.warning(request, 'Please enter a valid bid amount.')
             return redirect('detail', registration_no=registration_no)
 
-        # Create a new bid if no previous bid exists for this user on this vehicle
+        if not accept_terms:
+            messages.warning(request, 'You must accept the Terms and Conditions to place a bid.')
+            return redirect('detail', registration_no=registration_no)
+
+        # Validate bid is higher than the reserve price
+        if amount <= vehicle.reserve_price:
+            formatted_reserve_price = f"{vehicle.reserve_price:,}"
+            messages.warning(request, f'Your bid must be higher than the reserve price of Ksh {formatted_reserve_price}.')
+            return redirect('detail', registration_no=registration_no)
+
+        # Create the bid if all validations pass
         bid = Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
 
@@ -124,6 +129,39 @@ def place_bid(request, registration_no):
         return redirect('detail', registration_no=registration_no)
 
     return redirect('detail', registration_no=registration_no)
+
+# @login_required(login_url='login')
+# def place_bid(request, registration_no):
+#     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
+
+#     # Check if the user has already placed a bid on this vehicle
+#     # existing_bid = Bidding.objects.filter(vehicle=vehicle, user=request.user).first()
+
+#     # if existing_bid:
+#     #     messages.warning(request, 'You have already placed a bid on this vehicle.')
+#     #     return redirect('detail', registration_no=registration_no)
+
+#     if request.method == 'POST':
+#         amount = request.POST.get('amount')
+#         accept_terms = request.POST.get('accept_terms')  # Check if the checkbox is selected
+
+#         if not accept_terms:
+#             messages.error(request, 'You must accept the Terms and Conditions to place a bid.')
+#             return redirect('detail', registration_no=registration_no)
+
+#         # Create a new bid if no previous bid exists for this user on this vehicle
+#         bid = Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
+#         messages.success(request, 'Your bid has been placed successfully!')
+
+#         # Send "Thank You" email to the bidder
+#         send_thank_you_notification(bid, vehicle)
+
+#         # Send notification email to admin or other recipients
+#         send_bid_notification(bid, vehicle)
+
+#         return redirect('detail', registration_no=registration_no)
+
+#     return redirect('detail', registration_no=registration_no)
 
 # Function to send a thank-you email specifically to the bidder
 # def send_thank_you_notification(bid, vehicle):
