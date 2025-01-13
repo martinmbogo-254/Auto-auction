@@ -17,23 +17,23 @@
   <div class="carousel-inner">
     {% for vehicle in hotsale %}
     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-      <div style="background:blueviolet; width:100%; max-height:700px; margin: 0 auto; padding: 0 20px;">
+      <div style="background:rgb(238, 212, 208); width:100%; height:600px; margin: 0 auto; padding: 0 20px;">
         <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; position: relative;">
           <div class="col-md-3 hero-text" style="position: relative;  padding: 20px;">
-            <div style="font-size: 1.25rem; color: #ffd700; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; animation: slideIn 1s ease-out;">
+            <div style="font-size: 1.25rem; color: #ed1b35; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; animation: slideIn 1s ease-out;">
               Welcome To Autobid
             </div>
             <h1 style="font-size: 3.5rem; font-weight: 800; color: #ffffff; text-transform: uppercase; margin-bottom: 30px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); animation: scaleIn 1.2s ease-out;">
               HOT SALE
-              <span style="display: block; font-size: 1.5rem; color: #cccccc; margin-top: 10px; font-weight: 400;">
+              <span style="display: block; font-size: 1.5rem; color: #0c0b0b; margin-top: 10px; font-weight: 400;">
                  {{ vehicle.YOM }} . {{ vehicle.make }} . {{ vehicle.model}}
               </span>
             </h1>
             <div style="margin-top: 30px; display: flex; gap: 20px; animation: fadeIn 1.5s ease-out;">
-              <a href="{% url 'detail' vehicle.registration_no%}" style="background-color: #ffd700; color: #000000; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #ffd700; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#ffed4a'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255,215,0,0.3)'" onmouseout="this.style.backgroundColor='#ffd700'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+              <a href="{% url 'detail' vehicle.registration_no%}" style="background-color: #ed1b35; color: #000000; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #ed1b35; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#ffed4a'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255,215,0,0.3)'" onmouseout="this.style.backgroundColor='#ed1b35'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                 Check Vehicle
               </a>
-              <a href="{% url 'available_vehicles' %}" style="background-color: transparent; color: #ffd700; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #ffd700; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#ffd700'; this.style.color='#000000'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255,215,0,0.3)'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ffd700'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+              <a href="{% url 'available_vehicles' %}" style="background-color: transparent; color: #ed1b35; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #ed1b35; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#ed1b35'; this.style.color='#000000'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255,215,0,0.3)'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ed1b35'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
                 Explore
               </a>
             </div>

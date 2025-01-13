@@ -12,6 +12,9 @@ from django.dispatch import receiver
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from django.utils.html import format_html
+from django.http import HttpResponseForbidden
+from django.contrib.auth.models import Group
+
 
 
 class VehicleMake(models.Model):
@@ -97,6 +100,7 @@ class Vehicle(models.Model):
     is_approved = models.BooleanField(default=False)
     approved_by = models.ForeignKey(User, related_name="approved_vehicles", null=True, blank=True, on_delete=models.SET_NULL)
     approved_at = models.DateTimeField(null=True, blank=True)
+    
 
     def approve(self, user):
         """Approve the vehicle and set approved fields."""
@@ -152,13 +156,23 @@ class Auction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     vehicles = models.ManyToManyField('Vehicle', related_name='auctions')
     approved = models.BooleanField(default=False)
+    approved_by = models.ForeignKey(User, related_name="approved_auctions", null=True, blank=True, on_delete=models.SET_NULL)
+    approved_at = models.DateTimeField(null=True, blank=True)
+    processed = models.BooleanField(default=False)
+    
+    
+
     def __str__(self):
         return f"Auction {self.auction_id}"
+
     def get_auction_status(self):
             active_auctions = self.auctions.filter(end_date < timezone.now(), approved=True)
             if active_auctions.exists():
                 return 'Active'
             return 'Ended'
+
+        # Custom admin action to approve auctions
+    
 
     def check_and_update_status(self):
         if self.end_date < timezone.now():
@@ -173,6 +187,30 @@ class Auction(models.Model):
     @property
     def ended(self):
         return self.end_date < timezone.now()
+
+    def process_if_ended(self):
+        """Check and process the auction if it has ended"""
+        now = timezone.now()
+        if self.end_date <= now and self.approved and not self.processed:
+            from .signals import process_ended_auction
+            process_ended_auction(self)
+            return True
+        return False
+
+    @classmethod
+    def process_ended_auctions(cls):
+        """Process all ended auctions"""
+        now = timezone.now()
+        ended_auctions = cls.objects.filter(
+            end_date__lte=now,
+            approved=True,
+            processed=False
+        )
+        processed_count = 0
+        for auction in ended_auctions:
+            if auction.process_if_ended():
+                processed_count += 1
+        return processed_count
 class VehicleView(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

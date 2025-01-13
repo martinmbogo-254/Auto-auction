@@ -286,11 +286,12 @@ class AuctionHistoryInline(admin.TabularInline):
 @admin.register(Auction)
 class AuctionAdmin(admin.ModelAdmin):
     list_display = ('id','auction_id', 'start_date', 'end_date','created_at', 'approved','is_ended')
-    actions = ['update_vehicle_status']
     search_fields = ('vehicles__registration_no','auction_id')
     filter_horizontal = ('vehicles',)
     list_filter = ('approved',EndedFilter,'start_date', 'end_date','created_at')
     inlines = [AuctionHistoryInline]
+    readonly_fields = ('approved','processed','approved_by','approved_at')
+    actions = ['update_vehicle_status','approve_auction','disapprove_auction']
 
     def get_form(self, request, obj=None, **kwargs):
         # Call the superclass method to get the form class
@@ -303,22 +304,38 @@ class AuctionAdmin(admin.ModelAdmin):
         return obj.ended
     is_ended.boolean = True
     is_ended.short_description = 'Ended'
-   
 
-    def save_model(self, request, obj, form, change):
-            super().save_model(request, obj, form, change)
-            selected_vehicles = form.cleaned_data['vehicles']
-            for vehicle in selected_vehicles:
-                vehicle.status = 'on_auction'  # Update this status based on your needs
-                vehicle.save()
-                AuctionHistory.objects.create(
-                    vehicle=vehicle,
-                    auction=obj,
-                    start_date=obj.start_date,
-                    end_date=obj.end_date,
-                    on_bid=False
-                )
+    # Custom admin action to approve auctions
+    def approve_auction(modeladmin, request, queryset):
+        # Check if the user is part of the 'Approvers' group
+        if not request.user.groups.filter(name='Approvers').exists():
+            modeladmin.message_user(request, "You do not have permission to approve auctions.", level='error')
+            return
+        
+        # Check if the auction is already approved
+        already_approved = queryset.filter(approved=True)
+        if already_approved.exists():
+            modeladmin.message_user(request, f"{already_approved.count()} auction(s) already approved.", level='error')
+            return  # Do nothing if any of the selected auctions are already approved
+        
+        # Approve all selected auctions
+        queryset.update(approved=True)
+        modeladmin.message_user(request, f"{queryset.count()} auction(s) approved successfully.")
 
+        approve_auction.short_description = "Approve selected auctions"
+
+    # Custom admin action to disapprove auctions
+    def disapprove_auction(modeladmin, request, queryset):
+        # Check if the user is part of the 'Approvers' group
+        if not request.user.groups.filter(name='Approvers').exists():
+            modeladmin.message_user(request, "You do not have permission to disapprove auctions.", level='error')
+            return
+        
+        # Disapprove all selected auctions
+        queryset.update(approved=False)
+        modeladmin.message_user(request, f"{queryset.count()} auction(s) disapproved successfully.")
+
+        disapprove_auction.short_description = "Disapprove selected auctions"
 
     def update_vehicle_status(self, request, queryset):
         now = timezone.now()
@@ -338,23 +355,9 @@ class AuctionAdmin(admin.ModelAdmin):
                 self.message_user(request, f"Updated vehicle statuses for auction {auction.auction_id}", level=messages.SUCCESS)
             else:
                 self.message_user(request, f"Auction {auction.auction_id} is not yet ended or not approved.", level=messages.ERROR)
-    update_vehicle_status.short_description = "Update Vehicle Statuses for Selected Auctions"
+    update_vehicle_status.short_description = "Complete Selected Auctions"
 
-    # Method to send email notification to the winner
-    # def send_winner_email(self, winning_bid):
-    #     subject = f"Congratulations! You've won the bid for {winning_bid.vehicle.registration_no}"
-    #     message = (
-    #         f"Dear {winning_bid.user.username},\n\n"
-    #         f"Congratulations! You have won the auction for the vehicle {winning_bid.vehicle.registration_no}.\n"
-    #         f"Your winning bid amount: Ksh {winning_bid.amount}.\n\n"
-    #         "We will contact you shortly with the next steps.\n\n"
-    #         "Thank you for participating in our auction.\n\n"
-    #         "Best regards,\n"
-    #         "Riverlong Auction Team"
-    #     )
-    #     recipient_list = [winning_bid.user.email]
-    #     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list, fail_silently=False)
-
+  
     def send_winner_email(self, winning_bid):
         # Context data for the template
         context = {

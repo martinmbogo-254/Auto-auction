@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'vehicles',
+    'vehicles.apps.VehiclesConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
     'crispy_bootstrap5',
