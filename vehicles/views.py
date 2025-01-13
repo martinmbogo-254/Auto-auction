@@ -92,31 +92,40 @@ def vehicledetail(request, registration_no):
     }
     return render(request, 'vehicles/details.html', context)
 @login_required(login_url='login')
+@login_required(login_url='login')
 def place_bid(request, registration_no):
     vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
 
     if request.method == 'POST':
         amount = request.POST.get('amount')
-        accept_terms = request.POST.get('accept_terms')  # Check if the checkbox is selected
+        accept_terms = request.POST.get('accept_terms')
 
-        # Validate bid amount is numeric
         try:
             amount = int(amount)
         except (ValueError, TypeError):
-            messages.warning(request, 'Please enter a valid bid amount.')
+            messages.error(request, 'Please enter a valid bid amount.')
             return redirect('detail', registration_no=registration_no)
 
         if not accept_terms:
-            messages.warning(request, 'You must accept the Terms and Conditions to place a bid.')
+            messages.error(request, 'You must accept the Terms and Conditions to place a bid.')
             return redirect('detail', registration_no=registration_no)
 
-        # Validate bid is higher than the reserve price
         if amount <= vehicle.reserve_price:
-            formatted_reserve_price = f"{vehicle.reserve_price:,}"
-            messages.warning(request, f'Your bid must be higher than the reserve price of Ksh {formatted_reserve_price}.')
+            messages.warning(request, f'Your bid must be higher than the reserve price of Ksh {vehicle.reserve_price:,}.')
             return redirect('detail', registration_no=registration_no)
 
-        # Create the bid if all validations pass
+        # Check the current highest bid
+        current_highest_bid = Bidding.objects.filter(vehicle=vehicle).order_by('-amount').first()
+
+        if current_highest_bid and amount <= current_highest_bid.amount:
+            messages.warning(request, f'Your bid must be higher than the current highest bid of Ksh {current_highest_bid.amount:,}.')
+            return redirect('detail', registration_no=registration_no)
+
+        # Notify the current highest bidder if they are outbid
+        if current_highest_bid:
+            send_outbid_notification(current_highest_bid.user, vehicle, current_highest_bid.amount)
+
+        # Create the new bid
         bid = Bidding.objects.create(vehicle=vehicle, user=request.user, amount=amount)
         messages.success(request, 'Your bid has been placed successfully!')
 
@@ -182,6 +191,42 @@ def place_bid(request, registration_no):
 #     recipient_list = [bid.user.email]
 
 #     send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+def send_outbid_notification(user, vehicle, amount):
+    """
+    Send a notification to the previous highest bidder informing them they have been outbid.
+
+    Args:
+        user (User): The user who has been outbid.
+        vehicle (Vehicle): The vehicle associated with the bid.
+        amount (int): The amount of the outbid.
+    """
+    subject = f"You've been outbid on {vehicle.registration_no}"
+# Format the amount in thousands
+    formatted_amount = f"{amount:,.0f}"
+    # Prepare context for the email template
+    context = {
+        'user': user,
+        'vehicle': vehicle,
+        'amount': formatted_amount,
+    }
+
+    # Render the HTML message using the template
+    html_message = render_to_string('vehicles/emails/outbid_notification.html', context)
+
+    # Send the email
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_email = user.email
+    send_mail(
+        subject,
+        '',  # Plain text message (can be empty or optional)
+        from_email,
+        [recipient_email],
+        html_message=html_message,
+        fail_silently=False,
+    )
+
+
+
 def send_thank_you_notification(bid, vehicle):
     # Context data for the template
     context = {

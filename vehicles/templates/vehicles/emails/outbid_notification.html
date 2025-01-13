@@ -1,0 +1,22 @@
+<div style="background-color:#ffffff;max-width:600px;margin:20px auto;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+    <div style="background-color:#FF6B00;color:#ffffff;text-align:center;padding:20px;border-radius:8px 8px 0 0;">
+        <h1 style="font-size:24px;font-weight:600;">🚗 You've Been Outbid!</h1>
+    </div>
+    <div style="padding:30px;color:#333333;">
+        <h2 style="font-size:18px;font-weight:600;">Hello {{ user.username }},</h2>
+        <p style="margin-top:8px;">Your bid of <strong>KSH {{ amount }}</strong> on the vehicle <strong>{{ vehicle.make }} {{ vehicle.model }}</strong> (Registration No: <strong>{{ vehicle.registration_no }}</strong>) has been outbid.</p>
+        <p>To stay in the running, you can place a higher bid.</p>
+        <div style="background-color:#F5F5F5;border-left:4px solid #FF6B00;padding:20px;margin-top:16px;border-radius:4px;">
+            <p style="font-size:14px;"><strong>Vehicle:</strong> {{ vehicle.make }} {{ vehicle.model }}</p>
+            <p style="font-size:14px;"><strong>Registration No:</strong> {{ vehicle.registration_no }}</p>
+            <p style="font-size:20px;color:#FF6B00;font-weight:600;margin-top:8px;">Your Previous Bid: KSH {{ amount }}</p>
+        </div>
+        <div style="text-align:center;margin-top:24px;">
+            <a href="" style="display:inline-block;padding:12px 24px;background-color:#FF6B00;color:#ffffff;text-decoration:none;border-radius:4px;font-weight:600;">Place a New Bid</a>
+        </div>
+        <p style="margin-top:24px;">Thank you for participating in our auction!<br>Best regards,<br>Riverlong Auction Team</p>
+    </div>
+    <div style="text-align:center;background-color:#F5F5F5;color:#666666;font-size:14px;padding:20px;border-top:1px solid #E5E5E5;border-radius:0 0 8px 8px;">
+        <p>© 2025 Riverlong Auctions</p>
+    </div>
+</div>
