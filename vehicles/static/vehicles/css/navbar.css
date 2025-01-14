@@ -1,0 +1,81 @@
+/* Mobile First Styles */
+.top_nav, .bottom_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .top_nav .left, .top_nav .right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .top_nav .left > div, .top_nav .right > ul {
+    margin-right: 15px;
+  }
+  
+  .top_nav .right ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .top_nav .right li {
+    margin-left: 10px;
+  }
+  
+  /* Add a container for better alignment of items */
+  .bottom_nav ul {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .bottom_nav li {
+    margin: 0 15px;
+  }
+  
+  /* Mobile-Specific Styles */
+  @media (max-width: 768px) {
+    .top_nav, .bottom_nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .top_nav .left, .top_nav .right {
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+  
+    .top_nav .right ul {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .bottom_nav ul {
+      flex-direction: column;
+      width: 100%;
+      text-align: center;
+    }
+  
+    .bottom_nav li {
+      margin: 5px 0;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    /* Additional adjustments for small devices like phones */
+    .top_nav .left > div, .top_nav .right > ul {
+      font-size: 12px; /* Reduce font size for small screens */
+    }
+  
+    .bottom_nav ul {
+      padding: 0 10px;
+    }
+  
+    .logo-span img {
+      width: 80%; /* Reduce the logo size on smaller devices */
+    }
+  }
+  

@@ -305,6 +305,20 @@ class AuctionAdmin(admin.ModelAdmin):
     is_ended.boolean = True
     is_ended.short_description = 'Ended'
 
+    def save_model(self, request, obj, form, change):
+                super().save_model(request, obj, form, change)
+                selected_vehicles = form.cleaned_data['vehicles']
+                for vehicle in selected_vehicles:
+                    vehicle.status = 'on_auction'  # Update this status based on your needs
+                    vehicle.save()
+                    AuctionHistory.objects.create(
+                        vehicle=vehicle,
+                        auction=obj,
+                        start_date=obj.start_date,
+                        end_date=obj.end_date,
+                        on_bid=False
+                    )
+
     # Custom admin action to approve auctions
     def approve_auction(modeladmin, request, queryset):
         # Check if the user is part of the 'Approvers' group

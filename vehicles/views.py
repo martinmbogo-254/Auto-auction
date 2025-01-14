@@ -110,15 +110,17 @@ def place_bid(request, registration_no):
             messages.error(request, 'You must accept the Terms and Conditions to place a bid.')
             return redirect('detail', registration_no=registration_no)
 
-        if amount <= vehicle.reserve_price:
-            messages.warning(request, f'Your bid must be higher than the reserve price of Ksh {vehicle.reserve_price:,}.')
+        # Ensure the bid is above 70% of the reserve price
+        min_bid = vehicle.reserve_price * 0.7
+        if amount <= min_bid:
+            messages.warning(request, f'Your bid must be greater than 70% of the reserve price (Ksh {vehicle.reserve_price:,.0f}).')
             return redirect('detail', registration_no=registration_no)
 
         # Check the current highest bid
         current_highest_bid = Bidding.objects.filter(vehicle=vehicle).order_by('-amount').first()
 
         if current_highest_bid and amount <= current_highest_bid.amount:
-            messages.warning(request, f'Your bid must be higher than the current highest bid of Ksh {current_highest_bid.amount:,}.')
+            messages.warning(request, f'Your bid must be higher than the current highest bid.')
             return redirect('detail', registration_no=registration_no)
 
         # Notify the current highest bidder if they are outbid
