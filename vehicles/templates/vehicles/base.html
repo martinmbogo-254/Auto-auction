@@ -38,131 +38,89 @@
 
 <body> 
   <style>
-    /* Spinner Styles */
-    #spinner {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255,255,255, 0.1);
-        z-index: 9999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .spinner-border {
-        width: 3rem;
-        height: 3rem;
-        border-width: 0.4rem;
-    }
-</style>
-    <div class="wrapper">    
-        <div class="top_nav">
-            <div class="left">
-              <div class="space"> . </div>
-
-              <div class="call_span">
-                <img src="{% static 'images/telephone.svg' %}" height="14px" width="24px" />
-                <span for="">+254 701856557</span>
-              </div>
-
-              <div class="email_span">
-                <img src="{% static 'images/envelope-at.svg' %}" height="14px" width="24px" />
-                <span for=""> info@riverlong.com</span>
-              </div>
-
-              <div class="opentime_span">
-                <img src="{% static 'images/clock.svg' %}" height="14px" width="24px" />
-                <span for="">  Mon - Fri: 08:00 - 17:00</span>
-              </div>
-              <div class="opentime_span">
-                <img src="{% static 'images/clock.svg' %}" height="14px" width="24px" />
-                <span for="">  Sat: 08:00 - 12:00</span>
-              </div>
-              
-              
-          </div> 
-          <div class="right">
-           
-            <ul>
-            
-              <li>
-                <div class="flag-span">
-                  <img src="https://www.riverlong.com/wp-content/uploads/2022/02/riverlong-logo-x-80.png" height="30px" width="30px"  height="30px" width="30px" />
-              </div>
-              </li>
-              {% if user.is_authenticated %}              
-                {% if user.is_staff %}<li>
-                
-            </li>
-                  <li>
-                      <div class="signin-span">
-                      <a class="nav-link" href="/admin">Admin</a>                      
-                  </div>
-                </li>
-                {% endif %}
-                <li>
-                  <div class="signin-span">
-                      <a class="nav-link" href="{% url 'profile' %}">
-                      
-                        {{user.username}}</a>
-                      
-                  </div>
-                </li>
-                <div class="signin-span">
-                  <a class="nav-link" href="/logout">Logout</a>
-                  
-              </div>
-            </li>               
-
-                {% else %}
-                <li>
-                  <div class="signin-span">
-                    <a class="nav-link" href="/login">Login</a>
-                    
-                </div>
-              </li>
-
-              <li>
-                <div class="signup-span">
-                  <a class="nav-link" href="/register">Register</a>
-              </div>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-
-        <div class="bottom_nav mb-5">           
-            <ul>
-              <li>
-                <div class="logo-span">
-                  <img src="{% static 'images/logo-autobid.svg' %}" height="60px" width="100px" />
-              </div>
-              </li>
-              <li>
-                <a href="{% url 'homepage'%}">Home</a>
-              </li>
-              <li>
-                <a href="{% url 'aboutus' %}">About Us</a>
-              </li>
-              <li>
-                <a href="{% url 'available_vehicles' %}">Vehicles</a>
-              </li>
-              
-              <li>
-                <a href="{% url 'contactus' %}">Contact Us</a>
-              </li>
-              
-            </ul>
-      </div>
     
-    </div>
 
-    <div>
-     
+</style>
+      
+            <div class="row align-items-center" id="navmini">
+              <!-- Left Side - Contact Info -->
+              <div class="col-10 col-md-5 d-flex align-items-center p-2 ml-5">
+                <div class="me-3 mt-2 ml-2">
+                  <a href="tel:+2540701856557">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>0701856557</span>
+                  </a>
+                  
+                </div>
+                <div class="me-3 mt-2">
+                  <a href="mailto:info@riverlong.com">
+                    <i class="fa-regular fa-envelope"></i>
+                    <span>info@riverlong.com</span>
+                  </a>
+                 
+                </div>
+              </div>
+      
+              <!-- Right Side - User Authentication -->
+              <div class="col-10 col-md-5 text-md-center" id="auth">
+                <ul class="list-inline mb-2 mt-2 ml-5 text-lg-center">
+                  {% if user.is_authenticated %}
+                  {% if user.is_staff %}
+                  <li class="list-inline-item">
+                    <a class="nav-link text-light" href="/admin">Admin</a>
+                  </li>
+                      {% endif %}
+                    <li class="list-inline-item">
+                      <a href="/profile" class="text-light nav-link">{{ user.username }}</a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a href="/logout" class="text-light nav-link">Logout</a>
+                    </li>
+                  {% else %}
+                    <li class="list-inline-item">
+                      <a href="/login" class="text-light nav-link btn btn-outline-light login-btn">Login</a>
+                    </li>
+                    <li class="list-inline-item">
+                      <a href="/register" class="text-dark nav-link btn btn-light">Register</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>   
+            </div>
+        <!-- Bottom Layer Navbar (Main Links) -->
+        <nav class="bottom_nav navbar navbar-expand-lg navbar-dark" id="navbarmain">
+          <div class="container-fluid">
+            <!-- Logo (Brand) -->
+            <a class="navbar-brand" href="#">
+              <img src="{% static 'images/logo-autobid.svg' %}" height="50px" />
+            </a>
+      
+            <!-- Navbar Toggler (For mobile view) -->
+            <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon text-dark"></span>
+            </button>
+      
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse " id="navbarNav">
+              <ul class="navbar-nav ms-auto d-flex justify-content-center">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'homepage' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'aboutus' %}">About Us</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'available_vehicles' %}">Vehicles</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'contactus' %}">Contact Us</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+   
+   
         <!-- Bootstrap Modal -->
 <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
   <div class="modal-dialog">

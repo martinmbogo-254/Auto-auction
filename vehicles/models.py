@@ -144,26 +144,64 @@ class Bidding(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='bidding')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
+    is_auction_bid = models.BooleanField(default=False) 
+    awarded = models.BooleanField(default=False)  # To track awarded status
     bid_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f" Bid for {self.vehicle.registration_no} by {self.user.username} at Ksh {self.amount}"
 
     def save(self, *args, **kwargs):
-        # Get the related auction for the vehicle
-        vehicle = self.vehicle
-        auction = vehicle.auctions.filter(end_date__gte=timezone.now()).first()
+        # Check if this is a new bid (no ID yet)
+        if not self.pk:
+            # Get the related auction for the vehicle
+            active_auction = self.vehicle.auctions.filter(
+                start_date__lte=timezone.now(),
+                end_date__gte=timezone.now()
+            ).first()
+            
+            # If there's an active auction, mark as auction bid
+            if active_auction:
+                self.is_auction_bid = True
+                
+                # Handle auction extension logic
+                if not active_auction.has_extended:
+                    time_left = active_auction.end_date - timezone.now()
+                    if time_left <= timedelta(minutes=5):
+                        # Add 5 minutes to the auction end time
+                        active_auction.end_date = active_auction.end_date + timedelta(minutes=5)
+                        active_auction.has_extended = True
+                        active_auction.save()
+            
+            # If no active auction and is_auction_bid not already True, set to False
+            # This ensures we don't override any existing True value
+            elif not self.is_auction_bid:
+                self.is_auction_bid = False
 
-        # Check if the auction exists and if the bid is placed within the last 5 minutes
-        if auction and not auction.has_extended:
-            time_left = auction.end_date - timezone.now()
-            if time_left <= timedelta(minutes=5):
-                # Add 5 minutes to the auction end time if the bid is placed within the last 5 minutes
-                auction.end_date = auction.end_date + timedelta(minutes=5)
-                auction.has_extended = True  # Mark that the auction has been extended
-                auction.save()  # Save the updated auction with the new end time
+    # def save(self, *args, **kwargs):
+    #     # Get the related auction for the vehicle
+    #     vehicle = self.vehicle
+    #     auction = vehicle.auctions.filter(end_date__gte=timezone.now()).first()
+
+    #     # Check if the auction exists and if the bid is placed within the last 5 minutes
+    #     if auction and not auction.has_extended:
+    #         time_left = auction.end_date - timezone.now()
+    #         if time_left <= timedelta(minutes=5):
+    #             # Add 5 minutes to the auction end time if the bid is placed within the last 5 minutes
+    #             auction.end_date = auction.end_date + timedelta(minutes=5)
+    #             auction.has_extended = True  # Mark that the auction has been extended
+    #             auction.save()  # Save the updated auction with the new end time
         
         super(Bidding, self).save(*args, **kwargs)  # Call the original save method
+
+class AwardHistory(models.Model):
+    vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    awarded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Awarded {self.vehicle.registration_no} to {self.user.username} at Ksh {self.amount}"
 
 class Auction(models.Model):
     auction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)

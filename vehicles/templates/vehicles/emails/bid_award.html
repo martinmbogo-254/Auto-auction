@@ -11,11 +11,11 @@
             <h1 style="font-size:24px;font-weight:600;">🎉 Congratulations!</h1>
         </div>
         <div style="padding:30px;color:#333333;">
-            <h2 style="font-size:18px;font-weight:600;">Dear {{ username }},</h2>
-            <p style="margin-top:8px;">You've won the auction for:</p>
+            <h2 style="font-size:18px;font-weight:600;">Dear {{ user.username }},</h2>
+            <p style="margin-top:8px;">You've won the bid for:</p>
             
             <div style="background-color:#F5F5F5;border-left:4px solid #FF6B00;padding:20px;margin-top:16px;border-radius:4px;">
-                <p style="font-size:14px;"><strong>Vehicle:</strong> {{ registration_no }}</p>
+                <p style="font-size:14px;"><strong>Vehicle:</strong> {{ vehicle.registration_no }}</p>
                 <div style="font-size:20px;color:#FF6B00;font-weight:600;margin-top:8px;">
                     Winning Bid: KSH {{ amount }}
                 </div>

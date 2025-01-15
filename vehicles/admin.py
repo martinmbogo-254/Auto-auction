@@ -13,10 +13,9 @@ from django.utils import timezone
 from .models import Auction, Vehicle, AuctionHistory
 from django.contrib import admin
 from django.utils import timezone
-from .models import Auction
 from .models import (
     VehicleImage, VehicleMake, VehicleModel, 
-    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory,NotificationRecipient,Financier,Yard
+    ManufactureYear, FuelType, VehicleBody, Vehicle, Bidding, Auction, VehicleView, AuctionHistory,NotificationRecipient,Financier,Yard,AwardHistory
 )
 
 
@@ -30,12 +29,32 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
 # Add a description to the custom action
+@admin.register(AwardHistory)
+class AwardHistoryAdmin(admin.ModelAdmin):
+    list_display = ('vehicle', 'user_full_name', 'user_email', 'amount', 'awarded_at')
+    search_fields = ('vehicle__registration_no', 'user__username', 'user__email')
+    list_filter = ('awarded_at',)
+
+    def user_full_name(self, obj):
+        return f"{obj.user.first_name} {obj.user.last_name}"
+    user_full_name.short_description = 'User Full Name'
+
+    def user_email(self, obj):
+        return obj.user.email
+    user_email.short_description = 'User Email'
+
+    def amount(self, obj):
+        return f"Ksh {obj.amount:,}"
+    amount.short_description = 'Amount'
+
+    # Optional: Customize the ordering of the records
+    ordering = ('-awarded_at',)
 
 @admin.register(Bidding)
 class BidAdmin(admin.ModelAdmin):
     search_fields = ('vehicle__registration_no', 'user__username')
-    list_display = ('vehicle', 'user_full_name', 'user_email', 'formatted_amount', 'bid_time')
-    actions = ['generate_bid_report']
+    list_display = ('vehicle', 'user_full_name', 'user_email','awarded' ,'formatted_amount', 'bid_time')
+    actions = ['generate_bid_report','award_bid']
 
     # Method to extract user's full name (first_name + last_name)
     def user_full_name(self, obj):
@@ -55,6 +74,119 @@ class BidAdmin(admin.ModelAdmin):
 
     formatted_amount.short_description = 'Amount'  # This sets the column name in the admin list view
 
+    def award_bid(self, request, queryset):
+        # Ensure only one bid is selected
+        if queryset.count() != 1:
+            self.message_user(
+                request,
+                "Please select exactly one bid to award.",
+                level=messages.WARNING
+            )
+            return
+
+        bid = queryset.first()
+
+        # Check if the vehicle already has an awarded bid
+        # if bid.vehicle.bids.filter(awarded=True).exists():
+        #     self.message_user(
+        #         request,
+        #         f"The bid for vehicle {bid.vehicle.registration_no} has already been awarded.",
+        #         level=messages.WARNING
+        #     )
+        #     return
+
+        # if bid.awarded:
+        #     self.message_user(
+        #         request,
+        #         f"The bid for vehicle {bid.vehicle.registration_no} is already awarded.",
+        #         level=messages.WARNING
+        #     )
+        #     return
+        vehicle = Vehicle.objects.select_for_update().get(pk=bid.vehicle.pk)
+                
+        # Check if any bid for this vehicle is already awarded
+        existing_awarded_bid = Bidding.objects.select_for_update().filter(
+            vehicle=vehicle,
+            awarded=True
+        ).first()
+        
+        if existing_awarded_bid:
+            if existing_awarded_bid.pk == bid.pk:
+                self.message_user(
+                    request,
+                    f"This bid is already awarded.",
+                    level=messages.WARNING
+                )
+            else:
+                self.message_user(
+                    request,
+                    f"Vehicle {vehicle.registration_no} already has an awarded bid to "
+                    f"{existing_awarded_bid.user.get_full_name()} for "
+                    f"Ksh {'{:,.0f}'.format(existing_awarded_bid.amount)}.",
+                    level=messages.WARNING
+                )
+            return
+        # Mark the bid as awarded
+        bid.awarded = True
+        bid.save()
+
+        # Update the associated vehicle's status
+        bid.vehicle.status = 'bid_won'
+        bid.vehicle.save()
+
+        # Create an entry in the AwardHistory model
+        try:
+            AwardHistory.objects.create(
+                user=bid.user,
+                vehicle=bid.vehicle,
+                amount=bid.amount,
+                awarded_at=bid.bid_time
+            )
+        except Exception as e:
+            self.message_user(
+                request,
+                f"Failed to update award history. Error: {e}",
+                level=messages.ERROR
+            )
+            return
+
+        # Send notification email to the user
+        try:
+            context = {
+                'first_name': bid.user.first_name,
+                'registration_no': bid.vehicle.registration_no,
+                'bid_details_url': 'your-bid-details-url-here',  # Replace with actual URL to bid details page
+            }
+
+            # Render the HTML email content from the template
+            email_subject = "Bid Awarded"
+            email_message = render_to_string(
+                'vehicles/emails/bid_award.html',  # Path to the email HTML template
+                context
+            )
+
+            # Send the email
+            send_mail(
+                subject=email_subject,
+                message=email_message,  # The plain-text message (optional as we're sending HTML email)
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[bid.user.email],
+                fail_silently=False,
+                html_message=email_message  # HTML content of the email
+            )
+
+            return "Notification email sent to the user."
+        except Exception as e:
+            email_status = f"Notification email failed to send. Error: {e}"
+
+        # Notify the admin about the success of the operation
+        self.message_user(
+            request,
+            f"The bid for vehicle {bid.vehicle.registration_no} has been successfully awarded. {email_status}",
+            level=messages.SUCCESS
+        )
+
+    award_bid.short_description = "Award selected bid"
     # CSV export function (modified to include user details)
     def generate_bid_report(self, request, queryset):
         # Create the HttpResponse object with the appropriate CSV header
@@ -63,7 +195,7 @@ class BidAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
         
         # Write header row with columns
-        writer.writerow(['vehicle', 'user_full_name', 'user_email', 'amount', 'bid_time'])
+        writer.writerow(['vehicle', 'user_full_name', 'user_email', 'amount', 'bid_time','awarded'])
 
         # Write rows with the relevant data
         for bid in queryset:
@@ -72,7 +204,8 @@ class BidAdmin(admin.ModelAdmin):
                 f"{bid.user.first_name} {bid.user.last_name}",  # User's full name
                 bid.user.email,  # User's email
                 self.formatted_amount(bid),
-                bid.bid_time  # Bid time
+                bid.bid_time , # Bid time
+                bid.awarded # Awarded status
             ])
         
         return response
