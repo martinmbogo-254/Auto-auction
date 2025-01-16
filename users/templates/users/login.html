@@ -3,42 +3,133 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="shortcut icon" href="https://thumbs.dreamstime.com/b/microphone-icon-fashionable-flat-style-isolated-against-background-logo-application-user-interface-umoja-radio-148364309.jpg" type="image/jpg" style="border-radius:10px;" />
-  <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %} ">
-
-  <title>RVAS LOGIN</title>
-
-</head>
-<body class="">
-  <div class="container-login">
-    <div class="row justify-content-center">
-      <div class="col-md-6 " >
-        <div class="card login-card">
-         
-          <div class="card-body shadow-lg">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="https://thumbs.dreamstime.com/b/microphone-icon-fashionable-flat-style-isolated-against-background-logo-application-user-interface-umoja-radio-148364309.jpg" type="image/jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %}">
+    <title>RVAS LOGIN</title>
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
         
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+        
+        .login-form {
+            margin-top: 1.5rem;
+        }
+        
+        .form-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 38px;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        
+        .footer-text {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
 
-              <h4 class="text-center fw-bold fs-4 m-3"> LOGIN </h4>
-            <form method="POST" class="login-form">
-              {% csrf_token %}
-              {{ form|crispy }}
-              <button  class="btn btn-dark text-light mt-3">Login</button>
-              <div>
-                Don't have an account? <a href="/register">Register</a>
+<body>
+    <div class="login-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <div class="login-card">
+                        <h4 class="text-center fw-bold mb-4">LOGIN</h4>
+                        
+                        <form method="POST" class="login-form">
+                            {% csrf_token %}
+                            
+                            <!-- Username field -->
+                            <div class="form-group">
+                                {{ form.username|as_crispy_field }}
+                            </div>
+                            
+                            <!-- Password field with toggle -->
+                            <div class="form-group">
+                                {{ form.password|as_crispy_field }}
+                                <span class="password-toggle" onclick="togglePassword('password')">
+                                    <i class="fa-solid fa-eye" id="togglePassword"></i>
+                                </span>
+                            </div>
+                            
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-dark">Login</button>
+                            </div>
+                            
+                            <div class="text-center mt-3">
+                                <p class="mb-0">Don't have an account? 
+                                    <a href="/register" class="text-decoration-none">Register</a>
+                                </p>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center footer-text">
+                            <p class="mb-0">
+                                <i>
+                                    <a href="https://www.riverlong.com" class="text-danger text-decoration-none">
+                                        Riverlong Limited
+                                    </a>
+                                </i> 
+                                &copy; 2024
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </form>
-            
-           <p class="text-center "><i><a class="text-danger nav-link" href="https://www.riverlong.com">Riverlong Limited</a></i> &copy; 2024</p> 
-          </div>
         </div>
-      </div>
     </div>
-  </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePassword(fieldName) {
+            const passwordField = document.getElementById('id_' + fieldName);
+            const toggleIcon = document.getElementById('togglePassword');
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 </body>
-
+</html>
 {% endblock %}

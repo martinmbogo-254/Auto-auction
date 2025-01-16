@@ -6,20 +6,15 @@
 {% block content%}
 {% if hotsale %}
 <div id="autobidCarousel" class="carousel slide" data-bs-ride="carousel">
-  <!-- Indicators -->
-  <div class="carousel-indicators">
-    {% for vehicle in hotsale %}
-      <button type="button" data-bs-target="#autobidCarousel" data-bs-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}" aria-current="{% if forloop.first %}true{% endif %}" aria-label="Slide {{ forloop.counter }}"></button>
-    {% endfor %}
-  </div>
+
 
   <!-- Slides -->
-  <div class="carousel-inner">
+  <div class="carousel-inner ">
     {% for vehicle in hotsale %}
     <div class="carousel-item {% if forloop.first %}active{% endif %}">
-      <div style="background:rgb(238, 212, 208); width:100%; height:600px; margin: 0 auto; padding: 0 20px;">
-        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; position: relative;">
-          <div class="col-md-3 hero-text" style="position: relative;  padding: 20px;">
+      <div style="background:rgb(238, 212, 208); width:100%; height:700px; margin: 0 auto; padding: 0 20px;">
+        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; position: relative;" class="row">
+          <div class="col-md-3 hero-text" style="  padding: 20px;">
             <div style="font-size: 1.25rem; color: #ed1b35; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; animation: slideIn 1s ease-out;">
               Welcome To Autobid
             </div>
@@ -28,6 +23,9 @@
               <span style="display: block; font-size: 1.5rem; color: #0c0b0b; margin-top: 10px; font-weight: 400;">
                  {{ vehicle.YOM }} . {{ vehicle.make }} . {{ vehicle.model}}
               </span>
+              <span style="display: block; font-size: 1.5rem; color: #0c0b0b; margin-top: 10px; font-weight: 400;">
+                {{ vehicle.reserve_price|intcomma}} KSH
+             </span>
             </h1>
             <div style="margin-top: 30px; display: flex; gap: 20px; animation: fadeIn 1.5s ease-out;">
               <a href="{% url 'detail' vehicle.registration_no%}" style="background-color: #ed1b35; color: #000000; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #ed1b35; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#ffed4a'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255,215,0,0.3)'" onmouseout="this.style.backgroundColor='#ed1b35'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
@@ -38,12 +36,13 @@
               </a>
             </div>
           </div>
-          <div class="col-md-8" style="padding: 20px;">
+          <div class="col-md-8" style="padding: 20px; min-height:600px;">
             <img src="{{ vehicle.file.url }}" alt="{{ vehicle.registration_no }}" style="width: 100%; height: 60%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
           </div>
         </div>
       </div>
     </div>
+    
     {% endfor %}
   </div>
 
@@ -102,7 +101,7 @@
   </div>
 </div>
 
-<div class="lower-cont1 mb-5">
+<div class="mb-5">
   <div class="row mt-2">
     <div class="lower-head">
       <h3 class="text-danger">Start Now</h3>
@@ -165,7 +164,7 @@
             <label>Bid for a vehicle</label> 
         </div>
         <div class="card-body">
-            <p>Once you have registered and logged in you can view the vehicle you would like to buy and place your OFFER AMOUNT. You can bid for as many vehicles as you like but only one bid is accepted per vehicle. The bidding window closes after 14days.</p>
+            <p>Once you have registered and logged in you can view the vehicle you would like to buy and place your OFFER AMOUNT. You can bid for as many vehicles as you like. </p>
         </div>  
         
       </div>     
