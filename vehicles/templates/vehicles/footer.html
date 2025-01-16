@@ -36,48 +36,50 @@
     <link rel="icon" type="image/svg" href="{% static 'images/logo-autobid.svg' %}">
     <title>Riverlong | Autobid</title>
   </head>
-  <footer>
-    <div class="footer-top">
-      <div class="footer-top">
-        <div class="footer-day-time">
-            <div class="row">                      
-                <div class="col-sm-12 col-md-6 col-lg-3">
-                  <div class="opening ml-5">
-                    <p class="open-text">Opening Hours: Mon - Friday: 8AM - 5PM</p>
-                    <p class="open-text">Saturday: 8:00 AM - 12:00 PM</p>
-                  </div>                 
-                 
-                </div>                                   
-                
-                <div class="col-sm-12 col-md-6 col-lg-3">                                     
-                  <div class="col-12 footer-icons">
-                    <h5>Follow us on</h5>
-                    <li><a href="#"><i class="fa-brands fa-facebook icons" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa-brands fa-instagram icons" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa-brands fa-whatsapp icons" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa-brands fa-x-twitter icons" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa-brands fa-linkedin icons" aria-hidden="true"></i></a></li>
+  <footer class="footer bg-dark text-light py-4">
+    <div class="container">
+        <div class="row align-items-center">
+            <!-- Opening Hours Section -->
+            <div class="col-md-4 text-center text-md-left mb-3 mb-md-0">
+                <h6 class="font-weight-bold">Opening Hours</h6>
+                <p class="mb-1">Mon - Fri: 8:00 AM - 5:00 PM</p>
+                <p>Sat: 8:00 AM - 12:00 PM</p>
+            </div>
+
+            <!-- Social Media Icons -->
+            <div class="col-md-4 text-center mb-3 mb-md-0">
+                <h6 class="font-weight-bold">Follow Us</h6>
+                <div class="d-flex justify-content-center">
+                    <a href="#" class="text-light mx-2"><i class="fab fa-facebook fa-lg"></i></a>
+                    <a href="#" class="text-light mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+                    <a href="#" class="text-light mx-2"><i class="fab fa-whatsapp fa-lg"></i></a>
+                    <a href="#" class="text-light mx-2"><i class="fab fa-twitter fa-lg"></i></a>
+                    <a href="#" class="text-light mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
                 </div>
-                </div>
-                <div class="col-sm-12 col-md-12 col-lg-6">                       
-                    <ul class="address1">
-                      <li><i class="fa fa-map-marker"></i> Fourways Junction, Kiambu Rd Total Petrol station</li><br>
-                      <li><i class="fa fa-envelope"></i><a href="mailto:#"> info@riverlong.com</a></li><br>
-                      <li><i class="fa fa-phone" aria-hidden="true"></i> <a href="tel:12 34 56 78 90"> +254 701 856557</a></li>
-                    </ul>
-                  </div>                      
+            </div>
+
+            <!-- Contact Information -->
+            <div class="col-md-4 text-center text-md-right">
+                <h6 class="font-weight-bold">Contact Us</h6>
+                <ul class="list-unstyled mb-0">
+                    <li><i class="fas fa-map-marker-alt"></i> Fourways Junction, Kiambu Rd Total Petrol Station</li>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:info@riverlong.com" class="text-light">info@riverlong.com</a></li>
+                    <li><i class="fas fa-phone"></i> <a href="tel:+254701856557" class="text-light">+254 701 856557</a></li>
+                </ul>
             </div>
         </div>
-      
-</div>
-<div class="footer-bottom">                      
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <p>© 2024 Riverlong Ltd. All Rights Reserved. Built by Riverlong IT</p>
-      </div>                          
+
+        <hr class="bg-light">
+
+        <!-- Footer Bottom -->
+        <div class="row">
+            <div class="col text-center">
+                <p class="mb-0">&copy; 2025 Riverlong Ltd. All Rights Reserved. Built by <a href="#" class="text-light font-weight-bold">Riverlong IT</a></p>
+            </div>
+        </div>
     </div>
-</div>
 </footer>
+
   
 
 {% endblock footer %}

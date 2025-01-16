@@ -291,8 +291,8 @@ class VehicleAdmin(admin.ModelAdmin):
     search_fields = ('make__name', 'registration_no', 'model__name', 'YOM__year', 'status')
     list_filter = ('status', 'make', 'model', 'YOM', 'body_type', 'fuel_type', 'created_at', 'updated_at', 'is_approved')
     inlines = [VehicleImageInline, BidInline, VehicleViewInline]
-    readonly_fields = ('views', 'status', 'approved_by', 'approved_at', 'is_approved')
-    actions = ['make_available', 'generate_vehicle_report', 'sell', 'approve_vehicle']
+    readonly_fields = ('views', 'status', 'approved_by', 'approved_at','disapproved_by', 'disapproved_at')
+    actions = ['make_available', 'generate_vehicle_report', 'sell', 'approve_vehicle','disapprove_vehicle']
 
     # Custom action for generating reports
     def generate_vehicle_report(self, request, queryset):
@@ -349,7 +349,7 @@ class VehicleAdmin(admin.ModelAdmin):
 
     # Admin action for approving vehicles
     def approve_vehicle(self, request, queryset):
-        if not request.user.groups.filter(name='Admins').exists():
+        if not request.user.groups.filter(name='Approvers').exists():
             self.message_user(request, "Only Admins can approve vehicles.", level=messages.WARNING)
             return
 
@@ -360,6 +360,25 @@ class VehicleAdmin(admin.ModelAdmin):
 
         self.message_user(request, f"{count} vehicle(s) have been approved.", level=messages.SUCCESS)
     approve_vehicle.short_description = "Approve selected vehicles"
+
+    def disapprove_vehicle(self, request, queryset):
+        if not request.user.groups.filter(name='Approvers').exists():
+            self.message_user(request, "Only Admins can disapprove vehicles.", level=messages.WARNING)
+            return
+
+        count = 0
+        for vehicle in queryset.filter(is_approved=True):
+            vehicle.is_approved = False
+            vehicle.disapproved_by = request.user  # Assuming you have a `disapproved_by` field
+            vehicle.disapproved_at = timezone.now()
+            vehicle.status='idle'
+            vehicle.save()
+            count += 1
+
+        self.message_user(request, f"{count} vehicle(s) have been disapproved.", level=messages.SUCCESS)
+
+    disapprove_vehicle.short_description = "Disapprove selected vehicles"
+
 
 # admin.site.register(VehicleAdmin)
 

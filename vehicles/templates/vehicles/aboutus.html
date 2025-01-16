@@ -2,254 +2,317 @@
 {% load static %}
 {% load humanize %}
 
-<html>
-{% block content%}
-
-  <!-- About 1 - Bootstrap Brain Component -->
-            <div class="jumbotron jumbotron_body">
-              <img class="img-fluid rounded" loading="lazy" src="{% static 'images/riverlong2.jpg' %}"  alt="About 1">
-              <div class="centered">
-                <div class="row jumbotron_head_row">        
-                  <label class="jumbotron_head">Riverlong Limited</label>
-                </div>
-                <div class="row bg-danger banner">
-                  <h6 class="jumbotron_head1">Discover, Bid, and Win – Track to safety - Monitor and get economic value</h6>
-                  <h5 class="jumbotron_head2">Your Gateway to Exceptional motor Experiences!</h5>
-                </div>
-              </div>        
-            </div>
-
-          <div class="container aboutus_pane">
-            <div class="row gy-3 gy-md-4 gy-lg-0 align-items-lg-center">
-              <div class="col-12 col-lg-6 col-xl-5">
-                <img class="img-fluid rounded" loading="lazy" src="{% static 'images/RL-Logo.png' %}"  alt="About 1">
-              </div>
-              <div class="col-12 col-lg-6 col-xl-7">
-                <div class="row justify-content-xl-center">
-                  <div class="col-12 col-xl-11">
-                    <h2 class="mb-3 who_text">Who Are We?</h2>
-                    <p class="lead fs-4 mb-3"><b>Riverlong Limited</b> offers bidding and auction for new and used vehicles that are in good condition. We are also the best telematics solution provider in East Africa and extends our services to vehicle recovery and storage.</p>
-                    <!-- <p class="mb-5"><b>Riverlong Limited</b> is a telematics company that offers a wide range of technological solutions in the motor industry. We have a powerful suite of tools and a mobile workforce deliver solution to your fleet needs anytime anywhere. Our technology can transform the way you do business giving you a competitive edge, reducing your operation costs and improving your efficiency.</p> -->
-                  </div>
-                </div>
-              </div>
-            </div>  
-              <div class="row gy-4 gy-md-0 gx-xxl-5X">
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-2 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/sales.png' %}" width="200px" height="150px" alt="About 1">
-                      <!-- <img src="{% static 'images/sales.png' %}"> -->
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Vehicle Sales</h2>
-                      <p class="text-secondary mb-0">Riverlong Limited, powered by <b>AUTOBID</b>, transforms the car-buying journey by combining advanced technology with the thrill of live auctions. Your dream car is just a bid away.</i></p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-2 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/towing.png' %}" width="200px" height="150px" alt="About 1">
-                      <!-- <img src="{% static 'images/towing.png' %}"> -->
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Vehicle Recovery</h2>
-                      <p class="text-secondary mb-0">With towing trucks stationed at multiple locations, we provide 24/7 recovery services, including long-distance towing, motorsport towing, motorcycle transport and repossessions.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-4 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/storage.jpeg' %}" width="200px" height="200px" alt="About 1">
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Vehicle storage</h2>
-                      <p class="text-secondary mb-0">Riverlong Yard offers our clients a safe and secure vehicle storage with controlled access, 24/7 surveillance, on-site security with elite, top-tier guards, well-organized parking, fire prevention measures, and regular maintenance to protect vehicles from theft and damage.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-4 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/dashcam.png' %}" width="200px" height="150px" alt="About 1">
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Video telematics</h2>
-                      <p class="text-secondary mb-0">Our Dashcam offers a real-time video recording with AI capabilities. The solutions gives vehicle live location and records what happens inside and around your vehicle.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-4 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/tracking.png' %}" width="200px" height="150px" alt="About 1">
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Asset Tracking</h2>
-                      <p class="text-secondary mb-0">With the GPS and GNSS technology incorporated in our solutions, we offer real-time tracking of client assets both static and mobile. The solution also include geofencing, alerts, and reports.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-4 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/fleet.png' %}"  width="200px" height="150px"  alt="About 1">
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Fleet Management solution</h2>
-                      <p class="text-secondary mb-0">Our fleet management solution comes with driver behaviour management, route management, fuel consumption analysis. The package also include advance notofications on sms, emails and push alerts.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-4 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/fuel.png' %}" width="200px" height="150px" alt="About 1">
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Fuel Monitoring</h2>
-                      <p class="text-secondary mb-0">Our advance fuel monitoring solution give instant notifications on drains, refills and any abnormal consumption. Use this to reduce your transportation cost by 25%.</p>
-                    </div>
-                  </div>
-                </div>
-              
-                <div class="col-12 col-md-6 mt-5">
-                  <div class="d-flex">
-                    <div class="me-4 text-primary">
-                      <img class="img-fluid rounded" loading="lazy" src="{% static 'images/temp.png' %}" width="200px" height="150px" alt="About 1">
-                    </div>
-                    <div>
-                      <h2 class="h4 mb-3">Cold-chain Management</h2>
-                      <p class="text-secondary mb-0">Riverlong Temperature monitoring solution relays a realtime data of cold rooms and refrigerated vehicles. The solutions comes with both alerts and advance reporting modules.</p>
-                    </div>
-                  </div>
-                </div>
-                
-              </div>
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            height: 80vh;
+            min-height: 600px;
+            background-color: #000;
+            overflow: hidden;
+            margin-top: 7%;
+        }
+        
+        .hero-image {
+            opacity: 0.7;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            width: 100%;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            background-color: rgba(220, 53, 69, 0.9);
+            padding: 1rem;
+            border-radius: 5px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* About Section */
+        .about-section {
+            padding: 5rem 0;
+            background-color: #f8f9fa;
+        }
+        
+        .about-image {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        /* Services Section */
+        .service-card {
+            transition: transform 0.3s ease;
+            margin-bottom: 2rem;
+            border: none;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-image {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Stats Section */
+        .stats-section {
+            background-color: #f8f9fa;
+            padding: 5rem 0;
+        }
+        
+        .year-number {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #dc3545;
+        }
+        
+        /* Clients Section */
+        .clients-section {
+            padding: 5rem 0;
+        }
+        
+        .client-logo {
+            max-width: 150px;
+            height: 100px;
+            object-fit: contain;
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+            margin: 1rem;
+        }
+        
+        .client-logo:hover {
+            filter: grayscale(0%);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
             
-        </div>
-      </div>
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .service-card {
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
 
-      <div class="jumbotron">
-        <hr>
-        <div class="row">
-          <div class="col-md-2">
-            <label class="year">6</label> 
-          </div>
-          <div class="col-md-4">
-            <h3>Years on the Market</h3>
-            <p> Our platform that is accessible both on mobile devices and on the web gives a wide array of vehicles that gives explorable bidding and unbeatable excitement.</p>
-            <p> Riverlong's is a <b>CAK licensed</b> telematics solution provider that uses modern technology to offer tracking, fuel monitoring, video telematics among other related services.</p>
-          </div>
-
-
-          <div class="col-md-6">
-            <h3>Some of our esteemed Clients</h3>
-
-            <div class="container text-center my-3">
-              <div class="row mx-auto my-auto justify-content-center">
-                
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-img">
-                            <img class="img-fluid rounded" src="{% static 'images/equity.png' %}" width="200px" height="150px" alt="About 1">
-                          </div>
-                          
-                        </div>
-                      </div>
-                    
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-img">
-                            <img class="img-fluid rounded" src="{% static 'images/cak.jpg' %}" width="200px" height="150px" alt="About 1">
-                          </div>
-                          
-                        </div>
-                      </div>
-                   
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-img">
-                            <img class="img-fluid rounded" src="{% static 'images/almasi.jpg' %}" width="200px" height="150px" alt="About 1">
-                          </div>
-                          
-                        </div>
-                      </div>
-                  
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-img">
-                            <img class="img-fluid rounded" src="{% static 'images/lincap.png' %}" width="200px" height="150px" alt="About 1">
-                          </div>
-                          
-                        </div>
-                      </div>
-                    
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-img">
-                            <img class="img-fluid rounded" src="{% static 'images/strath1.png' %}" width="200px" height="150px" alt="About 1">
-                          </div>
-                          
-                        </div>
-                      </div>
-                    
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-img">
-                            <img class="img-fluid rounded" src="{% static 'images/Stanbic.jpg' %}" width="200px" height="150px" alt="About 1">
-                          </div>
-                          
-                        </div>
-                      </div>
-                    
-                      <div class="col-md-3">
-                        <div class="card">
-                          <div class="card-img">
-                            <img class="img-fluid rounded" src="{% static 'images/voca.png' %}" width="200px" height="150px" alt="About 1">
-                          </div>
-                          
-                        </div>
-                      </div>
-                    </div>
-                   
-                  </div>
-              
+<body>
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <img src="{% static 'images/riverlong2.jpg' %}" alt="Hero Image" class="hero-image">
+        <div class="hero-content">
+            <h1 class="hero-title" data-aos="fade-down">Riverlong Limited</h1>
+            <div class="hero-subtitle" data-aos="fade-up">
+                <p class="mb-2">Discover, Bid, and Win – Track to safety - Monitor and get economic value</p>
+                <p class="mb-0">Your Gateway to Exceptional Motor Experiences!</p>
             </div>
-
-          
-
-          </div>
-
         </div>
-      </div>
-    </div>
-<script>
-let items = document.querySelectorAll('.carousel .carousel-item')
+    </section>
 
-items.forEach((el) => {
-  const minPerSlide = 4
-  let next = el.nextElementSibling
-  for (var i=1; i<minPerSlide; i++) {
-    if (!next) {
-        // wrap carousel by using first child
-        next = items[0]
-    }
-    let cloneChild = next.cloneNode(true)
-    el.appendChild(cloneChild.children[0])
-    next = next.nextElementSibling
-}
-})
-</script>
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <img src="{% static 'images/RL-Logo.png' %}" alt="About Us" class="img-fluid about-image">
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <h2 class="display-4 mb-4">Who Are We?</h2>
+                    <p class="lead mb-4"><b>Riverlong Limited</b> offers bidding and auction for new and used vehicles that are in good condition. We are also the best telematics solution provider in East Africa and extends our services to vehicle recovery and storage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-{% endblock content%}
+    <!-- Services Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Services</h2>
+            <div class="row g-4">
+                <!-- Vehicle Sales -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/sales.png' %}" alt="Vehicle Sales" class="service-image">
+                            <h3 class="h4 mb-3">Vehicle Sales</h3>
+                            <p class="text-secondary mb-0">Riverlong Limited, powered by <b>AUTOBID</b>, transforms the car-buying journey by combining advanced technology with the thrill of live auctions. Your dream car is just a bid away.</p>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Vehicle Recovery -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/towing.png' %}" alt="Vehicle Recovery" class="service-image">
+                            <h3 class="h4 mb-3">Vehicle Recovery</h3>
+                            <p class="text-secondary mb-0">With towing trucks stationed at multiple locations, we provide 24/7 recovery services, including long-distance towing, motorsport towing, motorcycle transport and repossessions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle Storage -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/storage.jpeg' %}" alt="Vehicle Storage" class="service-image">
+                            <h3 class="h4 mb-3">Vehicle Storage</h3>
+                            <p class="text-secondary mb-0">Riverlong Yard offers our clients a safe and secure vehicle storage with controlled access, 24/7 surveillance, on-site security with elite, top-tier guards, well-organized parking, fire prevention measures, and regular maintenance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Telematics -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/dashcam.png' %}" alt="Video Telematics" class="service-image">
+                            <h3 class="h4 mb-3">Video Telematics</h3>
+                            <p class="text-secondary mb-0">Our Dashcam offers a real-time video recording with AI capabilities. The solutions gives vehicle live location and records what happens inside and around your vehicle.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asset Tracking -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/tracking.png' %}" alt="Asset Tracking" class="service-image">
+                            <h3 class="h4 mb-3">Asset Tracking</h3>
+                            <p class="text-secondary mb-0">With the GPS and GNSS technology incorporated in our solutions, we offer real-time tracking of client assets both static and mobile. The solution also include geofencing, alerts, and reports.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fleet Management -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/fleet.png' %}" alt="Fleet Management" class="service-image">
+                            <h3 class="h4 mb-3">Fleet Management Solution</h3>
+                            <p class="text-secondary mb-0">Our fleet management solution comes with driver behaviour management, route management, fuel consumption analysis. The package also include advance notifications on sms, emails and push alerts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fuel Monitoring -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/fuel.png' %}" alt="Fuel Monitoring" class="service-image">
+                            <h3 class="h4 mb-3">Fuel Monitoring</h3>
+                            <p class="text-secondary mb-0">Our advance fuel monitoring solution give instant notifications on drains, refills and any abnormal consumption. Use this to reduce your transportation cost by 25%.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cold-chain Management -->
+                <div class="col-md-6 col-lg-6" data-aos="fade-up">
+                    <div class="service-card h-100 p-4">
+                        <div class="text-center">
+                            <img src="{% static 'images/temp.png' %}" alt="Cold-chain Management" class="service-image">
+                            <h3 class="h4 mb-3">Cold-chain Management</h3>
+                            <p class="text-secondary mb-0">Riverlong Temperature monitoring solution relays a realtime data of cold rooms and refrigerated vehicles. The solutions comes with both alerts and advance reporting modules.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center" data-aos="fade-right">
+                    <div class="year-number">6</div>
+                    <h3 class="h4">Years on the Market</h3>
+                </div>
+                <div class="col-md-8" data-aos="fade-left">
+                    <p class="lead mb-4">Our platform that is accessible both on mobile devices and on the web gives a wide array of vehicles that gives explorable bidding and unbeatable excitement.</p>
+                    <p class="lead">Riverlong's is a <b>CAK licensed</b> telematics solution provider that uses modern technology to offer tracking, fuel monitoring, video telematics among other related services.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section class="clients-section" data-aos="">
+        <div class="container">
+            <h2 class="text-center mb-5">Our Esteemed Clients</h2>
+            <div class="row justify-content-center align-items-center">
+                <div class="col-6 col-md-3 text-center" data-aos="">
+                    <img src="{% static 'images/equity.png' %}" alt="Equity" class="client-logo">
+                </div>
+                <div class="col-6 col-md-3 text-center" data-aos="" data-aos-delay="100">
+                    <img src="{% static 'images/cak.jpg' %}" alt="CAK" class="client-logo">
+                </div>
+                <div class="col-6 col-md-3 text-center" data-aos="" data-aos-delay="200">
+                    <img src="{% static 'images/almasi.jpg' %}" alt="Almasi" class="client-logo">
+                </div>
+                <div class="col-6 col-md-3 text-center" data-aos="" data-aos-delay="300">
+                    <img src="{% static 'images/lincap.png' %}" alt="Lincap" class="client-logo">
+                </div>
+                <div class="col-6 col-md-3 text-center" data-aos="" data-aos-delay="400">
+                    <img src="{% static 'images/strath1.png' %}" alt="Strathmore" class="client-logo">
+                </div>
+                <div class="col-6 col-md-3 text-center" data-aos="" data-aos-delay="500">
+                    <img src="{% static 'images/Stanbic.jpg' %}" alt="Stanbic" class="client-logo">
+                </div>
+                <div class="col-6 col-md-3 text-center" data-aos="" data-aos-delay="600">
+                    <img src="{% static 'images/voca.png' %}" alt="Voca" class="client-logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    </script>
+</body>
 </html>
+{% endblock %}

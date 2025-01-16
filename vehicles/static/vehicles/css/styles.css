@@ -4,9 +4,7 @@ body{
   transition: all 0.3s ease;
   scroll-behavior: smooth;
 }
-.navigation{
-  border: 2px solid red;
-}
+
 #navmini{
   background: #000000 !important;
   min-height: 55px;
@@ -994,3 +992,11 @@ background-color: #fefefe;
 border-radius: 10px;
 }
 
+/* Mobile-specific styles for screen width 767px and below */
+@media (max-width: 767px) {
+  
+ #navbarmain{
+  background-color: #f7f7f7 !important;
+  margin-bottom: -25%;
+  }
+ }

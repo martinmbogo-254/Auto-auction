@@ -101,14 +101,27 @@ class Vehicle(models.Model):
     is_approved = models.BooleanField(default=False)
     approved_by = models.ForeignKey(User, related_name="approved_vehicles", null=True, blank=True, on_delete=models.SET_NULL)
     approved_at = models.DateTimeField(null=True, blank=True)
+    # is_disapproved = models.BooleanField(default=False)
+    disapproved_by = models.ForeignKey(User, related_name="disapproved_vehicles", null=True, blank=True, on_delete=models.SET_NULL)
+    disapproved_at = models.DateTimeField(null=True, blank=True)
     
 
     def approve(self, user):
         """Approve the vehicle and set approved fields."""
         self.is_approved = True
+        # self.is_disapproved = False
         self.approved_by = user
         self.approved_at = timezone.now()
         self.status = 'available'  # Automatically set to available if approved
+        self.save()
+
+    def disapprove(self, user):
+        """Disapprove the vehicle and set approved fields."""
+        # self.disapproved = True
+        self.is_approved = False
+        self.disapproved_by = user
+        self.disapproved_at = timezone.now()
+        self.status = 'idle'  # Automatically set to available if approved
         self.save()
         
     def get_absolute_url(self):
