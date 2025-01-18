@@ -8,12 +8,24 @@ from django.contrib.auth import logout
 from .models import Profile
 from vehicles.models import Bidding
 
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'users/password/password_reset.html'
+    email_template_name = 'users/password/password_reset_email.html'
+    subject_template_name = 'users/password/password_reset_subject.html'
+    success_message = "We've emailed you instructions for setting your password, " \
+                      "if an account exists with the email you entered. You should receive them shortly." \
+                      " If you don't receive an email, " \
+                      "please make sure you've entered the address you registered with, and check your spam folder."
+    success_url = reverse_lazy('homepage')
 
 
 def register(request):
     # Redirect a user to the homepage if they are already logged in
     if request.user.is_authenticated:
-        return redirect('vehicles')
+        return redirect('available_vehicles')
     else:
         # Perform this operation if the user is not logged in
         if request.method == 'POST':

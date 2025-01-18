@@ -11,13 +11,13 @@
             <h1 style="font-size:24px;font-weight:600;">🎉 Congratulations!</h1>
         </div>
         <div style="padding:30px;color:#333333;">
-            <h2 style="font-size:18px;font-weight:600;">Dear {{ username }},</h2>
+            <h2 style="font-size:18px;font-weight:600;">Dear {{ user.username }},</h2>
             <p style="margin-top:8px;">You've won the auction for:</p>
             
             <div style="background-color:#F5F5F5;border-left:4px solid #FF6B00;padding:20px;margin-top:16px;border-radius:4px;">
-                <p style="font-size:14px;"><strong>Vehicle:</strong> {{ registration_no }}</p>
+                <p style="font-size:14px;"><strong>Vehicle:</strong> {{ vehicle.registration_no }}</p>
                 <div style="font-size:20px;color:#FF6B00;font-weight:600;margin-top:8px;">
-                    Winning Bid: KSH {{ amount }}
+                    Winning Bid: KSH {{ amount|intcomma }}
                 </div>
             </div>
             
@@ -26,7 +26,7 @@
             <div style="margin-top:24px;">
                 <p style="padding: 5px;">The Buyer and Seller are responsible for completion of sale within 24hrs</p>
                 <p>Please note that our Terms and Conditions, including Rules of the Platform, can be accessed at <a href="http://autobid.riverlong.com/terms/">Autobid Terms $ Conditions</a>.<br> The recipient of this email, whether (without limitation) in his personal capacity or acting for and on behalf of a juristic entity or as an agent, acknowledges and warrants that he has read and understood the Autobid's Terms and Conditions, including Rules of the platform, and is irrevocably bound thereby.</p>
-                <a href="#" style="display:inline-block;padding:12px 24px;background-color:#FF6B00;color:#ffffff;text-decoration:none;border-radius:4px;font-weight:600;">View Details</a>
+                <a href="http://autobid.riverlong.com" style="display:inline-block;padding:12px 24px;background-color:#FF6B00;color:#ffffff;text-decoration:none;border-radius:4px;font-weight:600;">View Site</a>
             </div>
             
             <p style="margin-top:24px;">Best regards,<br>Riverlong Auction Team</p>

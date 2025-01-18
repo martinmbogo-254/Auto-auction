@@ -53,7 +53,7 @@ class AwardHistoryAdmin(admin.ModelAdmin):
 @admin.register(Bidding)
 class BidAdmin(admin.ModelAdmin):
     search_fields = ('vehicle__registration_no', 'user__username')
-    list_display = ('vehicle', 'user_full_name', 'user_email','awarded' ,'formatted_amount', 'bid_time')
+    list_display = ('vehicle', 'vehicle_details','vehicle_reserveprice', 'formatted_amount','user_email','awarded' , 'bid_time')
     actions = ['generate_bid_report','award_bid']
 
     # Method to extract user's full name (first_name + last_name)
@@ -61,6 +61,16 @@ class BidAdmin(admin.ModelAdmin):
         return f"{obj.user.first_name} {obj.user.last_name}"
 
     user_full_name.short_description = 'User Full Name'  # This sets the column name in the admin list view
+
+    def vehicle_reserveprice(self, obj):
+        return '{:,.0f}'.format(obj.vehicle.reserve_price)
+
+    vehicle_reserveprice.short_description ='Reserve Price' 
+
+    def vehicle_details(self, obj):
+        return f"{obj.vehicle.YOM} {obj.vehicle.make} {obj.vehicle.model}"
+
+    vehicle_details.short_description ='Vehicle Details' 
 
     # Method to extract user's email
     def user_email(self, obj):
@@ -72,7 +82,7 @@ class BidAdmin(admin.ModelAdmin):
     def formatted_amount(self, obj):
         return '{:,.0f}'.format(obj.amount)
 
-    formatted_amount.short_description = 'Amount'  # This sets the column name in the admin list view
+    formatted_amount.short_description = 'Offer Amount'  # This sets the column name in the admin list view
 
     def award_bid(self, request, queryset):
         # Ensure only one bid is selected
@@ -195,15 +205,16 @@ class BidAdmin(admin.ModelAdmin):
         writer = csv.writer(response)
         
         # Write header row with columns
-        writer.writerow(['vehicle', 'user_full_name', 'user_email', 'amount', 'bid_time','awarded'])
+        writer.writerow(['Vehicle', 'Vehicle Details','Vehicle Reserveprice' ,'Offer Amount','User Email', 'Bid Time','Awarded'])
 
         # Write rows with the relevant data
         for bid in queryset:
             writer.writerow([
                 bid.vehicle.registration_no,  # Vehicle registration number
-                f"{bid.user.first_name} {bid.user.last_name}",  # User's full name
-                bid.user.email,  # User's email
+                self.vehicle_details(bid),
+                self.vehicle_reserveprice(bid),
                 self.formatted_amount(bid),
+                bid.user.email,  # User's email
                 bid.bid_time , # Bid time
                 bid.awarded # Awarded status
             ])

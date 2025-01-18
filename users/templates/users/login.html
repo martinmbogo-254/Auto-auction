@@ -27,9 +27,10 @@
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0,0,0,0.1);
             padding: 2rem;
-            width: 100%;
-            max-width: 400px;
-            margin: auto;
+            {% comment %} width: 100%; {% endcomment %}
+            {% comment %} width:400px; {% endcomment %}
+            {% comment %} max-width: 400px; {% endcomment %}
+            margin-top:-40%;
         }
         
         .login-form {
@@ -66,36 +67,66 @@
     <div class="login-container">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-8 col-lg-6">
+              <div class="col-md-2"></div>
+                <div class="col-md-6">
                     <div class="login-card">
                         <h4 class="text-center fw-bold mb-4">LOGIN</h4>
                         
                         <form method="POST" class="login-form">
-                            {% csrf_token %}
-                            
-                            <!-- Username field -->
-                            <div class="form-group">
-                                {{ form.username|as_crispy_field }}
-                            </div>
-                            
-                            <!-- Password field with toggle -->
-                            <div class="form-group">
-                                {{ form.password|as_crispy_field }}
-                                <span class="password-toggle" onclick="togglePassword('password')">
-                                    <i class="fa-solid fa-eye" id="togglePassword"></i>
-                                </span>
-                            </div>
-                            
-                            <div class="d-grid gap-2 mt-4">
-                                <button type="submit" class="btn btn-dark">Login</button>
-                            </div>
-                            
-                            <div class="text-center mt-3">
-                                <p class="mb-0">Don't have an account? 
-                                    <a href="/register" class="text-decoration-none">Register</a>
-                                </p>
-                            </div>
-                        </form>
+                          {% csrf_token %}
+                          
+                          <!-- Display non-field errors -->
+                          {% if form.non_field_errors %}
+                              <div class="alert alert-danger">
+                                  {% for error in form.non_field_errors %}
+                                      <p>{{ error }}</p>
+                                  {% endfor %}
+                              </div>
+                          {% endif %}
+                          
+                          <!-- Username field -->
+                          <div class="form-group">
+                              {{ form.username|as_crispy_field }}
+                              {% if form.username.errors %}
+                                  <div class="text-danger">
+                                      {% for error in form.username.errors %}
+                                          <small>{{ error }}</small>
+                                      {% endfor %}
+                                  </div>
+                              {% endif %}
+                          </div>
+                          
+                          <!-- Password field with toggle -->
+                          <div class="form-group">
+                              {{ form.password|as_crispy_field }}
+                              {% if form.password.errors %}
+                                  <div class="text-danger">
+                                      {% for error in form.password.errors %}
+                                          <small>{{ error }}</small>
+                                      {% endfor %}
+                                  </div>
+                              {% endif %}
+                              <span class="password-toggle" onclick="togglePassword('password')">
+                                  <i class="fa-solid fa-eye" id="togglePassword"></i>
+                              </span>
+                          </div>
+                          
+                          <div class="d-grid gap-2 mt-4">
+                              <button type="submit" class="btn btn-dark">Login</button>
+                          </div>
+                          
+                          <div class="text-center mt-3">
+                              <p class="mb-0">
+                                  <a href="{% url 'password_reset' %}" class="nav-link">Forgot Password?</a>
+                              </p>
+                          </div>
+                          <div class="text-center mt-3">
+                              <p class="mb-0">Don't have an account? 
+                                  <a href="/register" class="text-decoration-none">Register</a>
+                              </p>
+                          </div>
+                      </form>
+                      
                         
                         <div class="text-center footer-text">
                             <p class="mb-0">
@@ -110,6 +141,7 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3"></div>
         </div>
     </div>
 
