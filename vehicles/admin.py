@@ -304,6 +304,9 @@ class VehicleAdmin(admin.ModelAdmin):
     inlines = [VehicleImageInline, BidInline, VehicleViewInline]
     readonly_fields = ('views', 'status', 'approved_by', 'approved_at','disapproved_by', 'disapproved_at')
     actions = ['make_available', 'generate_vehicle_report', 'sell', 'approve_vehicle','disapprove_vehicle']
+    list_per_page = 15  # Items per page
+    list_max_show_all = 1000  # Maximum items when showing all
+    show_full_result_count = True  # Show total count in pagination
 
     # Custom action for generating reports
     def generate_vehicle_report(self, request, queryset):
