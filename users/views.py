@@ -3,14 +3,46 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegistrationForm ,ProfileForm
+from .forms import UserRegistrationForm ,ProfileForm,CustomLoginForm
 from django.contrib.auth import logout
 from .models import Profile
 from vehicles.models import Bidding
-
+from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import get_user_model
+
+
+
+def login_view(request):
+    if request.method == 'POST':
+        form = CustomLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            
+            User = get_user_model()
+            try:
+                user = User.objects.get(username=username, email=email)
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    messages.success(request, f'Welcome back, {username}!')
+                    return redirect('homepage')  # Replace with your home URL
+                else:
+                    messages.warning(request, 'Invalid credentials.')
+            except User.DoesNotExist:
+                messages.warning(request, 'User with these credentials does not exist.')
+    else:
+        form = CustomLoginForm()
+    
+    return render(request, 'users/login.html', {'form': form})
+
+
+
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
     template_name = 'users/password/password_reset.html'
     email_template_name = 'users/password/password_reset_email.html'
