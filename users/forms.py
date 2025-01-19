@@ -24,6 +24,11 @@ class CustomLoginForm(forms.Form):
         fields = ['username', 'password']
 
 class UserRegistrationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2','accept_terms']
+      
+        
     accept_terms = forms.BooleanField(
         required=True,
         label="I accept the Terms and Conditions",
@@ -59,22 +64,22 @@ class UserRegistrationForm(UserCreationForm):
             'class': 'form-control'
         })
     )
-    password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Enter your password',
-            'class': 'form-control'
-        })
-    )
-    password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={
-            'placeholder': 'Confirm your password',
-            'class': 'form-control'
-        })
-    )
+    # password1 = forms.CharField(
+    #     widget=forms.PasswordInput(attrs={
+         
+    #         'placeholder': 'Enter your password',
+    #         'class': 'form-control'
+    #     })
+    # )
+    # password2 = forms.CharField(
+    #     widget=forms.PasswordInput(attrs={
+        
+    #         'placeholder': 'Confirm your password',
+    #         'class': 'form-control'
+    #     })
+    # )
 
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2','accept_terms']
+   
 
     def save(self, commit=True):
         user = super().save(commit=False)
