@@ -21,16 +21,15 @@ def login_view(request):
         form = CustomLoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
             
             User = get_user_model()
             try:
-                user = User.objects.get(username=username, email=email)
+                user = User.objects.get(username=username)
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     login(request, user)
-                    messages.success(request, f'Welcome back, {username}!')
+                    messages.success(request, f'Welcome back !')
                     return redirect('homepage')  # Replace with your home URL
                 else:
                     messages.warning(request, 'Invalid credentials.')
@@ -53,6 +52,21 @@ class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
                       "please make sure you've entered the address you registered with, and check your spam folder."
     success_url = reverse_lazy('homepage')
 
+
+# def register(request):
+#     if request.method == 'POST':
+#         form = CustomUserRegistrationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.first_name = form.cleaned_data['first_name']
+#             user.last_name = form.cleaned_data['last_name']
+#             user.email = form.cleaned_data['email']
+#             user.save()
+#             messages.success(request, 'Account created successfully. You can now login.')
+#             return redirect('login')
+#     else:
+#         form = CustomUserRegistrationForm()
+#     return render(request, 'register.html', {'form': form})
 
 def register(request):
     # Redirect a user to the homepage if they are already logged in
