@@ -77,12 +77,33 @@
                 
             </div>
           </div>
+          
       </div>
       {% endfor %}
+        <!-- Pagination controls -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if vehicles_on_sale.has_previous %}
+                    <a class="btn btn-outline-dark" href="?page=1">First</a>
+                    <a class="btn btn-dark" href="?page={{ vehicles_on_sale.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ vehicles_on_sale.number }} of {{ vehicles_on_sale.paginator.num_pages }}
+                </span>
+
+                {% if vehicles_on_sale.has_next %}
+                    <a class="btn btn-dark" href="?page={{ vehicles_on_sale.next_page_number }}">Next</a>
+                    <a class="btn btn-outline-dark" href="?page={{ vehicles_on_sale.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </span>
+        </div>
+      
       {% else %}
       <div class="jumbotron bg-info text-center">
         <p class="text-light">Sorry, No vehicles available.</p>
       </div>
+      
       {% endif %}
       <div class="row">
         <!-- <ul class="breadcrumb">
@@ -125,6 +146,9 @@
         <p class="text-dark">No vehicles on auction currently.</p>
       </div> -->
        {% endif %}
+
+      
+    
 
     </div>
 

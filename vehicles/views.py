@@ -14,6 +14,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 
 def reports(request):
     vehicles = Vehicle.objects.all()
@@ -60,6 +62,18 @@ def allvehiclespage(request):
     vehicles_on_auction = vehiclefilter.qs.filter(status='on_auction')
     on_salecount = vehicles_on_sale.count()
     on_auctioncount = vehicles_on_auction.count()
+
+    paginator = Paginator(vehicles_on_sale,12 )  # Display 12 objects per page
+
+    page = request.GET.get('page')
+    try:
+        vehicles_on_sale = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        vehicles_on_sale = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        vehicles_on_sale = paginator.page(paginator.num_pages)
     context = {
         'vehicles_on_sale': vehicles_on_sale,
         'vehiclefilter':vehiclefilter,
@@ -67,6 +81,7 @@ def allvehiclespage(request):
         'vehicles_on_auction' :vehicles_on_auction,
         'on_salecount' :on_salecount,
         'on_auctioncount' :on_auctioncount,
+        
     }
     return render (request,'vehicles/vehicles.html', context)
 
@@ -81,7 +96,7 @@ def vehicledetail(request, pk):
             vehicle.save()
             # Record this view
             VehicleView.objects.create(vehicle=vehicle, user=request.user)
-    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model).exclude(id=vehicle.id)
+    similar_vehicles = Vehicle.objects.filter(make=vehicle.make, model=vehicle.model,is_approved=True).exclude(id=vehicle.id)
     biddings = Bidding.objects.filter(vehicle=vehicle)
     highest_bid = vehicle.bidding.order_by('-amount').first()
     context = {
