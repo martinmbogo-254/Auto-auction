@@ -55,13 +55,13 @@
       <div class="col-md-3 col-sm-2">
         <div class="card car_cad">
             <div class="car_image">
-                <a href="{% url 'detail' vehicle.registration_no%}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
+                <a href="{% url 'detail' vehicle.id %}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
             </div>       
             
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="car_name"><a href="{% url 'detail' vehicle.registration_no%}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
+                        <label class="car_name"><a href="{% url 'detail' vehicle.id %}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
                     </div>
                     <div class="col-md-12">
                         <span class="car_info"> <i class="fa-solid fa-road cicon"></i> {{ vehicle.mileage }} KM • <i class="fas fa-tachometer-alt  cicon"></i> {{vehicle.engine_cc}} CC • <i class="fa-solid fa-gas-pump cicon"></i>  {{vehicle.fuel_type}}</span>
@@ -96,13 +96,13 @@
       <div class="col-md-3 col-sm-2">
         <div class="card car_cad">
             <div class="car_image">
-                <a href="{% url 'detail' vehicle.registration_no%}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
+                <a href="{% url 'detail' vehicle.id%}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
             </div>       
             
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="car_name"><a href="{% url 'detail' vehicle.registration_no%}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
+                        <label class="car_name"><a href="{% url 'detail' vehicle.id%}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
                     </div>
                     <div class="col-md-12">
                         <span class="car_info"> <i class="fa-solid fa-road cicon"></i> {{ vehicle.mileage }} KM • <i class="fas fa-tachometer-alt  cicon"></i> {{vehicle.engine_cc}} CC • <i class="fa-solid fa-gas-pump cicon"></i>  {{vehicle.fuel_type}}</span>

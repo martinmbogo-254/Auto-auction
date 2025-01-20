@@ -16,6 +16,8 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.models import Group
 from django.utils import timezone
 from datetime import timedelta
+from django.utils.text import slugify
+
 
 
 class VehicleMake(models.Model):
@@ -105,6 +107,9 @@ class Vehicle(models.Model):
     disapproved_by = models.ForeignKey(User, related_name="disapproved_vehicles", null=True, blank=True, on_delete=models.SET_NULL)
     disapproved_at = models.DateTimeField(null=True, blank=True)
     
+    # Method to generate a URL-friendly slug for the registration number
+    def slugified_registration_no(self):
+        return slugify(self.registration_no)
 
     def approve(self, user):
         """Approve the vehicle and set approved fields."""

@@ -7,92 +7,26 @@
 {% block content %}
 <div class="container-fluid details_pane">
     <head>
-   
+        <head>
+            <meta property="og:title" content="{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}" />
+            <meta property="og:description" content="Reserved Price: Ksh {{ vehicle.reserve_price|intcomma }}. View more details and images here." />
+            <meta property="og:image" content="{{ vehicle.vehicleimage_set.first.image.url|default:'https://www.bmw.co.ke/content/dam/bmw/common/topics/offers-and-services/bmw-special-sales-2020/protection-vehicle/bmw-special-sales-protection-vehicle-protection-sd-01.jpg' }}" />
+            <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+            <meta property="og:type" content="website" />
+        </head>
+        
     </head>
 <div class="jumbotron center">
     <div class="breadcram m-4">        
         <ul class="breadcrumb">
             <li><a href="{% url 'homepage'%}"><i class="fa-solid fa-house cicon"></i></a></li>
             <li><a href="{% url 'available_vehicles' %}">Vehicles</a></li>
-            <li>{{ vehicle.YOM }} {{ vehicle.model }} {{ vehicle.make }}</li>
+            <li>{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}</li>
           </ul>
     </div>
-    
-     <!--<div class="row">
-       <div class="col-md-7">
-            <div id="vehicleCarousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    {% for image in vehicle.vehicleimage_set.all %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <img src="{{ image.image.url }}" class="d-block w-100" alt="Vehicle Image">
-                    </div>
-                    {% endfor %}
-                </div>
-                <a class="carousel-control-prev" href="#vehicleCarousel" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#vehicleCarousel" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>-->
-
-            
-            <!--<div class="row mt-3">
-                {% for image in vehicle.vehicleimage_set.all %}
-                <div class="col-md-3">
-                    <img src="{{ image.image.url }}" class="img-thumbnail" alt="Vehicle Image" data-target="#vehicleCarousel" data-slide-to="{{ forloop.counter0 }}">
-                </div>
-                {% endfor %}
-            </div>-->
-        <!--</div>
-        <div class="col-md-4">
-          <h4 class="badge rounded-pill">Views: {{ vehicle.views }}</h4> 
-            <h4>YOM: {{ vehicle.YOM }}</h4>
-            <p>Make: {{ vehicle.make }}</p>
-            <p>Model: {{ vehicle.model }}</p>
-            <p>Mileage: {{ vehicle.mileage|intcomma }} km</p>
-            <p>Reserved Price: {{ vehicle.reserve_price|intcomma }} Ksh</p>
-            {% if highest_bid %}
-            <p>Highest Bid: {{ highest_bid.amount|intcomma }} Ksh</p>
-            {% else %}
-            <p>Highest Bid :No bids yet.</p>
-            {% endif %}
-           {% if user.is_authenticated %}
-            <button type="button" class="btn btn-info p-2 m-2 text-center" data-toggle="modal" data-target="#bidModal">
-                Make a bid
-            </button>
-            {% else %}
-            <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
-                Login to bid
-            </a>
-            {% endif %}
-        </div>
-    </div>
-    {% if user.is_staff %}
-    <div class="row">
-        <div class="jumbotron">
-            <h4>All Bids</h4>
-            {% for bidding in biddings %}
-            <p>{{ bidding.user.username }}</p>
-            <p>{{ bidding.amount|intcomma }}</p>
-            <p>{{ bidding.created_at }}</p>
-            {% empty %}
-            <p>No bids yet.</p>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-     
--->
-
-
-
-
-
+ 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-2" id="vehicleimgs">
         {% for image in vehicle.vehicleimage_set.all %}
         <div class="col-md-12">
             <img src="{{ image.image.url }}" class="img-thumbnail" alt="Vehicle Image" data-target="#vehicleCarousel" data-slide-to="{{ forloop.counter0 }}">
@@ -145,7 +79,7 @@
                     <i class="fa fa-gavel"></i> Place a bid
                     </button>
                     {% else %}
-                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center">
+                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
                         Login to bid
                     </a>
                     {% endif %}       
@@ -156,7 +90,7 @@
                     <i class="fa fa-gavel"></i> Place a bid
                     </button>
                     {% else %}
-                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.registration_no %}"  class="btn btn-info p-2 m-2 text-center login2bid">
+                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center login2bid">
                         Login to bid
                     </a>
                     {% endif %}
@@ -169,32 +103,42 @@
                             <a href="tel:0701856557" class="enq-call p-2 rounded mb-2 nav-link text-light"><i class="fa fa-phone"></i> Call Now</a>                       
                         </div>
 
-                        {% comment %} <a href="https://wa.me/?text={{ vehicle.registration_no }}%20{{ request.build_absolute_uri(vehicle.get_absolute_url) }}%20Image:%20{{ vehicle.file.url }}" target="_blank">Share on WhatsApp</a> {% endcomment %}
+                    
 
                     </div>
                    
                 </div>   
             </div>
-            
-        </div>
-        <div class="col-md-11 enq-share">
-            <h6>Share this:</h6>
-            <div class="row">
-                <div class="col-md-12">
-                    
-
-                   
-                
-                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
-                    target="blank">
-                     <i class="fa-brands fa-facebook icons"></i>
-                    </a>
-                    <i class="fa-brands fa-x-twitter icons"></i>
-                    <i class="fa-brands fa-linkedin icons"></i>
-                    
-                </div>               
+            <div class="col-md-12 enq-share">
+                <h6>Let Others Know:</h6>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card text-justifyrounded shadow">
+                                                <!-- WhatsApp Share -->
+                                <a class="btn btn-success  m-2" href="https://wa.me/?text={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id}}" 
+                                target="_blank" class="btn btn-outline-success m-1 nav-link text-light">
+                                <i class="fa-brands fa-whatsapp"></i> Share On WhatsApp
+                                </a>
+    
+                                <!-- Facebook Share -->
+                                <a class="btn btn-info m-2 " href="https://www.facebook.com/sharer/sharer.php?u=https://autobid.riverlong.com/vehicle/{{ vehicle.registration_number }}&quote={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id}}" 
+                                target="_blank" class="btn btn-outline-info m-1 nav-link text-light">
+                                <i class="fa-brands fa-facebook"></i> Share On Facebook
+                                </a>
+    
+                                <!-- Twitter Share -->
+                                <a class="btn btn-dark m-2" href="https://twitter.com/intent/tweet?text={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id }}" 
+                                target="_blank" class="btn btn-outline-primary m-1 nav-link text-light">
+                                <i class="fa-brands fa-twitter"></i> Share On Twitter
+                                </a>
+    
+    
+                        </div>                    
+                    </div>               
+                </div>
             </div>
         </div>
+       
   
     </div>
 </div>
@@ -262,7 +206,7 @@
             <img src="{{ similar_vehicle.file.url }}" class="card-img-top" alt="Similar Vehicle Image">
             <div class="card-body">
                 <p class="card-text">{{ similar_vehicle.YOM }} {{ similar_vehicle.make }}  {{ similar_vehicle.model }}</p>
-                <a href="{% url 'detail' similar_vehicle.registration_no %}" class="btn btn-info">View Details</a>
+                <a href="{% url 'detail' similar_vehicle.id%}" class="btn btn-info">View Details</a>
             </div>
         </div>
     </div>
@@ -287,7 +231,7 @@
                     <p>{{ vehicle.YOM }} | {{ vehicle.make }} | {{ vehicle.model }}</p>
                     <img class="card-img-top thumbnail" src="{{ vehicle.file.url }}" style="height:250px" />
                 </div>
-                <form method="POST" action="{% url 'place_bid' vehicle.registration_no %}" onsubmit="showSpinner(this)">
+                <form method="POST" action="{% url 'place_bid' vehicle.id %}" onsubmit="showSpinner(this)">
                     {% csrf_token %}
                     <div class="form-group">
                         <p>Reserve Price: Ksh {{ vehicle.reserve_price|intcomma }}</p>

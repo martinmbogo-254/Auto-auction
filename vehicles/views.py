@@ -70,8 +70,10 @@ def allvehiclespage(request):
     }
     return render (request,'vehicles/vehicles.html', context)
 
-def vehicledetail(request, registration_no):
-    vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
+def vehicledetail(request, pk):
+    vehicle = get_object_or_404(Vehicle, id=pk)
+    # Get the vehicle using the slugified registration number
+    # vehicle = get_object_or_404(Vehicle, registration_no__iexact=registration_no.replace("-", " "))
     if request.user.is_authenticated:
         # Check if the user has already viewed this vehicle
         if not VehicleView.objects.filter(vehicle=vehicle, user=request.user).exists():
@@ -93,8 +95,10 @@ def vehicledetail(request, registration_no):
     return render(request, 'vehicles/details.html', context)
 @login_required(login_url='login')
 @login_required(login_url='login')
-def place_bid(request, registration_no):
-    vehicle = get_object_or_404(Vehicle, registration_no=registration_no)
+def place_bid(request, pk):
+    vehicle = get_object_or_404(Vehicle, id=pk)
+    # Get the vehicle using the slugified registration number
+    # vehicle = get_object_or_404(Vehicle, registration_no__iexact=registration_no.replace("-", " "))
 
     if request.method == 'POST':
         amount = request.POST.get('amount')
@@ -104,24 +108,24 @@ def place_bid(request, registration_no):
             amount = int(amount)
         except (ValueError, TypeError):
             messages.error(request, 'Please enter a valid bid amount.')
-            return redirect('detail', registration_no=registration_no)
+            return redirect('detail', vehicle.id)
 
         if not accept_terms:
             messages.error(request, 'You must accept the Terms and Conditions to place a bid.')
-            return redirect('detail', registration_no=registration_no)
+            return redirect('detail', vehicle.id)
 
         # Ensure the bid is above 70% of the reserve price
         min_bid = vehicle.reserve_price * 0.7
         if amount <= min_bid:
             messages.warning(request, f'Your bid must be greater than 70% of the reserve price (Ksh {vehicle.reserve_price:,.0f}).')
-            return redirect('detail', registration_no=registration_no)
+            return redirect('detail', vehicle.id)
 
         # Check the current highest bid
         current_highest_bid = Bidding.objects.filter(vehicle=vehicle).order_by('-amount').first()
 
         if current_highest_bid and amount <= current_highest_bid.amount:
             messages.warning(request, f'Your bid must be higher than the current highest bid.')
-            return redirect('detail', registration_no=registration_no)
+            return redirect('detail', vehicle.id)
 
         # Notify the current highest bidder if they are outbid
         if current_highest_bid:
@@ -137,9 +141,9 @@ def place_bid(request, registration_no):
         # Send notification email to admin or other recipients
         send_bid_notification(bid, vehicle)
 
-        return redirect('detail', registration_no=registration_no)
+        return redirect('detail', vehicle.id)
 
-    return redirect('detail', registration_no=registration_no)
+    return redirect('detail', vehicle.id)
 
 # @login_required(login_url='login')
 # def place_bid(request, registration_no):
