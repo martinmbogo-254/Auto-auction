@@ -7,7 +7,7 @@ from django.http.response import HttpResponseRedirect
 from django.urls import reverse
 from .filters import VehicleFilter
 from django.contrib import messages
-from .forms import AuctionForm
+from .forms import AuctionForm,FeedbackForm
 from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
@@ -394,3 +394,66 @@ def auction_status_update(request):
         'active_auctions_count': active_auctions.count()
     }
     return JsonResponse(data)
+
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            # Extract form data
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            feedback = form.cleaned_data['feedback']
+
+            # Prepare email content
+            subject_user = "Thank you for your feedback!"
+            message_user = (
+                f"Hi {name},\n\n"
+                "Thank you for taking the time to share your feedback with us. "
+                "We truly value your input .\n\n"
+                "Best regards,\nYour Team"
+            )
+
+            subject_team = f"New Feedback Received from {name}"
+            message_team = (
+                f"Feedback Details:\n"
+                f"-----------------\n"
+                f"Name: {name}\n"
+                f"Email: {email}\n"
+                f"Feedback:\n{feedback}\n"
+            )
+            
+            # Sending emails
+            try:
+                # Email to the user
+                send_mail(
+                    subject_user,
+                    message_user,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email],
+                    fail_silently=False,
+                )
+
+                # Fallback email recipients if none are found in the database
+                recipient_list = list(NotificationRecipient.objects.values_list('email', flat=True))
+                if not recipient_list:
+                    recipient_list = ['fuel@riverlong.com']
+                # Email to the team
+                send_mail(
+                    subject_team,
+                    message_team,
+                    settings.DEFAULT_FROM_EMAIL,
+                    recipient_list,  # Your team email
+                    fail_silently=False,
+                )
+                # Success message for the user
+                messages.success(request, "Thank you for your feedback! We've received your message.")
+            except Exception as e:
+                messages.error(request, f"An error occurred while sending your feedback: {e}")
+
+            # Redirect to the feedback page
+            return redirect('contactus')
+    else:
+        form = FeedbackForm()
+    
+    return render(request, 'vehicles/contactus.html', {'form': form})

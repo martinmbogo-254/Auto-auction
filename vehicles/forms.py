@@ -24,3 +24,30 @@ class AuctionForm(forms.ModelForm):
         # }
     
     
+class FeedbackForm(forms.Form):
+    name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your name',
+            'required': True
+        }),
+        label='Name'
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Enter your email',
+            'required': True
+        }),
+        label='Email'
+    )
+    feedback = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'class': 'form-control',
+            'placeholder': 'Write your feedback here',
+            'rows': 5,
+            'required': True
+        }),
+        label='Feedback'
+    )

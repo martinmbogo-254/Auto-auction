@@ -5,66 +5,78 @@
 <html>
 {% block content%}
 
-
-    <div class="container contact_pane">
-        
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="wrapper1">
-                    <div class="row no-gutters">
-                        <div class="col-lg-8 col-md-7 order-md-last d-flex align-items-stretch">
-                            <div class="contact-wrap w-100 p-md-5 p-4">
-                                <h3 class="mb-4">Get in touch</h3>
-                                <div id="form-message-warning" class="mb-4"></div> 
-                          <div id="form-message-success" class="mb-4">
-                      
-                          </div>
-                                <form method="POST" id="contactForm" name="contactForm" class="contactForm">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="label" for="name">Full Name</label>
-                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6"> 
-                                            <div class="form-group">
-                                                <label class="label" for="email">Email Address</label>
-                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="subject">Subject</label>
-                                                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="label" for="#">Message</label>
-                                                <textarea name="message" class="form-control" id="message" cols="30" rows="4" placeholder="Message"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="submit" value="Send Message" class="btn btn-primary">
-                                                <div class="submitting"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-5 d-flex align-items-stretch">
-                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.9260789272316!2d36.834546473973546!3d-1.2117425355470959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f3d67f04d2473%3A0xdb2ba4ae3f80a1e1!2sRiverlong%20Tracking%20company!5e0!3m2!1sen!2ske!4v1730668618859!5m2!1sen!2ske" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                        </div>
-                    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .feedback-container {
+            /* max-width: 600px; */
+            margin: 30px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 600px;
+        }
+        .btn-submit {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+        .map-container {
+            /* max-width: 600px; */
+            margin: 20px auto;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            height: 600px;
+        }
+        .map {
+            width: 100%;
+            height: 600px;
+           
+        }
+    </style>
+</head>
+<body>
+    <div class="row m-3 p-1">
+        <div class="feedback-container col-md-6">
+           
+                <h2 class="text-center mb-4">We Value Your Feedback</h2>
+           
+            <form method="post" >
+                {% csrf_token %}
+                    {{form.as_p}}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-dark text-light btn-lg">Submit Feedback</button>
                 </div>
-            </div>
+            </form>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-container col-md-5">
+            <h4 class="text-center mt-4 mb-2">Visit Us</h4>
+            <iframe 
+                class="map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.9260789271966!2d36.83454647585793!3d-1.2117425355510365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f3d67f04d2473%3A0xdb2ba4ae3f80a1e1!2sRiverlong%20Tracking%20company!5e0!3m2!1sen!2ske!4v1737365447378!5m2!1sen!2ske"
+                allowfullscreen=""
+                loading="lazy">
+            </iframe>
         </div>
     </div>
-
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
 
 {% endblock content%}
 
