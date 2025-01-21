@@ -27,6 +27,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+import os
+from reportlab.platypus import Image
 
 # Add a description to the custom action
 @admin.register(AwardHistory)
@@ -85,7 +87,7 @@ class BidAdmin(admin.ModelAdmin):
     formatted_amount.short_description = 'Offer Amount'  # This sets the column name in the admin list view
 
     def award_bid(self, request, queryset):
-        # Ensure only one bid is selected
+    # Ensure only one bid is selected
         if queryset.count() != 1:
             self.message_user(
                 request,
@@ -95,25 +97,8 @@ class BidAdmin(admin.ModelAdmin):
             return
 
         bid = queryset.first()
-
-        # Check if the vehicle already has an awarded bid
-        # if bid.vehicle.bids.filter(awarded=True).exists():
-        #     self.message_user(
-        #         request,
-        #         f"The bid for vehicle {bid.vehicle.registration_no} has already been awarded.",
-        #         level=messages.WARNING
-        #     )
-        #     return
-
-        # if bid.awarded:
-        #     self.message_user(
-        #         request,
-        #         f"The bid for vehicle {bid.vehicle.registration_no} is already awarded.",
-        #         level=messages.WARNING
-        #     )
-        #     return
         vehicle = Vehicle.objects.select_for_update().get(pk=bid.vehicle.pk)
-                
+                    
         # Check if any bid for this vehicle is already awarded
         existing_awarded_bid = Bidding.objects.select_for_update().filter(
             vehicle=vehicle,
@@ -136,6 +121,7 @@ class BidAdmin(admin.ModelAdmin):
                     level=messages.WARNING
                 )
             return
+
         # Mark the bid as awarded
         bid.awarded = True
         bid.save()
@@ -160,43 +146,209 @@ class BidAdmin(admin.ModelAdmin):
             )
             return
 
-        # Send notification email to the user
+        # Generate offer letter as PDF
         try:
-            context = {
-                'first_name': bid.user.first_name,
-                'registration_no': bid.vehicle.registration_no,
-                'bid_details_url': 'your-bid-details-url-here',  # Replace with actual URL to bid details page
-            }
+            from reportlab.lib import colors
+            from reportlab.lib.pagesizes import letter
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+            from reportlab.lib.units import inch
+            import tempfile
+            from datetime import datetime
+            from reportlab.platypus import Image
 
-            # Render the HTML email content from the template
-            email_subject = "Bid Awarded"
-            email_message = render_to_string(
-                'vehicles/emails/bid_award.html',  # Path to the email HTML template
-                context
+
+            # Assuming you have the path to the image file
+            image_path = 'vehicles\static\images\RL-Logo.png'
+            # Create a temporary file for the PDF
+            with tempfile.NamedTemporaryFile(suffix='.pdf', delete=False) as tmp_file:
+                pdf_file_path = tmp_file.name
+
+            # Create the PDF document
+            doc = SimpleDocTemplate(
+                pdf_file_path,
+                pagesize=letter,
+                rightMargin=72,
+                leftMargin=72,
+                # topMargin=72,
+                bottomMargin=72
             )
 
-            # Send the email
-            send_mail(
-                subject=email_subject,
-                message=email_message,  # The plain-text message (optional as we're sending HTML email)
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[bid.user.email],
-                fail_silently=False,
-                html_message=email_message  # HTML content of the email
-            )
+            # Prepare the story (content) for the PDF
+            story = []
+            styles = getSampleStyleSheet()
+            
+            # Add custom style for the header
+            styles.add(ParagraphStyle(
+                name='CustomTitle',
+                parent=styles['Heading1'],
+                alignment=1,  # Center alignment
+                spaceAfter=30
+            ))
 
-            return "Notification email sent to the user."
+            # Add the header
+            # Append the image to your story
+            story.append(Image(image_path, width=100, height=100))
+            # story.append(Paragraph("Riverlong Limited", styles['CustomTitle']))
+            story.append(Paragraph("Vehicle Bid Award Letter", styles['CustomTitle']))
+            story.append(Spacer(1, 10))
+
+            # Add the date
+            story.append(Paragraph(
+                f"Date: {datetime.now().strftime('%d %B %Y')}", 
+                styles['Normal']
+            ))
+            story.append(Spacer(1, 20))
+            story.append(Paragraph(f"<b><u>RE: SALE OF MOTOR VEHICLE REG NO. {vehicle.registration_no}.</u></b>", styles['Normal']))
+            # Add client information
+            # story.append(Paragraph(f"Dear {bid.user.get_full_name()},", styles['Normal']))
+            # story.append(Paragraph(f"ID Number: {bid.user.profile.ID_number}", styles['Normal']))
+            story.append(Spacer(1, 10))
+
+            # Add main content
+            story.append(Paragraph(
+                f"<b>{bid.user.get_full_name()}</b> of ID <b>{bid.user.profile.ID_number}</b> is hereby granted the opportunity to make payment of Kes.<b> {'{:,.0f}'.format(bid.amount)}</b> "
+                f"towards purchase of vehicle <b>{vehicle.registration_no}</b>. "
+                f"Kindly but urgently deposit the above forestated amount to the below bank account.",
+                styles['Normal']
+            ))
+            story.append(Spacer(1, 20))
+
+            # Add bank details
+            story.append(Paragraph("Payment Details:", styles['Heading2']))
+            bank_data = [
+                ["Bank Name:", "NCBA Bank"],
+                ["Paybill Number:", "795902"],
+                ["Account Name:", "MYCREDIT LIMITED"],
+                ["Account Number:", "1004557111"],
+                ["Branch:", "KENYATTA AVENUE"]
+            ]
+            
+            table = Table(bank_data, colWidths=[2*inch, 3*inch])
+            table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (0, -1), colors.lightgrey),
+                ('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+                ('BACKGROUND', (1, 0), (-1, -1), colors.white),
+                ('FONTNAME', (1, 0), (-1, -1), 'Helvetica'),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black)
+            ]))
+            story.append(table)
+            story.append(Spacer(1, 20))
+
+            # Add terms and conditions
+            story.append(Paragraph("Terms and Conditions:", styles['Heading2']))
+            terms = [
+                "Payment must be made within 3 hours of receiving this letter.",
+                "The vehicle will only be released after full payment confirmation.",
+                "This offer is non-transferable."
+            ]
+            for term in terms:
+                story.append(Paragraph(f"• {term}", styles['Normal']))
+                story.append(Spacer(1, 10))
+
+            # Add footer
+            story.append(Spacer(1, 30))
+            story.append(Paragraph(
+                "For any queries, please contact us at support@riverlong.com",
+                styles['Normal']
+            ))
+            story.append(Paragraph("Riverlong Limited", styles['Normal']))
+
+            # Build the PDF
+            doc.build(story)
+
+            # [Rest of the email sending code remains the same]
+
         except Exception as e:
-            email_status = f"Notification email failed to send. Error: {e}"
+            self.message_user(
+                request,
+                f"Failed to generate the offer letter. Error: {e}",
+                level=messages.ERROR
+            )
+            return
+
+        # Send notification email with the offer letter attached
+        try:
+            from django.core.mail import EmailMultiAlternatives
+            from django.template.loader import render_to_string
+            
+            # Email subject
+            email_subject = "🎉 Auction Win Notification - Autobid by Riverlong Limited"
+            
+            # Context for email template
+            email_context = {
+                'user_name': bid.user.first_name,
+                'vehicle_reg': vehicle.registration_no,
+                'amount': '{:,.0f}'.format(bid.amount),
+                # 'site_settings': site_settings
+            }
+            
+            # Render HTML email content
+            html_content = render_to_string('vehicles/emails/bid_award.html', email_context)
+            
+            # Create plain text version for email clients that don't support HTML
+            text_content = f"""Congratulations!
+
+        Dear {bid.user.first_name},
+
+        You've won the bid for:
+        Vehicle: {vehicle.registration_no}
+        Winning Bid: KSH {'{:,.0f}'.format(bid.amount)}
+
+        The Buyer and Seller are responsible for completion of sale within 3hrs.
+
+        Please find the attached offer letter with complete details.
+
+        Best regards,
+        Riverlong Auction Team"""
+
+            # Create email message
+            email = EmailMultiAlternatives(
+                subject=email_subject,
+                body=text_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[bid.user.email]
+            )
+            
+            # Attach HTML content
+            email.attach_alternative(html_content, "text/html")
+            
+            # Attach the generated PDF
+            with open(pdf_file_path, 'rb') as pdf:
+                email.attach(
+                    f'Vehicle_Award_{vehicle.registration_no}.pdf',
+                    pdf.read(),
+                    'application/pdf'
+                )
+
+            email.send()
+
+            # Clean up the temporary PDF file
+            import os
+            os.unlink(pdf_file_path)
+
+        except Exception as e:
+            self.message_user(
+                request,
+                f"Notification email failed to send. Error: {e}",
+                level=messages.ERROR
+            )
+            return
 
         # Notify the admin about the success of the operation
         self.message_user(
             request,
-            f"The bid for vehicle {bid.vehicle.registration_no} has been successfully awarded. {email_status}",
+            f"Bid awarded successfully for vehicle {vehicle.registration_no}. Offer letter has been sent to {bid.user.email}",
             level=messages.SUCCESS
         )
 
     award_bid.short_description = "Award selected bid"
+
+
     # CSV export function (modified to include user details)
     def generate_bid_report(self, request, queryset):
         # Create the HttpResponse object with the appropriate CSV header

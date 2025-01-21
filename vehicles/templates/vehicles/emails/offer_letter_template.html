@@ -1,0 +1,117 @@
+{% extends "vehicles/base.html" %}
+{% load static %}
+{% block content %}
+
+<style>
+    .offer-letter {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px;
+    font-family: Arial, sans-serif;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+.date {
+    text-align: right;
+    margin-bottom: 30px;
+}
+
+.client-info {
+    margin-bottom: 30px;
+}
+
+.content {
+    line-height: 1.6;
+}
+
+.payment-details {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.payment-details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.payment-details td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+.payment-details td:first-child {
+    font-weight: bold;
+    width: 40%;
+}
+
+.terms {
+    margin: 30px 0;
+}
+
+.terms ol {
+    margin-left: 20px;
+}
+
+.footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #666;
+}
+</style>
+<div class="offer-letter">
+    <div class="header">
+        <img src="{% static 'images/RL-Logo.png' %}" alt="Riverlong Logo" class="logo">
+        <h1>Vehicle Bid Award Letter</h1>
+    </div>
+
+    <div class="date">{{ date }}</div>
+
+    <div class="client-info">
+        <h4><strong>RE: SALE OF MOTOR VEHICLE REG NO. {{vehicle_reg}}.</strong></h4>
+    </div>
+
+    <div class="content">
+        <p>Dear {{ client_name }},</p>
+
+        <p><strong>{{ client_name }}</strong> of ID <strong>{{ client_id}}</strong> is hereby granted the opportunity to make payment of <strong>Kes {{amount}}</strong> ,<br> towards purchase of the subject motor vehicle.
+        </p>
+        <h2>Payment Details</h2>
+        <div class="payment-details">
+            <p>Kindly but urgently deposit the above forestated amount to the below bank account:</p>
+            <table>
+                <tr><td>Bank Name:</td><td>{{ bank_details.name }}</td></tr>
+                <tr><td>Paybill Number:</td><td>{{ bank_details.paybill }}</td></tr>
+                <tr><td>Account Name:</td><td>{{ bank_details.account_name }}</td></tr>
+                <tr><td>Account Number:</td><td>{{ bank_details.account_number }}</td></tr>
+                <tr><td>Branch:</td><td>{{ bank_details.branch }}</td></tr>
+            </table>
+        </div>
+
+        <div class="terms">
+            <h2>Terms and Conditions</h2>
+            <ol>
+                <li>Payment must be made within 3 hours of receiving this letter.</li>
+                <li>The vehicle will only be released after full payment confirmation.</li>
+                <li>This offer is non-transferable.</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>For any queries, please contact us at support@mycredit.co.ke</p>
+        <p>MyCredit Limited</p>
+    </div>
+</div>
+{% endblock %}
