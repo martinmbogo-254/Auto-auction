@@ -145,6 +145,59 @@ class BidAdmin(admin.ModelAdmin):
                 level=messages.ERROR
             )
             return
+        try:
+            from django.core.mail import EmailMultiAlternatives
+            from django.template.loader import render_to_string
+            from django.conf import settings
+
+            # Email subject
+            admin_email_subject = "🚨  Bid Award Notification - Autobid by Riverlong Limited"
+            
+            # Context for email template
+            admin_email_context = {
+                'bidder_name': bid.user.first_name,
+                'bidder_email': bid.user.email,
+                'vehicle_reg': vehicle.registration_no,
+                'amount': '{:,.0f}'.format(bid.amount),
+
+            }
+            
+            # Render HTML email content
+            admin_html_content = render_to_string('vehicles/emails/bidaward_admins.html', admin_email_context)
+            
+            # Create plain text version for email clients that don't support HTML
+            admin_text_content = f"""Auction Bid Award Notification!
+
+                Bid Details:
+                Bidder: {bid.user.first_name}
+                Vehicle: {vehicle.registration_no}
+                Winning Bid: KSH {'{:,.0f}'.format(bid.amount)}
+
+                Please review and process the awarded bid."""
+
+            # Get admin emails (configure in settings)
+            admin_emails = settings.ADMIN_NOTIFICATION_EMAILS
+
+            # Create email message
+            admin_email = EmailMultiAlternatives(
+                subject=admin_email_subject,
+                body=admin_text_content,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=admin_emails
+            )
+            
+            # Attach HTML content
+            admin_email.attach_alternative(admin_html_content, "text/html")
+
+            # Send admin notification email
+            admin_email.send()
+
+        except Exception as e:
+            self.message_user(
+                request,
+                f"Admin notification email failed to send. Error: {e}",
+                level=messages.WARNING
+            )
 
         # Generate offer letter as PDF
         try:
@@ -277,7 +330,7 @@ class BidAdmin(admin.ModelAdmin):
             from django.template.loader import render_to_string
             
             # Email subject
-            email_subject = "🎉 Auction Win Notification - Autobid by Riverlong Limited"
+            email_subject = "🎉 Bid Win Notification - Autobid by Riverlong Limited"
             
             # Context for email template
             email_context = {

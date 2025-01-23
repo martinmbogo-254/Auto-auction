@@ -165,6 +165,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 # Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp-mail.outlook.com'
+# EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
@@ -172,6 +173,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 CKEDITOR_UPLOAD_PATH = "uploads/"  # Folder where uploaded files will go
 CKEDITOR_IMAGE_BACKEND = 'pillow'  # Required for image processing (pillow is a common dependency)
+ADMIN_NOTIFICATION_EMAILS = ['mmburu@riverlong.com', 'mbogomartin25@gmail.com']
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'Full',  # Use full toolbar (you can customize this)

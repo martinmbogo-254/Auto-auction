@@ -38,7 +38,28 @@
 
 <body> 
   <style>
-    
+      /* Spinner style */
+    .loader {
+      border: 5px solid #f3f3f3; /* Light grey */
+      border-top: 5px solid black; /* Blue */
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 2s linear infinite;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin-top: -40px; /* Adjust for centering */
+      margin-left: -40px; /* Adjust for centering */
+      z-index: 9999; /* Keep the spinner on top */
+    }
+
+    /* Animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+      
 
 </style>
       <div class="sticky-top">
@@ -144,6 +165,8 @@
   </div>
 </div>
 
+<div id="loader" class="loader"></div>
+
 <!-- JavaScript to Trigger Modal -->
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -152,6 +175,16 @@
       messageModal.show();
       {% endif %}
   });
+    // Show the spinner on page load
+  document.addEventListener('DOMContentLoaded', function () {
+    document.getElementById('loader').style.display = 'block';
+  });
+
+  // Hide the spinner once the page has fully loaded
+  window.onload = function () {
+    document.getElementById('loader').style.display = 'none';
+  };
+
 </script>
 
         <body class="bg-light">   
