@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porsche Vehicle Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-4" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="#" class="inline-flex items-center text-sm text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        <a href="#" class="ml-1 text-sm text-gray-700 hover:text-gray-900 md:ml-2">Vehicles</a>
+                    </div>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Porsche 911</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Image Gallery -->
+            <div class="md:col-span-2">
+                <div class="relative">
+                    <div class="w-full overflow-hidden rounded-lg">
+                        <img src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" alt="Porsche 911" class="w-full h-auto object-cover">
+                    </div>
+                    <div class="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4">
+                        <button class="bg-gray-800 text-white p-2 rounded-full opacity-75 hover:opacity-100">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="bg-gray-800 text-white p-2 rounded-full opacity-75 hover:opacity-100">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Thumbnail Gallery -->
+                <div class="flex space-x-2 mt-4">
+                    <img src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" class="w-20 h-20 object-cover rounded cursor-pointer">
+                    <img src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" class="w-20 h-20 object-cover rounded cursor-pointer">
+                </div>
+            </div>
+
+            <!-- Vehicle Details Sidebar -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">Porsche 911 Carrera</h2>
+                    <span class="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded">
+                        Views: 1,234
+                    </span>
+                </div>
+
+                <div class="space-y-2 mb-4">
+                    <p class="text-gray-600">Yard: Porsche Dealership</p>
+                    <p class="text-gray-600">Automatic | 3.0L Turbo</p>
+                </div>
+
+                <div class="space-y-4">
+                    <button class="w-full bg-yellow-500 text-white py-2 rounded hover:bg-yellow-600 transition">
+                        <i class="fas fa-gavel mr-2"></i>Place a Bid
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="#" class="bg-green-500 text-white py-2 rounded text-center hover:bg-green-600 transition">
+                            <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                        </a>
+                        <a href="#" class="bg-blue-500 text-white py-2 rounded text-center hover:bg-blue-600 transition">
+                            <i class="fas fa-phone mr-2"></i>Call Now
+                        </a>
+                    </div>
+
+                    <div class="mt-4">
+                        <h6 class="font-semibold mb-2">Share This Vehicle</h6>
+                        <div class="flex space-x-2">
+                            <a href="#" class="bg-green-500 text-white p-2 rounded-full hover:bg-green-600">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            <a href="#" class="bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="#" class="bg-black text-white p-2 rounded-full hover:bg-gray-800">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="bg-white mt-6 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold mb-4">Additional Information</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <table class="w-full">
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-car mr-2"></i>Model</td>
+                            <td class="py-2">911 Carrera</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-car mr-2"></i>Body</td>
+                            <td class="py-2">Coupe</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <table class="w-full">
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-road mr-2"></i>Mileage</td>
+                            <td class="py-2">15,000 Km</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-tachometer-alt mr-2"></i>Engine</td>
+                            <td class="py-2">3.0L Turbo</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h4 class="font-semibold mb-2">Vehicle Description</h4>
+                <p class="text-gray-700">The Porsche 911 Carrera represents the pinnacle of sports car engineering. With its iconic design, powerful 3.0L turbocharged engine, and precision handling, this vehicle offers an unparalleled driving experience.</p>
+            </div>
+        </div>
+
+        <!-- Similar Deals -->
+        <div class="mt-6">
+            <h3 class="text-xl font-semibold mb-4">Similar Deals</h3>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <p class="font-semibold">Porsche 718 Cayman</p>
+                        <a href="#" class="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+                <!-- Additional similar deals -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autobid</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="bg-gray-900 text-white py-2">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center px-4 my-3">
+          <!-- Left Side: Email and Phone Number -->
+          <div class="flex space-x-6 text-sm my-3">
+            <span class="flex items-center">
+              <i class="fa-solid fa-envelope mr-2"></i> <!-- Envelope Icon -->
+              support@example.com
+            </span>
+            <span class="flex items-center">
+              <i class="fa-solid fa-phone-alt mr-2"></i> <!-- Phone Icon -->
+              +123 456 7890
+            </span>
+          </div>
+          
+          <!-- Right Side: Login and Register Buttons -->
+          <div class="flex space-x-4 my-3">
+            <a href="login.html" class=" bg-red-600 text-white hover:text-gray-300 text-sm px-4 py-2 rounded-md text-sm font-semibold">Login</a>
+            <a href="{% url 'register' %}" class="bg-blue-800 text-white hover:bg-black-600 text-white px-4 py-2 rounded-md text-sm font-semibold">Register</a>
+          </div>
+        </div>
+      </header>
+      
+    <nav class="bg-white p-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+          <div class="flex items-center">
+            <!-- Logo or Brand Name -->
+            <a href="#" class="text-black-800 text-2xl font-bold">AutoBid</a>
+          </div>
+          
+          <!-- Desktop Menu -->
+          <div class="hidden md:flex space-x-6">
+            <a href="homepage.html" class="text-black hover:text-red-600">Home</a>
+            <a href="vehiclespage.html" class="text-black hover:text-red-600">Vehicles</a>
+            <a href="contact.html" class="text-black hover:text-red-600">Contact Us</a>
+            <a href="about.html" class="text-black hover:text-red-600">About Us</a>
+          </div>
+      
+          <!-- Mobile Menu Button -->
+          <div class="md:hidden flex items-center">
+            <button id="menu-toggle" class="text-black=800 focus:outline-none">
+              <i class="fa-solid fa-bars"></i> <!-- Hamburger Icon -->
+            </button>
+          </div>
+        </div>
+      
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white text-black px-4 py-2 space-y-4">
+          <a href="{% url 'home' %}" class="block">Home</a>
+          <a href="{% url 'available_vehicles' %}" class="block">Vehicles</a>
+          <a href="{% url 'contactus' %}" class="block">Contact Us</a>
+          <a href="{% url 'about' %}" class="block">About Us</a>
+        </div>
+      </nav>
+  
+ 
+<footer class="bg-gray-900 text-white py-12">
+  <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
+      <div>
+          <h4 class="text-xl font-bold mb-4">About Riverlong</h4>
+          <p>Innovative telematics and vehicle auction solutions in East Africa</p>
+      </div>
+      <div>
+          <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+              <li><a href="#" class="hover:text-red-500">Home</a></li>
+              <li><a href="#" class="hover:text-red-500">Services</a></li>
+              <li><a href="#" class="hover:text-red-500">Contact</a></li>
+          </ul>
+      </div>
+      <div>
+          <h4 class="text-xl font-bold mb-4">Contact</h4>
+          <p>Email: info@riverlong.com</p>
+          <p>Phone: +254 700 000 000</p>
+      </div>
+  </div>
+</footer>
+
+</body>
+<!-- Tailwind CSS for Mobile Responsive -->
+<script>
+    // JavaScript to toggle mobile menu visibility
+    const menuToggleButton = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+  
+    menuToggleButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+</html>

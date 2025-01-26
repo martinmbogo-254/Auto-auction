@@ -33,7 +33,7 @@ from reportlab.platypus import Image
 # Add a description to the custom action
 @admin.register(AwardHistory)
 class AwardHistoryAdmin(admin.ModelAdmin):
-    list_display = ('vehicle', 'user_full_name', 'user_email', 'amount', 'awarded_at')
+    list_display = ('vehicle', 'user_full_name', 'user_email', 'amount', 'awarded_by','awarded_at')
     search_fields = ('vehicle__registration_no', 'user__username', 'user__email')
     list_filter = ('awarded_at',)
 
@@ -45,6 +45,10 @@ class AwardHistoryAdmin(admin.ModelAdmin):
         return obj.user.email
     user_email.short_description = 'User Email'
 
+    def awarded_by(self, obj):
+        return obj.user.email
+    awarded_by.short_description = 'Awarded By'
+
     def amount(self, obj):
         return f"Ksh {obj.amount:,}"
     amount.short_description = 'Amount'
@@ -55,7 +59,7 @@ class AwardHistoryAdmin(admin.ModelAdmin):
 @admin.register(Bidding)
 class BidAdmin(admin.ModelAdmin):
     search_fields = ('vehicle__registration_no', 'user__username')
-    list_display = ('vehicle', 'vehicle_details','vehicle_reserveprice', 'formatted_amount','user_email','awarded' , 'bid_time')
+    list_display = ('vehicle', 'vehicle_details','vehicle_reserveprice', 'formatted_amount','user_email','user_phonenumber','awarded' , 'bid_time')
     actions = ['generate_bid_report','award_bid']
 
     # Method to extract user's full name (first_name + last_name)
@@ -79,6 +83,12 @@ class BidAdmin(admin.ModelAdmin):
         return obj.user.email
 
     user_email.short_description = 'User Email'  # This sets the column name in the admin list view
+
+    # Method to extract user's email
+    def user_phonenumber(self, obj):
+        return obj.user.profile.phone_number
+
+    user_phonenumber.short_description = 'User phone number'  # This sets the column name in the admin list view
 
     # Method to format the 'amount' field with thousands separator
     def formatted_amount(self, obj):
@@ -136,7 +146,8 @@ class BidAdmin(admin.ModelAdmin):
                 user=bid.user,
                 vehicle=bid.vehicle,
                 amount=bid.amount,
-                awarded_at=bid.bid_time
+                awarded_at=bid.bid_time,
+                awarded_by=request.user
             )
         except Exception as e:
             self.message_user(
@@ -152,10 +163,11 @@ class BidAdmin(admin.ModelAdmin):
 
             # Email subject
             admin_email_subject = "🚨  Bid Award Notification - Autobid by Riverlong Limited"
+            # bidder_full_name = bid.first_name
             
             # Context for email template
             admin_email_context = {
-                'bidder_name': bid.user.first_name,
+                'bidder_name': bid.user.get_full_name(),
                 'bidder_email': bid.user.email,
                 'vehicle_reg': vehicle.registration_no,
                 'amount': '{:,.0f}'.format(bid.amount),
@@ -306,7 +318,7 @@ class BidAdmin(admin.ModelAdmin):
             # Add footer
             story.append(Spacer(1, 30))
             story.append(Paragraph(
-                "For any queries, please contact us at support@riverlong.com",
+                "For any queries, please contact us at autobid@riverlong.com",
                 styles['Normal']
             ))
             story.append(Paragraph("Riverlong Limited", styles['Normal']))

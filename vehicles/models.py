@@ -217,6 +217,7 @@ class AwardHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
     awarded_at = models.DateTimeField(auto_now_add=True)
+    awarded_by = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='awarder')
 
     def __str__(self):
         return f"Awarded {self.vehicle.registration_no} to {self.user.username} at Ksh {self.amount}"
