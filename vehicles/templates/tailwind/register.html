@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RVAS REGISTER</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+    <div class="min-h-screen flex items-center justify-center px-4 py-8">
+        <div class="max-w-2xl w-full bg-white p-6 rounded-lg shadow-lg">
+            <h4 class="text-center text-2xl font-bold text-gray-800 mb-6">REGISTER</h4>
+
+            <!-- Example error messages -->
+            <div class="alert alert-danger mb-4 text-red-500">
+                <p>Invalid username or password.</p>
+            </div>
+
+            <form method="POST" class="space-y-6">
+                
+                <!-- First and Last Name -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="first_name" class="text-sm text-gray-600">First Name</label>
+                        <input type="text" id="first_name" name="first_name" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name" class="text-sm text-gray-600">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                    </div>
+                </div>
+
+                <!-- Username and Location -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="username" class="text-sm text-gray-600">Username</label>
+                        <input type="text" id="username" name="username" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location" class="text-sm text-gray-600">Location</label>
+                        <input type="text" id="location" name="location" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                    </div>
+                </div>
+
+                <!-- ID and Phone Number -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="ID_number" class="text-sm text-gray-600">ID Number</label>
+                        <input type="text" id="ID_number" name="ID_number" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number" class="text-sm text-gray-600">Phone Number</label>
+                        <input type="text" id="phone_number" name="phone_number" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                    </div>
+                </div>
+
+                <!-- Password fields -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group relative">
+                        <label for="password1" class="text-sm text-gray-600">Password</label>
+                        <input type="password" id="password1" name="password1" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                        <span class="absolute right-4 top-10 cursor-pointer" onclick="togglePassword('password1')">
+                            <i class="fa-solid fa-eye" id="togglePassword1"></i>
+                        </span>
+                    </div>
+                    <div class="form-group relative">
+                        <label for="password2" class="text-sm text-gray-600">Confirm Password</label>
+                        <input type="password" id="password2" name="password2" class="form-input w-full p-2 border border-gray-300 rounded-md" required>
+                        <span class="absolute right-4 top-10 cursor-pointer" onclick="togglePassword('password2')">
+                            <i class="fa-solid fa-eye" id="togglePassword2"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Accept Terms and Conditions -->
+                <div class="flex items-center mb-4">
+                    <input type="checkbox" id="acceptTerms" name="accept_terms" class="form-check-input" required>
+                    <label for="acceptTerms" class="text-sm text-gray-600 ml-2">I accept the <a href="terms_url" class="text-blue-600">Terms and Conditions</a></label>
+                </div>
+
+                <!-- Register Button -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="w-full py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                        Register
+                    </button>
+                </div>
+
+                <!-- Login Link -->
+                <div class="text-center mt-3">
+                    <p class="text-sm">Already have an account? <a href="login.html" class="text-blue-600 hover:text-blue-700">Login</a></p>
+                </div>
+            </form>
+
+            <div class="text-center text-xs text-gray-500 mt-6">
+                <p>&copy; 2024 <a href="https://www.riverlong.com" class="text-blue-600 hover:text-blue-700">Riverlong Limited</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePassword(fieldName) {
+            const passwordField = document.getElementById(fieldName);
+            const toggleIcon = document.getElementById('toggle' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1));
+            
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django_social_share',
     'ckeditor',
     'ckeditor_uploader', 
+    "crispy_tailwind",
+
 ]
 
 MIDDLEWARE = [
@@ -153,10 +155,11 @@ LOGOUT_URL ='homepage'
 # LOGIN_URL = 'login'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # AUTH_USER_MODEL = 'vehicles.CustomUser'
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+# CRISPY_TEMPLATE_PACK = "bootstrap5"
 # AUTH_USER_MODEL = 'users.CustomUser'
-
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 # Security
 SECRET_KEY = config('SECRET_KEY')

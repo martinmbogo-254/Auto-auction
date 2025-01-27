@@ -1,9 +1,9 @@
-{% extends 'vehicles/base.html'%}
+{% extends 'vehicles/base.html' %}
 {% load static %}
 {% load humanize %}
 
 <html>
-{% block content%}
+{% block content %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,73 +11,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .feedback-container {
-            /* max-width: 600px; */
-            margin: 30px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 600px;
-        }
-        .btn-submit {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-submit:hover {
-            background-color: #0056b3;
-        }
-        .map-container {
-            /* max-width: 600px; */
-            margin: 20px auto;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            height: 600px;
-        }
-        .map {
-            width: 100%;
-            height: 600px;
-           
-        }
-    </style>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <div class="row m-3 p-1">
-        <div class="feedback-container col-md-6">
-           
-                <h2 class="text-center mb-4">We Value Your Feedback</h2>
-           
-            <form method="post" >
-                {% csrf_token %}
-                    {{form.as_p}}
-                <div class="text-center">
-                    <button type="submit" class="btn btn-dark text-light btn-lg">Submit Feedback</button>
-                </div>
-            </form>
-        </div>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Feedback Form -->
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">We Value Your Feedback</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="space-y-6">
+                        <!-- Name Field -->
+                        <div>
+                            <label for="{{ form.name.id_for_label }}" class="block text-gray-700 font-semibold mb-2">
+                                {{ form.name.label }}
+                            </label>
+                            <input
+                                type="text"
+                                name="{{ form.name.name }}"
+                                id="{{ form.name.id_for_label }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="{{ form.name.field.widget.attrs.placeholder }}"
+                                required
+                            >
+                        </div>
 
-        <!-- Map Section -->
-        <div class="map-container col-md-5">
-            <h4 class="text-center mt-4 mb-2">Visit Us</h4>
-            <iframe 
-                class="map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.9260789271966!2d36.83454647585793!3d-1.2117425355510365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f3d67f04d2473%3A0xdb2ba4ae3f80a1e1!2sRiverlong%20Tracking%20company!5e0!3m2!1sen!2ske!4v1737365447378!5m2!1sen!2ske"
-                allowfullscreen=""
-                loading="lazy">
-            </iframe>
+                        <!-- Email Field -->
+                        <div>
+                            <label for="{{ form.email.id_for_label }}" class="block text-gray-700 font-semibold mb-2">
+                                {{ form.email.label }}
+                            </label>
+                            <input
+                                type="email"
+                                name="{{ form.email.name }}"
+                                id="{{ form.email.id_for_label }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="{{ form.email.field.widget.attrs.placeholder }}"
+                                required
+                            >
+                        </div>
+
+                        <!-- Feedback Field -->
+                        <div>
+                            <label for="{{ form.feedback.id_for_label }}" class="block text-gray-700 font-semibold mb-2">
+                                {{ form.feedback.label }}
+                            </label>
+                            <textarea
+                                name="{{ form.feedback.name }}"
+                                id="{{ form.feedback.id_for_label }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                placeholder="{{ form.feedback.field.widget.attrs.placeholder }}"
+                                rows="5"
+                                required
+                            ></textarea>
+                        </div>
+                    </div>
+                    <div class="text-center mt-8">
+                        <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-all">
+                            Submit Feedback
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Map Section -->
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h4 class="text-2xl font-bold text-center text-gray-800 mb-4">Visit Us</h4>
+                <div class="rounded-lg overflow-hidden shadow-md">
+                    <iframe 
+                        class="w-full h-[500px]"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.9260789271966!2d36.83454647585793!3d-1.2117425355510365!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f3d67f04d2473%3A0xdb2ba4ae3f80a1e1!2sRiverlong%20Tracking%20company!5e0!3m2!1sen!2ske!4v1737365447378!5m2!1sen!2ske"
+                        allowfullscreen=""
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
-{% endblock content%}
-
+{% endblock content %}
 </html>

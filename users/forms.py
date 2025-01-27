@@ -23,23 +23,27 @@ class CustomLoginForm(forms.Form):
     class Meta:
         fields = ['username', 'password']
 
+
+
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2','accept_terms']
-      
-        
+        fields = ['first_name', 'last_name', 'username', 'email', 'password1', 'password2', 'accept_terms']
+
     accept_terms = forms.BooleanField(
         required=True,
         label="I accept the Terms and Conditions",
-        error_messages={'required': "You must accept the Terms and Conditions to register."}
+        error_messages={'required': "You must accept the Terms and Conditions to register."},
+        widget=forms.CheckboxInput(attrs={
+            'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded'
+        })
     )
     first_name = forms.CharField(
         max_length=30,
         required=True,
         widget=forms.TextInput(attrs={
             'placeholder': 'Enter your first name',
-            'class': 'form-control'
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500'
         })
     )
     last_name = forms.CharField(
@@ -47,39 +51,34 @@ class UserRegistrationForm(UserCreationForm):
         required=True,
         widget=forms.TextInput(attrs={
             'placeholder': 'Enter your last name',
-            'class': 'form-control'
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500'
         })
     )
-    # email = forms.EmailField(
-    #     max_length=254,
-    #     required=True,
-    #     widget=forms.EmailInput(attrs={
-    #         'placeholder': 'Enter your email',
-    #         'class': 'form-control'
-    #     })
-    # )
-    username = forms.EmailField(  # Changed to EmailField
+    username = forms.EmailField(
         widget=forms.EmailInput(attrs={
             'placeholder': 'Enter your email',
-            'class': 'form-control'
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500'
         })
     )
-    # password1 = forms.CharField(
-    #     widget=forms.PasswordInput(attrs={
-         
-    #         'placeholder': 'Enter your password',
-    #         'class': 'form-control'
-    #     })
-    # )
-    # password2 = forms.CharField(
-    #     widget=forms.PasswordInput(attrs={
-        
-    #         'placeholder': 'Confirm your password',
-    #         'class': 'form-control'
-    #     })
-    # )
-
-   
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'placeholder': 'Enter your email',
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500'
+        })
+    )
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Enter your password',
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500'
+        })
+    )
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'Confirm your password',
+            'class': 'block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500'
+        })
+    )
 
     def save(self, commit=True):
         user = super().save(commit=False)

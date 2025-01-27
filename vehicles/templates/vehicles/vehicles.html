@@ -1,165 +1,134 @@
-{% extends 'vehicles/base.html'%}
-{% load crispy_forms_tags%}
-{% load static %}
+{% extends 'vehicles/base.html' %}
 {% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoBid - Vehicle Auction Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
 
-<html>
-{% block content%}
-<div class="container-fluid vehicles_pane">
-<div class="jumbotron center">
-    <form method="get" class="form-inline my-2 my-lg-0" >
-    
-        <div class="form-row p-2">
-            <div class="form-group p-1 m-2 ">
-                {{ vehiclefilter.form|crispy }}
-            </div>
-            
+{% block content %}
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <div class="container mx-auto px-4 py-12 flex-grow">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">Available Vehicles</h1>
+            <p class="text-gray-600">Browse our curated selection of vehicles ready for auction</p>
         </div>
-        <!-- <div class="row">
-            <div class="col-md-6">
-                {{vehiclefilter.form.make|as_crispy_field}}
-            </div>
-            <div class="col-md-6">
-                {{vehiclefilter.form.model|as_crispy_field}}
-            </div>
-            <div class="col-md-4">
-                {{vehiclefilter.form.fuel_type|as_crispy_field}}
-            </div>
-            <div class="col-md-4">
-                {{vehiclefilter.form.engine_cc|as_crispy_field}}
-            </div>
-            <div class="col-md-4">
-                {{vehiclefilter.form.YOM|as_crispy_field}}
-            </div>
-            <div class="col-md-4">
-                {{vehiclefilter.form.body_type|as_crispy_field}}
-            </div>
-        </div> -->
-        <button type="submit" class="btn btn-info mt-2 ml-2">Filter</button>
-        <a href="{% url 'available_vehicles' %}" class="btn btn-secondary mt-2 ml-2">Clear Filters</a>
 
-    </form>
-      
-    <div class="container-fluid ">
-        <div class="row">
-            <ul class="breadcrumb">
-                <!-- <li><a href="{% url 'homepage'%}">Home</a></li> -->
-                <li>  {{on_salecount}} Vehicles for sale</li>
-              </ul>
-    
-            {% if vehicles_on_sale %}
-          {% for vehicle in vehicles_on_sale  %}
-    
-          <div class="col-md-2 col-sm-2 ">
-            <div class="card car_cad mx-8">
-                <div class="car_image">
-                    <a href="{% url 'detail' vehicle.id %}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
-                </div>       
+        <div class="mb-8 max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <select id="make-filter" class="p-2 border rounded">
+                    <option value="">All Makes</option>
+                    {% for make in makes %}
+                        <option value="{{ make }}">{{ make }}</option>
+                    {% endfor %}
+                </select>
+
+                <select id="model-filter" class="p-2 border rounded">
+                    <option value="">All Models</option>
+                    {% for model in models %}
+                        <option value="{{ model }}">{{ model }}</option>
+                    {% endfor %}
+                </select>
+
+                <select id="yom-filter" class="p-2 border rounded">
+                    <option value="">Year of Manufacture</option>
+                    {% for year in years_of_manufacture %}
+                        <option value="{{ year }}">{{ year }}</option>
+                    {% endfor %}
+                </select>
+
+                <select id="transmission-filter" class="p-2 border rounded">
+                    <option value="">All Transmissions</option>
+                    {% for value, label in transmissions %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
                 
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="car_name"><a href="{% url 'detail' vehicle.id %}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
-                        </div>
-                        <div class="col-md-12">
-                            <span class="car_info"> <i class="fa-solid fa-road cicon"></i> {{ vehicle.mileage }} KM • <i class="fas fa-tachometer-alt  cicon"></i> {{vehicle.engine_cc}} CC • <i class="fa-solid fa-gas-pump cicon"></i>  {{vehicle.fuel_type}}</span>
-                        </div>
-                        <div class="col-md-12">
-                            <hr/>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">Ksh {{vehicle.reserve_price|intcomma}}</label>
-                        </div>
-                     
-                    </div>
-                    
-                </div>
-              </div>
-              
-          </div>
-          {% endfor %}
-            <!-- Pagination controls -->
-            <div class="pagination">
-                <span class="step-links">
-                    {% if vehicles_on_sale.has_previous %}
-                        <a class="btn btn-outline-dark" href="?page=1">First</a>
-                        <a class="btn btn-dark" href="?page={{ vehicles_on_sale.previous_page_number }}">Previous</a>
-                    {% endif %}
-    
-                    <span class="current">
-                        Page {{ vehicles_on_sale.number }} of {{ vehicles_on_sale.paginator.num_pages }}
-                    </span>
-    
-                    {% if vehicles_on_sale.has_next %}
-                        <a class="btn btn-dark" href="?page={{ vehicles_on_sale.next_page_number }}">Next</a>
-                        <a class="btn btn-outline-dark" href="?page={{ vehicles_on_sale.paginator.num_pages }}">Last</a>
-                    {% endif %}
-                </span>
             </div>
-          
-          {% else %}
-          <div class="jumbotron bg-info text-center">
-            <p class="text-light">Sorry, No vehicles available.</p>
-          </div>
-          
-          {% endif %}
-          <div class="row">
-            <!-- <ul class="breadcrumb">
-               
-                <li>{{on_auctioncount}}  Vehicles on Auctions</li>
-              </ul> -->
-            {% if vehicles_on_auction %}
-          {% for vehicle in vehicles_on_auction %}
-         
-          
-          <div class="col-md-3 col-sm-2">
-            <div class="card car_cad">
-                <div class="car_image">
-                    <a href="{% url 'detail' vehicle.id%}"><img class="car_img" src="{{vehicle.file.url}}"  /></a>
-                </div>       
-                
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <label class="car_name"><a href="{% url 'detail' vehicle.id%}">{{vehicle.YOM}} • {{vehicle.make}} • {{vehicle.model}}</a></label>
-                        </div>
-                        <div class="col-md-12">
-                            <span class="car_info"> <i class="fa-solid fa-road cicon"></i> {{ vehicle.mileage }} KM • <i class="fas fa-tachometer-alt  cicon"></i> {{vehicle.engine_cc}} CC • <i class="fa-solid fa-gas-pump cicon"></i>  {{vehicle.fuel_type}}</span>
-                        </div>
-                        <div class="col-md-12">
-                            <hr/>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="">Ksh {{vehicle.reserve_price|intcomma}}</label>
-                        </div>
-                     
-                    </div>
-                    
-                </div>
-              </div>
-          </div>
-          {% endfor %}
-           {% else %}
-           <!-- <div class="jumbotron bg-info text-center">
-            <p class="text-dark">No vehicles on auction currently.</p>
-          </div> -->
-           {% endif %}
-    
-          
-        
-    
         </div>
-    </div>
-     
-        
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8" id="vehicle-grid">
+            {% for vehicle in vehicles_on_sale %}
+            <div class="vehicle-card bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105" 
+                data-make="{{ vehicle.make }}" 
+                data-model="{{ vehicle.model }}" 
+                data-yom="{{ vehicle.YOM }}" 
+                data-transmission="{{ vehicle.transmission }}">
+               <a href="{% url 'detail' vehicle.id %}"><img src="{{ vehicle.file.url }}" alt="Porsche Vehicle" class="w-full h-48 object-cover"></a> 
+                <div class="p-6">
+                    <a href="{% url 'detail' vehicle.id %}">
+                    <h3 class="text-xl font-bold mb-2">{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}</h3>
    
+                    </a>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-gray-600">Mileage: {{ vehicle.mileage|intcomma }} km</span>
+                        <span class="status text-green-600 font-bold">{{ vehicle.status }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-bold text-red-500">{{ vehicle.reserve_price|intcomma }} KSH</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
 
+        <div id="no-results" class="hidden text-center mt-8">
+            <p class="text-gray-600 text-xl">No vehicles match your search criteria</p>
+        </div>
     </div>
-  
-</div>
-</div>
-</div>
 
-{% endblock content%}
+    
 
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const makeFilter = document.getElementById('make-filter');
+        const modelFilter = document.getElementById('model-filter');
+        const yomFilter = document.getElementById('yom-filter');
+        const transmissionFilter = document.getElementById('transmission-filter');
+        const vehicleCards = document.querySelectorAll('.vehicle-card');
+        const noResultsMessage = document.getElementById('no-results');
+
+        function filterVehicles() {
+            const makeValue = makeFilter.value.toLowerCase();
+            const modelValue = modelFilter.value.toLowerCase();
+            const yomValue = yomFilter.value.toLowerCase();
+            const transmissionValue = transmissionFilter.value.toLowerCase();
+
+            let visibleCards = 0;
+
+            vehicleCards.forEach(card => {
+                const make = card.dataset.make.toLowerCase();
+                const model = card.dataset.model.toLowerCase();
+                const yom = card.dataset.yom.toLowerCase();
+                const transmission = card.dataset.transmission.toLowerCase();
+
+                const matchMake = !makeValue || make === makeValue;
+                const matchModel = !modelValue || model === modelValue;
+                const matchYOM = !yomValue || yom === yomValue;
+                const matchTransmission = !transmissionValue || transmission === transmissionValue;
+
+                if (matchMake && matchModel && matchYOM && matchTransmission) {
+                    card.style.display = 'block';
+                    visibleCards++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            noResultsMessage.classList.toggle('hidden', visibleCards > 0);
+        }
+
+        makeFilter.addEventListener('change', filterVehicles);
+        modelFilter.addEventListener('change', filterVehicles);
+        yomFilter.addEventListener('change', filterVehicles);
+        transmissionFilter.addEventListener('change', filterVehicles);
+    });
+    </script>
+</body>
+{% endblock content %}
+{% include 'vehicles/footer.html' %}
 </html>

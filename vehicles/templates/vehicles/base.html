@@ -4,16 +4,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Riverlong | Autobid</title>
 
-    <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %} ">
-    <link rel="stylesheet" href="{% static 'vehicles/css/footer.css' %} ">
-    <script src="{% static 'vehicles/js/index.js'%}"></script>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-    <!--<link rel="stylesheet" href="{% static 'vehicles/css/details_style1.css' %} ">-->
-    <meta charset="UTF-8">
-    <title>Vehicle {{ vehicle.registration_no }}</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg" href="{% static 'images/logo-autobid.svg' %}">
 
     <!-- Open Graph meta tags for sharing -->
     <meta property="og:type" content="website">
@@ -21,202 +22,172 @@
     <meta property="og:description" content="Check out this vehicle: {{ vehicle.registration_no }}!">
     <meta property="og:image" content="{{ vehicle.image.url }}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
+</head>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> -->
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    
-    <link rel="icon" type="image/svg" href="{% static 'images/logo-autobid.svg' %}">
-    <title>Riverlong | Autobid</title>
-  </head>
-
-<body> 
-  <style>
-      /* Spinner style */
-    .loader {
-      border: 5px solid #f3f3f3; /* Light grey */
-      border-top: 5px solid black; /* Blue */
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 2s linear infinite;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      margin-top: -40px; /* Adjust for centering */
-      margin-left: -40px; /* Adjust for centering */
-      z-index: 9999; /* Keep the spinner on top */
-    }
-
-    /* Animation */
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-      
-
-</style>
-      <div class="sticky-top">
-        <div class="row align-items-center sticky-top" id="navmini">
-          <!-- Left Side - Contact Info -->
-          <div class="col-10 col-md-5 d-flex align-items-center p-2 ml-5">
-            <div class="me-3 mt-2 ml-2">
-              <a href="tel:+2540701856557" class="nav-link text-light">
-                <i class="fa-solid fa-phone mr-2"></i>
-                <span>0701856557</span>
-              </a>
-             
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white py-2">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center px-4">
+            <!-- Left Side: Email and Phone Number -->
+            <div class="flex space-x-6 text-sm my-2">
+                <span class="flex items-center">
+                    <i class="fa-solid fa-envelope mr-2"></i> <!-- Envelope Icon -->
+                    autobid@riverlong.com
+                </span>
+                <span class="flex items-center">
+                    <i class="fa-solid fa-phone-alt mr-2"></i> <!-- Phone Icon -->
+                    +123 456 7890
+                </span>
             </div>
-            <div class="me-3 mt-2 text-light">
-              <a href="mailto:info@riverlong.com" class="nav-link text-light">
-                <i class="fa-regular fa-envelope mr-2"></i>
-                <span>info@riverlong.com</span>
-              </a>
-             
-            </div>
-          </div>
-  
-          <!-- Right Side - User Authentication -->
-          <div class="col-10 col-md-5 text-md-center sticky-top" id="auth">
-            <ul class="list-inline mb-2 mt-2 ml-5 text-lg-center">
-              {% if user.is_authenticated %}
+           
+            <!-- Right Side: Login and Register Buttons -->
+            <div class="flex space-x-4 my-2">
+
+
+                {% if user.is_authenticated %}
               {% if user.is_staff %}
-              <li class="list-inline-item">
-                <a class="nav-link text-light" href="/admin">Admin</a>
-              </li>
+              <a href="/admin" class="bg-red-600 text-white hover:text-gray-300 text-sm px-4 py-2 rounded-md font-semibold">Admin</a>
+
                   {% endif %}
-                <li class="list-inline-item">
-                  <a href="/profile" class="text-light nav-link">{{ user.username }}</a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="/logout" class="text-light nav-link">Logout</a>
-                </li>
+               
+                <a href="/profile" class="bg-black text-white hover:text-gray-300 text-sm px-4 py-2 rounded-md font-semibold">{{ user.username }}</a>
+                <a href="/logout" class="bg-blue-800 text-white hover:bg-black-600 px-4 py-2 rounded-md font-semibold">Logout</a>
               {% else %}
-                <li class="list-inline-item">
-                  <a href="/login" class="text-light nav-link btn btn-outline-light login-btn">Login</a>
-                </li>
-                <li class="list-inline-item">
-                  <a href="/register" class="text-dark nav-link btn btn-light">Register</a>
-                </li>
-              {% endif %}
-            </ul>
-          </div>   
-        </div>
-    <!-- Bottom Layer Navbar (Main Links) -->
-    <nav class="bottom_nav navbar navbar-expand-lg navbar-dark " id="navbarmain" >
-      <div class="container-fluid">
-        <!-- Logo (Brand) -->
-        <a class="navbar-brand" href="#">
-          <img src="{% static 'images/logo-autobid.svg' %}" height="50px" />
-        </a>
-  
-        <!-- Navbar Toggler (For mobile view) -->
-        <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon text-dark"></span>
-        </button>
-  
-        <!-- Navbar Links -->
-        <div class="collapse navbar-collapse " id="navbarNav">
-          <ul class="navbar-nav ms-auto d-flex justify-content-center">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'homepage' %}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'aboutus' %}">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'available_vehicles' %}">Vehicles</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'contactus' %}">Contact Us</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-      </div>
-        <!-- Bootstrap Modal -->
-<div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title" id="messageModalLabel">Notification</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-              <div class="container text-center message-container">
-                  {% if messages %}
-                  {% for message in messages %}
-                  <div class="alert alert-{{ message.tags }}">
-                      {{ message }}
-                  </div>
-                  {% endfor %}
-                  {% endif %}
-              </div>
-          </div>
-         
-      </div>
-  </div>
-</div>
-
-<div id="loader" class="loader"></div>
-
-<!-- JavaScript to Trigger Modal -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-      {% if messages %}
-      var messageModal = new bootstrap.Modal(document.getElementById('messageModal'));
-      messageModal.show();
-      {% endif %}
-  });
-    // Show the spinner on page load
-  document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('loader').style.display = 'block';
-  });
-
-  // Hide the spinner once the page has fully loaded
-  window.onload = function () {
-    document.getElementById('loader').style.display = 'none';
-  };
-
-</script>
-
-        <body class="bg-light">   
-              <div class="container_body">
-                {% block content%} {% endblock content%}
-              <!-- Loading Spinner -->
-                {% block footer%} {% endblock%}
-              </div>
+              <a href="{% url 'login' %}" class="bg-blue-800 text-white hover:bg-black-600 px-4 py-2 rounded-md font-semibold">Login</a>
+              <a href="/register" class="bg-white text-black hover:bg-black-600 px-4 py-2 rounded-md font-semibold">Register</a>
               
-              {% include 'vehicles/footer.html' %}
+              {% endif %}
+            
+            </div>
+           
+        </div>
+    </header>
 
-              <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    const spinner = document.getElementById('spinner');
-                    spinner.classList.remove('d-none');  // Show spinner
-        
-                    window.addEventListener("load", function() {
-                        spinner.classList.add('d-none');  // Hide spinner when page fully loads
-                    });
-                });
-            </script>
+    <!-- Navigation -->
+    <nav class="bg-white p-4 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+                <!-- Logo or Brand Name -->
+                 <!-- Logo Section -->
+            <a href="{% url 'homepage' %}" class="flex items-center">
+                <img src="{% static 'images/logo-autobid.svg' %}" alt="AutoBid Logo" class="h-12 w-auto" />
+                <!-- <span class="text-lg font-semibold text-gray-800 ml-2">AutoBid</span> -->
+            </a>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6">
+                <a href="{% url 'homepage' %}" class="text-black hover:text-red-600">Home</a>
+                <a href="{% url 'available_vehicles' %}" class="text-black hover:text-red-600">Vehicles</a>
+                <a href="{% url 'aboutus' %}" class="text-black hover:text-red-600">About Us</a>
+                <a href="{% url 'contactus' %}" class="text-black hover:text-red-600">Contact Us</a>
+               
+            </div>
     
-  </body>
-  
-<!-- Include Bootstrap JS and dependencies -->
-<script src="{% static 'vehicles/js/index.js'%}"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="menu-toggle" class="text-black-800 focus:outline-none">
+                    <i id="menu-icon" class="fa-solid fa-bars"></i> <!-- Hamburger Icon -->
+                </button>
+            </div>
+        </div>
+    
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white text-black px-4 py-2 space-y-4 transform transition-all duration-300 ease-in-out">
+            <a href="{% url 'homepage' %}" class="block">Home</a>
+            <a href="{% url 'available_vehicles' %}" class="block">Vehicles</a>
+            <a href="{% url 'aboutus' %}" class="block">About Us</a>
+            <a href="{% url 'contactus' %}" class="block">Contact Us</a>
+            
+        </div>
+    </nav>
 
-<!-- Bootstrap JS (including Popper.js) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <!-- Loading Spinner -->
+    <div id="loader" class="fixed inset-0 flex items-center justify-center bg- bg-opacity-50  z-50">
+        <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+
+    <!-- Message Modal -->
+    <div id="messageModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/2">
+            <div class="flex justify-between items-center mb-4">
+                <h5 class="text-xl font-bold">Notification</h5>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="message-container">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flex items-center p-4 mb-4 text-sm rounded-lg {% if message.tags == 'success' %}text-green-800 border border-green-300 bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800{% elif message.tags == 'error' %}text-red-800 border border-red-300 bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800{% elif message.tags == 'warning' %}text-yellow-800 border border-yellow-300 bg-yellow-50 dark:bg-gray-800 dark:text-yellow-400 dark:border-yellow-800{% else %}text-blue-800 border border-blue-300 bg-blue-50 dark:bg-gray-800 dark:text-blue-400 dark:border-blue-800{% endif %}" role="alert">
+                            <svg class="shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                            </svg>
+                            <span class="sr-only">Info</span>
+                            <div>
+                                <span class="font-medium">{{ message }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full mx-auto px-4 py-8">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <!-- Footer -->
+    {% include 'vehicles/footer.html' %}
+
+    <!-- JavaScript -->
+    <script src="{% static 'vehicles/js/index.js' %}"></script>
+    <script>
+        // Toggle mobile menu
+        document.getElementById('menu-toggle').addEventListener('click', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                menuIcon.classList.remove('fa-times');
+                menuIcon.classList.add('fa-bars');
+            } else {
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-times');
+            }
+        });
+
+        // Show/hide the message modal
+        document.addEventListener("DOMContentLoaded", function () {
+            const messageModal = document.getElementById('messageModal');
+            const closeModal = document.getElementById('closeModal');
+
+            {% if messages %}
+                messageModal.classList.remove('hidden');
+            {% endif %}
+
+            closeModal.addEventListener('click', function () {
+                messageModal.classList.add('hidden');
+            });
+        });
+
+        // Show/hide the loading spinner
+        document.addEventListener("DOMContentLoaded", function () {
+            const loader = document.getElementById('loader');
+
+            // Show spinner on page load
+            loader.classList.remove('hidden');
+
+            // Hide spinner when page fully loads
+            window.addEventListener('load', function () {
+                loader.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
 
 </html>

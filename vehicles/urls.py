@@ -28,4 +28,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='users/password/password_reset_complete.html'),
          name='password_reset_complete'),
 
+     # path('get-models-for-make/', views.get_models_for_make, name='get_models_for_make'),
+     # path('get-models/<int:make_id>/', views.get_models, name='get_models'),
+
 ]

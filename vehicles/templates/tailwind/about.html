@@ -5,12 +5,14 @@
   <title>Autobid</title>
   <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="index.js"></script>
+
 </head>
 <body>
     <header class="bg-gray-900 text-white py-2">
-        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center px-4 my-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center px-4">
           <!-- Left Side: Email and Phone Number -->
-          <div class="flex space-x-6 text-sm my-3">
+          <div class="flex space-x-6 text-sm my-2">
             <span class="flex items-center">
               <i class="fa-solid fa-envelope mr-2"></i> <!-- Envelope Icon -->
               support@example.com
@@ -22,9 +24,9 @@
           </div>
           
           <!-- Right Side: Login and Register Buttons -->
-          <div class="flex space-x-4 my-3">
+          <div class="flex space-x-4 my-2">
             <a href="login.html" class=" bg-red-600 text-white hover:text-gray-300 text-sm px-4 py-2 rounded-md text-sm font-semibold">Login</a>
-            <a href="{% url 'register' %}" class="bg-blue-800 text-white hover:bg-black-600 text-white px-4 py-2 rounded-md text-sm font-semibold">Register</a>
+            <a href="register.html" class="bg-blue-800 text-white hover:bg-black-600 text-white px-4 py-2 rounded-md text-sm font-semibold">Register</a>
           </div>
         </div>
       </header>
@@ -87,12 +89,6 @@
 </body>
 <!-- Tailwind CSS for Mobile Responsive -->
 <script>
-    // JavaScript to toggle mobile menu visibility
-    const menuToggleButton = document.getElementById('menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-  
-    menuToggleButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
+   
   </script>
 </html>

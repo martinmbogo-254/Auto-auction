@@ -6,19 +6,67 @@
     <title>AutoBid - Vehicle Auction Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="index.js"></script>
+    
+
 </head>
+
+<header class="bg-gray-900 text-white py-2">
+    <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center px-4">
+      <!-- Left Side: Email and Phone Number -->
+      <div class="flex space-x-6 text-sm my-2">
+        <span class="flex items-center">
+          <i class="fa-solid fa-envelope mr-2"></i> <!-- Envelope Icon -->
+          support@example.com
+        </span>
+        <span class="flex items-center">
+          <i class="fa-solid fa-phone-alt mr-2"></i> <!-- Phone Icon -->
+          +123 456 7890
+        </span>
+      </div>
+      
+      <!-- Right Side: Login and Register Buttons -->
+      <div class="flex space-x-4 my-2">
+        <a href="login.html" class=" bg-red-600 text-white hover:text-gray-300 text-sm px-4 py-2 rounded-md text-sm font-semibold">Login</a>
+        <a href="register.html" class="bg-blue-800 text-white hover:bg-black-600 text-white px-4 py-2 rounded-md text-sm font-semibold">Register</a>
+      </div>
+    </div>
+  </header>
+  
+<nav class="bg-white p-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center">
+        <!-- Logo or Brand Name -->
+        <a href="#" class="text-black-800 text-2xl font-bold">AutoBid</a>
+      </div>
+      
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex space-x-6">
+        <a href="homepage.html" class="text-black hover:text-red-600">Home</a>
+        <a href="vehiclespage.html" class="text-black hover:text-red-600">Vehicles</a>
+        <a href="contact.html" class="text-black hover:text-red-600">Contact Us</a>
+        <a href="about.html" class="text-black hover:text-red-600">About Us</a>
+      </div>
+  
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button id="menu-toggle" class="text-black=800 focus:outline-none">
+          <i class="fa-solid fa-bars"></i> <!-- Hamburger Icon -->
+        </button>
+      </div>
+    </div>
+  
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white text-black px-4 py-2 space-y-4">
+      <a href="{% url 'home' %}" class="block">Home</a>
+      <a href="{% url 'available_vehicles' %}" class="block">Vehicles</a>
+      <a href="{% url 'contactus' %}" class="block">Contact Us</a>
+      <a href="{% url 'about' %}" class="block">About Us</a>
+    </div>
+  </nav>
+
 <body class="bg-gray-50 flex flex-col min-h-screen">
-    <nav class="bg-red-600 text-white py-4">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <div class="text-2xl font-bold">AutoBid</div>
-            <ul class="flex space-x-6">
-                <li><a href="homepage.html" class="hover:text-red-200">Home</a></li>
-                <li><a href="vehiclespage.html" class="hover:text-red-200">Vehicles</a></li>
-                <li><a href="about.html" class="hover:text-red-200">About Us</a></li>
-                <li><a href="contact.html" class="hover:text-red-200">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
+
 
     <div class="container mx-auto px-4 py-12 flex-grow">
         <div class="text-center mb-12">
@@ -67,7 +115,8 @@
                     class="w-full h-48 object-cover"
                 >
                 <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Porsche 911 Carrera</h3>
+                    <a href="dets.html"> <h3 class="text-xl font-bold mb-2">Porsche 911 Carrera</h3></a>
+                   
                     <div class="flex justify-between items-center mb-4">
                         <span class="text-gray-600">Mileage: 25,000 km</span>
                         <span class="status text-green-600 font-bold">In Auction</span>
@@ -179,49 +228,3 @@
     </footer>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const makeFilter = document.getElementById('make-filter');
-        const modelFilter = document.getElementById('model-filter');
-        const yomFilter = document.getElementById('yom-filter');
-        const transmissionFilter = document.getElementById('transmission-filter');
-        const vehicleCards = document.querySelectorAll('.vehicle-card');
-        const noResultsMessage = document.getElementById('no-results');
-
-        function filterVehicles() {
-            const makeValue = makeFilter.value.toLowerCase();
-            const modelValue = modelFilter.value.toLowerCase();
-            const yomValue = yomFilter.value.toLowerCase();
-            const transmissionValue = transmissionFilter.value.toLowerCase();
-
-            let visibleCards = 0;
-
-            vehicleCards.forEach(card => {
-                const make = card.dataset.make.toLowerCase();
-                const model = card.dataset.model.toLowerCase();
-                const yom = card.dataset.yom.toLowerCase();
-                const transmission = card.dataset.transmission.toLowerCase();
-
-                const matchMake = !makeValue || make === makeValue;
-                const matchModel = !modelValue || model === modelValue;
-                const matchYOM = !yomValue || yom === yomValue;
-                const matchTransmission = !transmissionValue || transmission === transmissionValue;
-
-                if (matchMake && matchModel && matchYOM && matchTransmission) {
-                    card.style.display = 'block';
-                    visibleCards++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            noResultsMessage.classList.toggle('hidden', visibleCards > 0);
-        }
-
-        makeFilter.addEventListener('change', filterVehicles);
-        modelFilter.addEventListener('change', filterVehicles);
-        yomFilter.addEventListener('change', filterVehicles);
-        transmissionFilter.addEventListener('change', filterVehicles);
-    });
-    </script>
-</body>
-</html>

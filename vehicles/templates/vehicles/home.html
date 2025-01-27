@@ -1,211 +1,245 @@
-{% extends 'vehicles/base.html'%}
-{% load static %}
+{% extends 'vehicles/base.html' %}
 {% load humanize %}
-
-<html>
-{% block content%}
-{% if hotsale %}
-<div id="autobidCarousel" class="carousel slide" data-bs-ride="carousel">
-
-
-  <!-- Slides -->
-  <div class="carousel-inner ">
-    {% for vehicle in hotsale %}
-    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-      <div style="background:rgb(238, 212, 208); width:100%; height:700px; margin: 0 auto; padding: 0 20px;">
-        <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; position: relative;" class="row">
-          <div class="col-md-3 hero-text" style="  padding: 20px;">
-            <div style="font-size: 1.25rem; color: #ed1b35; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; animation: slideIn 1s ease-out;">
-              Welcome To Autobid
-            </div>
-            <h1 style="font-size: 3.5rem; font-weight: 800; color: #ffffff; text-transform: uppercase; margin-bottom: 30px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); animation: scaleIn 1.2s ease-out;">
-              HOT SALE
-              <span style="display: block; font-size: 1.5rem; color: #0c0b0b; margin-top: 10px; font-weight: 400;">
-                 {{ vehicle.YOM }} . {{ vehicle.make }} . {{ vehicle.model}}
-              </span>
-              <span style="display: block; font-size: 1.5rem; color: #0c0b0b; margin-top: 10px; font-weight: 400;">
-                {{ vehicle.reserve_price|intcomma}} KSH
-             </span>
-            </h1>
-            <div style="margin-top: 30px; display: flex; gap: 20px; animation: fadeIn 1.5s ease-out;">
-              <a href="{% url 'detail' vehicle.id %}" style="background-color: #ed1b35; color: #000000; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #ed1b35; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#ffed4a'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255,215,0,0.3)'" onmouseout="this.style.backgroundColor='#ed1b35'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                Check Vehicle
-              </a>
-              <a href="{% url 'available_vehicles' %}" style="background-color: transparent; color: #ed1b35; padding: 15px 30px; border-radius: 8px; font-weight: 600; text-decoration: none; text-transform: uppercase; letter-spacing: 1px; border: 2px solid #ed1b35; transition: all 0.3s ease;" onmouseover="this.style.backgroundColor='#ed1b35'; this.style.color='#000000'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 15px rgba(255,215,0,0.3)'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='#ed1b35'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                Explore
-              </a>
-            </div>
-          </div>
-          <div class="col-md-8" style="padding: 20px; min-height:600px;">
-            <img src="{{ vehicle.file.url }}" alt="{{ vehicle.registration_no }}" style="width: 100%; height: 60%; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
-          </div>
-        </div>
-      </div>
-    </div>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoBid - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    {% endfor %}
-  </div>
+</head>
+{% block content %}
+<body class="bg-gray-100">
+    <!-- Main Content -->
+    <div class=" w-full px-6 mx-auto px-4 py-8">
+        <!-- Hot Sale Carousel -->
+        {% if hotsale %}
+<div id="autobidCarousel" class="relative overflow-hidden rounded-lg shadow-lg">
+    <!-- Carousel Slides -->
+    <div class="carousel-inner flex transition-transform duration-500 ease-in-out">
+        {% for vehicle in hotsale %}
+        <div class="carousel-item w-full flex-shrink-0">
+            <div class="flex flex-col md:flex-row items-center justify-between bg-red-100 p-24">
+                <!-- Text Content -->
+                <div class="md:w-1/2 space-y-6 ml-5 p-6">
+                    <div class="text-red-600 text-xl font-semibold uppercase tracking-widest animate-slideIn">
+                        Welcome To Autobid
+                    </div>
+                    <h1 class="text-6xl font-bold text-gray-900 uppercase animate-scaleIn">
+                        HOT SALE
+                        <span class="block text-2xl text-gray-800 mt-4 font-normal">
+                            {{ vehicle.YOM }} . {{ vehicle.make }} . {{ vehicle.model }}
+                        </span>
+                        <span class="block text-2xl text-gray-800 mt-4 font-normal">
+                            {{ vehicle.reserve_price|intcomma }} KSH
+                        </span>
+                    </h1>
+                    <div class="flex space-x-6 animate-fadeIn">
+                        <a href="{% url 'detail' vehicle.id %}" class="bg-red-600 text-white px-8 py-4 rounded-lg font-semibold uppercase hover:bg-red-700 transition-all hover:-translate-y-1 hover:shadow-lg">
+                            Check Vehicle
+                        </a>
+                        <a href="{% url 'available_vehicles' %}" class="bg-transparent border-2 border-red-600 text-red-600 px-8 py-4 rounded-lg font-semibold uppercase hover:bg-red-600 hover:text-white transition-all hover:-translate-y-1 hover:shadow-lg">
+                            Explore
+                        </a>
+                    </div>
+                </div>
+                              <!-- Image -->
+              <div class="md:w-3/4 mt-12 md:mt-0 ">
+                <img 
+                    src="{{ vehicle.file.url }}" 
+                    alt="{{ vehicle.registration_no }}" 
+                    class="w-full h-[300px] md:h-[500px] object-cover rounded-lg shadow-xl"
+                >
+              </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
+    <!-- Carousel Navigation Buttons -->
+    <button id="prevButton" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full opacity-75 hover:opacity-100 mr-3">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button id="nextButton" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-3 rounded-full opacity-75 hover:opacity-100 ml-3">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
 {% endif %}
-    <div class="text-center" id="banner">
-      <h1 class="">DRIVE HOME TODAY</h1>
-        <a class="btn explore" href="{% url 'available_vehicles' %}"><i class="fa-solid fa-eye"></i> Explore Vehicles</a> 
-        <a class="btn contactus" href="{% url 'contactus' %}"><i class="fa-solid fa-phone-volume"></i> Contact Us</a>
-        <p class="Top-banner-text2">Win a bid at your Price !</p>  
-    </div>
+       
 
-
-<div class="bottom_container">
-  
-  <div class="row">    
-    <div class="col-lg-6 col-md-12  col-sm-12 text-center p-5">
-      
-        <div class="row">
-          <span class="span_about">
-            Visit Us Today
-          </span>
-        </div>
-        
-        <span class="auction_items_intro text-center">
-          <p>Welcome to <b>AutoBid</b>, where passion meets possibility in every bid.</p> 
-          Explore a world of curated auctions, where treasures await discovery and bidding is an art form.
-          Unleash the thrill of winning as you navigate through our diverse marketplace of unique items.  
-          Join us on the journey where auctions become more than transactions – they become stories.</span>
-      
-    </div>
-
-    <div class="col-lg-6 col-md-12  col-sm-12 mt-5 mt-4">    
-      <div class="text-center">
-        <div class="row">
-         
-          <div class="card-items">
-            <span class="auction_header">Your Ultimate Auction Car Destination</span>          
-            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Diverse Inventory:</b> Explore a wide range of vehicles.</span></div> <br>
-            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Live Auctions:</b> Immerse yourself in the excitement of real-time bidding</span></div><br>
-            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Transparency:</b> We believe in openness and  award on merit.</span></div><br>
-            <div class="auction_items pl-5"><i class="fa-solid fa-check"></i> <span class="auction_items_text"><b>Secure Transactions:</b> Bid with confidence, knowing that your transactions are secure</span></div>
-          
+       <!-- Banner -->
+        <div class="text-center my-12">
+          <h1 class="text-4xl font-bold text-gray-900 mb-4">DRIVE HOME TODAY</h1>
+          <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 justify-center">
+              <a href="{% url 'available_vehicles' %}" class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-all">
+                  <i class="fa-solid fa-eye mr-2"></i> Explore Vehicles
+              </a>
+              <a href="{% url 'contactus' %}" class="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-all">
+                  <i class="fa-solid fa-phone-volume mr-2"></i> Contact Us
+              </a>
           </div>
-          
+          <p class="text-gray-600 mt-4">Win a bid at your Price!</p>
         </div>
-      
+
+      <!-- About Section -->
+<div class="bg-white p-12 rounded-lg shadow-lg my-12 max-w-7xl mx-auto">
+  <div class="grid md:grid-cols-2 gap-12">
+      <!-- Left Side -->
+      <div class="text-center md:text-left">
+          <span class="text-3xl font-bold text-red-600">Visit Us Today</span>
+          <p class="text-gray-700 mt-6 text-lg leading-relaxed">
+              Welcome to <b>AutoBid</b>, where passion meets possibility in every bid. Explore a world of curated auctions, where treasures await discovery and bidding is an art form. Unleash the thrill of winning as you navigate through our diverse marketplace of unique items. Join us on the journey where auctions become more than transactions – they become stories.
+          </p>
       </div>
-    </div>
+
+      <!-- Right Side -->
+      <div class="space-y-6">
+          <span class="text-3xl font-bold text-gray-900">Your Ultimate Auction Car Destination</span>
+          <div class="space-y-4">
+              <div class="flex items-start">
+                  <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
+                  <span class="text-gray-700 text-lg"><b>Diverse Inventory:</b> Explore a wide range of vehicles.</span>
+              </div>
+              <div class="flex items-start">
+                  <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
+                  <span class="text-gray-700 text-lg"><b>Live Auctions:</b> Immerse yourself in the excitement of real-time bidding.</span>
+              </div>
+              <div class="flex items-start">
+                  <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
+                  <span class="text-gray-700 text-lg"><b>Transparency:</b> We believe in openness and award on merit.</span>
+              </div>
+              <div class="flex items-start">
+                  <i class="fa-solid fa-check text-green-500 mt-1 mr-3"></i>
+                  <span class="text-gray-700 text-lg"><b>Secure Transactions:</b> Bid with confidence, knowing that your transactions are secure.</span>
+              </div>
+          </div>
+      </div>
   </div>
 </div>
 
-<div class="middle-banner" style="background-image:url('{% static 'images/riverlong.jpg' %}');">
-  <div class="middle-banner-content">
-    <h2 style="font-family: 'Brush Script MT', cursive; ">One Stop Vehicle Solutions</h2>
-    <h1 style="font-family: 'Comic Sans MS', cursive;">Riverlong Ltd</h1>
-  </div>
-</div>
-
-<div class="mb-5">
-  <div class="row mt-2">
-    <div class="lower-head">
-      <h3 class="text-danger">Start Now</h3>
-      <h2>How it Works </h2>
-    </div>   
-  </div>
-  <div class="row lower-content">
-    <!-- <div class="row">
-      <div class="col-lg-3">
-      
-      </div>
-      <div class="col-lg-2">
-        <img class="image" src="{% static 'images/dotted-arrow1.png' %}" />
-      </div>
-      
-      <div class="col-lg-7">
-        
-      </div>
-    </div> -->
-   
-   <div class="row" id="howitworks">
-    <div class="col-lg-4 col-md-12  col-sm-12">
-        <!-- <div class="howitworksicon m-3">
-          <span class="round_icon">
-            <i class="fa-solid fa-chalkboard-user"></i>
-          </span>          
-        </div> -->
-      
-
-      <div class="card">
-        <div class="card-header">
-          <div class=""><i class="fa-solid fa-1" id="steps"></i></div>
-            <p><label> Create your account</label> 
-        </div>  
-        <div class="card-body">
-            <p>You will be required to create an account using your Name, ID, valid email address and Telephone Number.</p>
-        </div>        
-        
-      </div>
-      <div class="card">
-        <div class="card-header">
-          <div class=""><i class="fa-solid fa-2" id="steps"></i></div>
-            <label> Your account profile</label>
+        <!-- Middle Banner -->
+        <div class="bg-cover bg-center h-96 rounded-lg shadow-lg my-12" style="background-image: url('{% static 'images/riverlong.jpg' %}');">
+            <div class="flex items-center justify-center h-full bg-black bg-opacity-50 rounded-lg">
+                <div class="text-center text-white">
+                    <h2 class="text-4xl font-bold" style="font-family: 'Brush Script MT', cursive;">One Stop Vehicle Solutions</h2>
+                    <h1 class="text-6xl font-bold mt-4" style="font-family: 'Comic Sans MS', cursive;">Riverlong Ltd</h1>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <p> Your profile contains information on the vehicles you have bid, bid amounts and your successful bids.</p>
-        </div>  
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" id="howitworks">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-white shadow-lg rounded-lg p-8">
+              <div class="flex items-center space-x-4">
+                <div class="text-4xl font-bold text-blue-500">1</div>
+                <h3 class="text-2xl font-bold text-gray-900">Create your account</h3>
+              </div>
+              <p class="mt-6 text-gray-600 text-lg leading-relaxed">
+                You will be required to create an account using your Name, ID, valid email address, and Telephone Number.
+              </p>
+            </div>
         
-      </div>
+            <!-- Card 2 -->
+            <div class="bg-white shadow-lg rounded-lg p-8">
+              <div class="flex items-center space-x-4">
+                <div class="text-4xl font-bold text-blue-500">2</div>
+                <h3 class="text-2xl font-bold text-gray-900">Your account profile</h3>
+              </div>
+              <p class="mt-6 text-gray-600 text-lg leading-relaxed">
+                Your profile contains information on the vehicles you have bid, bid amounts, and your successful bids.
+              </p>
+            </div>
+        
+            <!-- Card 3 -->
+            <div class="bg-white shadow-lg rounded-lg p-8">
+              <div class="flex items-center space-x-4">
+                <div class="text-4xl font-bold text-blue-500">3</div>
+                <h3 class="text-2xl font-bold text-gray-900">Bid for a vehicle</h3>
+              </div>
+              <p class="mt-6 text-gray-600 text-lg leading-relaxed">
+                Once you have registered and logged in, you can view the vehicle you would like to buy and place your OFFER AMOUNT. You can bid for as many vehicles as you like.
+              </p>
+            </div>
+        
+            <!-- Card 4 -->
+            <div class="bg-white shadow-lg rounded-lg p-8">
+              <div class="flex items-center space-x-4">
+                <div class="text-4xl font-bold text-blue-500">4</div>
+                <h3 class="text-2xl font-bold text-gray-900">Bid acceptance</h3>
+              </div>
+              <p class="mt-6 text-gray-600 text-lg leading-relaxed">
+                Vehicles are sold on an ‘As is, Where is’ basis. Offer letters shall be issued to successful bidder(s) who will be required to pay the full amount within 24 hours. Final allocation will be on a first-come, first-served basis.
+              </p>
+            </div>
+        
+            <!-- Card 5 -->
+            <div class="bg-white shadow-lg rounded-lg p-8">
+              <div class="flex items-center space-x-4">
+                <div class="text-4xl font-bold text-blue-500">5</div>
+                <h3 class="text-2xl font-bold text-gray-900">Vehicle release</h3>
+              </div>
+              <p class="mt-6 text-gray-600 text-lg leading-relaxed">
+                The Bank will confirm receipt of your payment and immediately issue you a letter authorizing the release of the vehicle from the yard. You will thereafter collect the Logbook and necessary documentation to facilitate the transfer of the motor vehicle.
+              </p>
+            </div>
+          </div>
+        </div>
     </div>
-    <div class="col-lg-4  col-md-12  col-sm-12 mt-md-1" id="step3">     
-      <!-- <div class="howitworksicon m-3">
-        <span class="round_icon m-2">
-          <i class="fa fa-gavel"></i>
-        </span>          
-      </div> -->
-      <div class="card mt-5" >
-        <div class="card-header">
-          <div class=""><i class="fa-solid fa-3" id="steps"></i></div>
-            <label>Bid for a vehicle</label> 
-        </div>
-        <div class="card-body">
-            <p>Once you have registered and logged in you can view the vehicle you would like to buy and place your OFFER AMOUNT. You can bid for as many vehicles as you like. </p>
-        </div>  
-        
-      </div>     
-      
-     </div>
-    <div class="col-lg-4  col-md-12  col-sm-12">
-     
-      <!-- <div class="howitworksicon m-3">
-        <span class="round_icon">
-          <i class="fa-solid fa-circle-dollar-to-slot mb-2"></i>
-        </span>          
-      </div> -->
 
-      <div class="card">
-        <div class="card-header">
-          <div class=""><i class="fa-solid fa-4" id="steps"></i></div>
-            <label>Bid acceptance</label> 
-        </div>
-        <div class="card-body">
-            <p>Vehicles are sold on ‘As is, Where is’ basis. Offer letter shall be issued to successful bidder(s) who will be required to pay the full amount within 24 hours. Final allocation will be on a first come first served basis</p>
-        </div>   
-        
-      </div> 
+     <!-- JavaScript for Sliding Carousel -->
+     <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.carousel-item');
+      const totalSlides = slides.length;
+      const carouselInner = document.querySelector('.carousel-inner');
+  
+      // Function to show the current slide
+      function showSlide(index) {
+          const offset = -index * 100; // Calculate the offset for sliding
+          carouselInner.style.transform = `translateX(${offset}%)`;
+      }
+  
+      // Next Slide
+      document.getElementById('nextButton').addEventListener('click', () => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          showSlide(currentSlide);
+      });
+  
+      // Previous Slide
+      document.getElementById('prevButton').addEventListener('click', () => {
+          currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+          showSlide(currentSlide);
+      });
+  
+      // Auto-rotate the carousel (optional)
+      setInterval(() => {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          showSlide(currentSlide);
+      }, 5000); // Change slide every 5 seconds
 
-      <div class="card">
-        <div class="card-header">
-          <div class=""><i class="fa-solid fa-5" id="steps"></i></div>
-            <label> Vehicle release</label>
-        </div>
-        <div class="card-body">
-            <p>The Bank will confirm receipt of your payment and immediately issue you a letter authorizing release of the vehicle from the yard. You will thereafter collect the Logbook and necessary documentation to facilitate transfer of the motor vehicle.</p>
-        </div>
-      </div> 
-      
-    </div>
-   </div>
+ // Toggle mobile menu and icon
+document.getElementById('menu-toggle').addEventListener('click', function() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
 
-  </div>
+    // Toggle menu visibility
+    mobileMenu.classList.toggle('hidden');
 
-</div>
-
-{% endblock content%}
-
+    // Toggle icon between hamburger and close
+    if (mobileMenu.classList.contains('hidden')) {
+        menuIcon.classList.remove('fa-xmark'); // Remove close icon
+        menuIcon.classList.add('fa-bars');    // Add hamburger icon
+    } else {
+        menuIcon.classList.remove('fa-bars'); // Remove hamburger icon
+        menuIcon.classList.add('fa-xmark');   // Add close icon
+    }
+});
+  </script>
+  
+</body>
+{% endblock content %}
 </html>

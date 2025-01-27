@@ -1,95 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoBid - Available Vehicles</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Carousel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50">
-    <div class="container mx-auto px-4 py-12">
-        <div class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-gray-800 mb-4">Available Vehicles</h1>
-            <p class="text-gray-600">Browse our curated selection of vehicles ready for auction</p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-8">
-            <!-- Vehicle Card 1 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105">
-                <img 
-                    src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" 
-                    alt="Porsche Vehicle" 
-                    class="w-full h-48 object-cover"
-                >
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Porsche 911 Carrera</h3>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-gray-600">Mileage: 25,000 km</span>
-                        <span class="text-green-600 font-bold">In Auction</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-red-500">8,500,000 KSH</span>
-                        <a 
-                            href="#" 
-                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                        >
-                            Place Bid
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Vehicle Card 2 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105">
-                <img 
-                    src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" 
-                    alt="Porsche Vehicle" 
-                    class="w-full h-48 object-cover"
-                >
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Porsche Panamera</h3>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-gray-600">Mileage: 42,000 km</span>
-                        <span class="text-yellow-600 font-bold">Ending Soon</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-red-500">6,300,000 KSH</span>
-                        <a 
-                            href="#" 
-                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                        >
-                            Place Bid
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Vehicle Card 3 -->
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden transform transition hover:scale-105">
-                <img 
-                    src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" 
-                    alt="Porsche Vehicle" 
-                    class="w-full h-48 object-cover"
-                >
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2">Porsche Cayenne</h3>
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="text-gray-600">Mileage: 35,000 km</span>
-                        <span class="text-blue-600 font-bold">New Listing</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-2xl font-bold text-red-500">7,200,000 KSH</span>
-                        <a 
-                            href="#" 
-                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-                        >
-                            Place Bid
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <div class="max-w-3xl w-full bg-white p-6 rounded-lg shadow-lg">
+    <!-- Main Image Display -->
+    <div class="relative">
+      <div class="w-full overflow-hidden rounded-lg">
+        <img id="main-image" src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" alt="Carousel Image" class="w-full h-96 object-cover rounded-lg transition-transform duration-500 ease-in-out">
+      </div>
+      <!-- Navigation Buttons -->
+      <button onclick="prevImage()" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-75 hover:opacity-100">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button onclick="nextImage()" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full opacity-75 hover:opacity-100">
+        <i class="fas fa-chevron-right"></i>
+      </button>
     </div>
+
+    <!-- Thumbnail Gallery -->
+    <div class="flex space-x-2 mt-4 overflow-x-auto">
+      <img src="https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ" class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-75" onclick="showImage(0)">
+      <img src="https://media.ed.edmunds-media.com/land-rover/defender/2025/oem/2025_land-rover_defender_2dr-suv_90-p300-s_fq_oem_1_1600.jpg" class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-75" onclick="showImage(1)">
+      <img src="https://www.example.com/image3.jpg" class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-75" onclick="showImage(2)">
+      <img src="https://www.example.com/image4.jpg" class="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-75" onclick="showImage(3)">
+    </div>
+  </div>
+
+  <script>
+    let currentImageIndex = 0;
+    const images = [
+      "https://pictures.porsche.com/rtt/iris?COSY-EU-100-1711coMvsi60AAt5FwcmBEgA4qP8iBUDxPE3Cb9pNXkBuNYdMGF4tl3U0%25z8rMHIspMBvMZq6G5OtgSv31nBJaA4qh4NSEGewirQ91wRmWBi2Ch7gVdcQT3UlhDfluNspAnPpw2iZJyNZcsctBvoT%25Ff8dXFyg%25PED6uvqMN9nReRv%25o4y7z9V6F%25vUqJbspAnPT05iZJyNKA9ctBvoqwUf8dXFOcvPED6u%25bSN9jZsVu57Zx5%259BkWwDLFRfH438nhVEeZJ",
+      "https://media.ed.edmunds-media.com/land-rover/defender/2025/oem/2025_land-rover_defender_2dr-suv_90-p300-s_fq_oem_1_1600.jpg",
+      "https://www.example.com/image3.jpg",
+      "https://www.example.com/image4.jpg"
+    ];
+
+    // Function to update the main image
+    function updateMainImage() {
+      const mainImage = document.getElementById('main-image');
+      mainImage.src = images[currentImageIndex];
+    }
+
+    // Show next image
+    function nextImage() {
+      currentImageIndex = (currentImageIndex + 1) % images.length;
+      updateMainImage();
+    }
+
+    // Show previous image
+    function prevImage() {
+      currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+      updateMainImage();
+    }
+
+    // Show specific image from thumbnail
+    function showImage(index) {
+      currentImageIndex = index;
+      updateMainImage();
+    }
+  </script>
 </body>
 </html>

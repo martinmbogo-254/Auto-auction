@@ -3,303 +3,371 @@
 {% load humanize %}
 {% load social_share %}
 
-
 {% block content %}
-<div class="container-fluid details_pane">
-    <head>
-        <head>
-            <meta property="og:title" content="{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}" />
-            <meta property="og:description" content="Reserved Price: Ksh {{ vehicle.reserve_price|intcomma }}. View more details and images here." />
-            <meta property="og:image" content="{{ vehicle.vehicleimage_set.first.image.url|default:'https://www.bmw.co.ke/content/dam/bmw/common/topics/offers-and-services/bmw-special-sales-2020/protection-vehicle/bmw-special-sales-protection-vehicle-protection-sd-01.jpg' }}" />
-            <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-            <meta property="og:type" content="website" />
-        </head>
-        
-    </head>
-<div class="jumbotron center">
-    <div class="breadcram m-4">        
-        <ul class="breadcrumb">
-            <li><a href="{% url 'homepage'%}"><i class="fa-solid fa-house cicon"></i></a></li>
-            <li><a href="{% url 'available_vehicles' %}">Vehicles</a></li>
-            <li>{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}</li>
-          </ul>
-    </div>
- 
-<div class="row">
-    <div class="col-md-2" id="vehicleimgs">
-        {% for image in vehicle.vehicleimage_set.all %}
-        <div class="col-md-12">
-            <img src="{{ image.image.url }}" class="img-thumbnail" alt="Vehicle Image" data-target="#vehicleCarousel" data-slide-to="{{ forloop.counter0 }}">
-        </div>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        <div id="vehicleCarousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                {% for image in vehicle.vehicleimage_set.all %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <img src="{{ image.image.url }}" class="d-block w-100" alt="Vehicle Image">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        #image-modal {
+            transition: opacity 0.3s ease;
+        }
+
+        #modal-image {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Breadcrumb -->
+        <nav class="flex mb-4" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{% url 'homepage' %}" class="inline-flex items-center text-sm text-gray-700 hover:text-gray-900">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        <a href="{% url 'available_vehicles' %}" class="ml-1 text-sm text-gray-700 hover:text-gray-900 md:ml-2">Vehicles</a>
+                    </div>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}</span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Main Content Grid -->
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Image Gallery -->
+            <div class="md:col-span-2">
+                <!-- Main Image -->
+                <div class="relative">
+                    <div class="w-full overflow-hidden rounded-lg">
+                        <img id="main-image" src="{{ vehicle.vehicleimage_set.first.image.url }}" alt="{{ vehicle.make }} {{ vehicle.model }}" class="w-full h-auto object-cover cursor-pointer" onclick="openModal(this.src)">
+                    </div>
+                    <!-- Navigation Buttons -->
+                    <div class="absolute top-1/2 transform -translate-y-1/2 w-full flex justify-between px-4">
+                        <button class="bg-gray-800 text-white p-2 rounded-full opacity-75 hover:opacity-100" onclick="prevImage()">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="bg-gray-800 text-white p-2 rounded-full opacity-75 hover:opacity-100" onclick="nextImage()">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
+
+                <!-- Thumbnail Gallery -->
+                <div class="flex space-x-2 mt-4">
+                    {% for image in vehicle.vehicleimage_set.all %}
+                    <img src="{{ image.image.url }}" class="w-20 h-20 object-cover rounded cursor-pointer" onclick="showImage({{ forloop.counter0 }})">
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Vehicle Details Sidebar -->
+            <div class="col-span-1 bg-white p-6 rounded-lg shadow-md h-[500px]">
+                <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full float-right">Views: {{ vehicle.views }}</span>
+                <h4 class="text-2xl font-bold mb-4">{{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}</h4>
+
+                <div class="space-y-2 mb-6">
+                    <h6 class="text-sm"><b>Yard Name:</b> <a href="{{ vehicle.yard.link }}" class="text-blue-500 hover:underline">{{ vehicle.yard }}</a></h6>
+                    <h6 class="text-sm">{{ vehicle.registration_no }} | {{ vehicle.transmission }} | {{ vehicle.engine_cc }} CC</h6>
+                    <h6 class="text-sm"><b>Reserve Price:</b> KSH {{ vehicle.reserve_price|intcomma }}</h6>
+                </div>
+
+                <!-- Bid and Contact Buttons -->
+                <div class="space-y-4">
+                    {% if vehicle.current_auction_end_date %}
+                    <p id="countdown"></p>
+                    <script>
+                        const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
+                    </script>
+                    {% endif %}
+
+                    {% if user.is_authenticated %}
+                      <!-- Button to Launch Modal -->
+                <!-- <button type="button" id="bidbtn" class="w-full bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600" data-toggle="modal" data-target="#bidModal">
+                    <i class="fa fa-gavel"></i> Place a bid
+                </button> -->
+                <button
+                onclick="document.getElementById('modal').classList.remove('hidden')"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium px-6 py-2 rounded-lg transition-colors duration-200">
+                Place Bid
+            </button>
+
+                    {% else %}
+                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 text-center block">
+                        Login to bid
+                    </a>
+                    {% endif %}
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <a href="https://wa.me/+254701856557" class="bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 text-center">
+                            <i class="fa-brands fa-whatsapp"></i> Whatsapp
+                        </a>
+                        <a href="tel:0701856557" class="bg-red-500 text-white py-2 rounded-lg hover:bg-blue-600 text-center">
+                            <i class="fa fa-phone"></i> Call Now
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Share Buttons -->
+                <div class="mt-6">
+                    <h6 class="text-lg font-semibold mb-2">Let Others Know:</h6>
+                    <div class="space-y-2">
+                        <a href="https://wa.me/?text={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id }}" 
+                           target="_blank" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 text-center block">
+                            <i class="fa-brands fa-whatsapp"></i> Share On WhatsApp
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://autobid.riverlong.com/vehicle/{{ vehicle.registration_number }}&quote={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id}}" 
+                           target="_blank" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 text-center block">
+                            <i class="fa-brands fa-facebook"></i> Share On Facebook
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id }}" 
+                           target="_blank" class="w-full bg-black text-white py-2 rounded-lg hover:bg-dark hover:text-light text-center block">
+                            <i class="fa-brands fa-twitter"></i> Share On Twitter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="bg-white mt-6 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold mb-4">Additional Information</h3>
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <table class="w-full">
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-car mr-2"></i>Model</td>
+                            <td class="py-2">{{ vehicle.model }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-car mr-2"></i>Body</td>
+                            <td class="py-2">{{ vehicle.body_type }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-gas-pump mr-2"></i>Fuel</td>
+                            <td class="py-2">{{ vehicle.fuel_type }}</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-chair mr-2"></i>Seats</td>
+                            <td class="py-2">{{ vehicle.seats }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <table class="w-full">
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-road mr-2"></i>Mileage</td>
+                            <td class="py-2">{{ vehicle.mileage|intcomma }} Km</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-tachometer-alt mr-2"></i>Engine</td>
+                            <td class="py-2">{{ vehicle.engine_cc }} CC</td>
+                        </tr>
+                        <tr class="border-b">
+                            <td class="py-2"><i class="fas fa-palette mr-2"></i>Color</td>
+                            <td class="py-2">{{ vehicle.color }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h4 class="font-semibold mb-2">Vehicle Description</h4>
+                <p class="text-gray-700">{{ vehicle.description|safe }}</p>
+            </div>
+        </div>
+
+        <!-- Similar Deals -->
+        <div class="mt-6">
+            <h3 class="text-xl font-semibold mb-4">Similar Deals</h3>
+            <div class="grid md:grid-cols-4 gap-4">
+                {% for similar_vehicle in similar_vehicles %}
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img src="{{ similar_vehicle.file.url }}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <p class="font-semibold">{{ similar_vehicle.YOM }} {{ similar_vehicle.make }} {{ similar_vehicle.model }}</p>
+                        <a href="{% url 'detail' similar_vehicle.id %}" class="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-gray-600">No similar vehicles found.</p>
                 {% endfor %}
             </div>
-            <a class="carousel-control-prev" href="#vehicleCarousel" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#vehicleCarousel" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
-            </a>
         </div>
     </div>
-    <div class="col-md-4 mt-2">
-        
-        <div class="right_box">
-            <span class="badge views-bg pull-right">Views: {{ vehicle.views }}</span>
-            <h4 class="right-header">{{vehicle.YOM}}, {{vehicle.make}} {{vehicle.model}}</h4>
 
-            <div class="vehicle_info">             
-                <h6>Yard Name: <b><a class="nav-link" href="{{vehicle.yard.link}}">{{vehicle.yard}}</a></b></h6>                
-                <h6>{{vehicle.registration_no}} | {{vehicle.transmission}} | {{vehicle.engine_cc}} CC</h6>  
-            </div>
-
-            <div class="contact-btn">
-                <div class="row">
-                    {% if vehicle.current_auction_end_date %}
-
-                    
-                    <p id="countdown" ></p>
-                    <script>
-                        // Pass the auction end date to JavaScript
-                        const auctionEndDate = "{{ vehicle.current_auction_end_date|date:'Y-m-d H:i:s' }}";
-                    </script>     
-                    <div class="col-md-10">
-                        {% if user.is_authenticated %}
-                    <button type="button" id="bidbtn" class="btn btn-warning p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
-                    <i class="fa fa-gavel"></i> Place a bid
-                    </button>
-                    {% else %}
-                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center">
-                        Login to bid
-                    </a>
-                    {% endif %}       
-                    </div>
-                    {% else %}
-                    {% if user.is_authenticated %}
-                    <button type="button" id="bidbtn" class="btn btn-warning p-2 m-2 text-center enq-bid" data-toggle="modal" data-target="#bidModal">
-                    <i class="fa fa-gavel"></i> Place a bid
-                    </button>
-                    {% else %}
-                    <a href="{% url 'login' %}?next={% url 'detail' vehicle.id %}"  class="btn btn-info p-2 m-2 text-center login2bid">
-                        Login to bid
-                    </a>
-                    {% endif %}
-                    {% endif %}
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <a href="https://wa.me/+254701856557" class="enq-whatsapp p-2 rounded mb-2 nav-link text-light"><i class="fa-brands fa-whatsapp"></i> Whatsapp</a>
-                        </div>
-                        <div class="col-md-6">                            
-                            <a href="tel:0701856557" class="enq-call p-2 rounded mb-2 nav-link text-light"><i class="fa fa-phone"></i> Call Now</a>                       
-                        </div>
-
-                    
-
-                    </div>
-                   
-                </div>   
-            </div>
-            <div class="col-md-12 enq-share">
-                <h6>Let Others Know:</h6>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card text-justifyrounded shadow">
-                                                <!-- WhatsApp Share -->
-                                <a class="btn btn-success  m-2" href="https://wa.me/?text={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id}}" 
-                                target="_blank" class="btn btn-outline-success m-1 nav-link text-light">
-                                <i class="fa-brands fa-whatsapp"></i> Share On WhatsApp
-                                </a>
-    
-                                <!-- Facebook Share -->
-                                <a class="btn btn-info m-2 " href="https://www.facebook.com/sharer/sharer.php?u=https://autobid.riverlong.com/vehicle/{{ vehicle.registration_number }}&quote={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id}}" 
-                                target="_blank" class="btn btn-outline-info m-1 nav-link text-light">
-                                <i class="fa-brands fa-facebook"></i> Share On Facebook
-                                </a>
-    
-                                <!-- Twitter Share -->
-                                <a class="btn btn-dark m-2" href="https://twitter.com/intent/tweet?text={{ vehicle.YOM }} {{ vehicle.make }} {{ vehicle.model }}%0AReserved Price: Ksh {{ vehicle.reserve_price|intcomma }}%0AView more details here: https://autobid.riverlong.com/vehicle/{{ vehicle.id }}" 
-                                target="_blank" class="btn btn-outline-primary m-1 nav-link text-light">
-                                <i class="fa-brands fa-twitter"></i> Share On Twitter
-                                </a>
-    
-    
-                        </div>                    
-                    </div>               
-                </div>
-            </div>
-        </div>
-       
-  
-    </div>
-</div>
-<div class="row container p-5">
-    <hr class="hr_details">
-</div>
-<div class="row container additional-info"> 
-    <div class="info_title">
-        <label for="">Additional information</label>
-    </div>    
-    <div class="col-md-6">                
-        <table class="info_table">
-            <tr>
-                <td><span class="info_label"> <i class="fa-solid fa-bus-simple cicon"></i> Model </span></td>
-                <td><span  class="info_data">{{vehicle.model}}</span></td>
-            </tr> 
-            <tr>
-                <td><span class="info_label"> <i class="fa fa-car cicon" aria-hidden="true"></i> Body </span></td>
-                <td><span  class="info_data">{{vehicle.body_type}}</span></td>
-            </tr>  
-            <tr>
-                <td><span class="info_label"><i class="fa-solid fa-gas-pump cicon"></i> Fuel </span></td>
-                <td><span  class="info_data">{{vehicle.fuel_type}}</span></td>
-            </tr>    
-            <tr>
-                <td><span class="info_label"><i class="fas fa-chair cicon"></i></i> Seats </span></td>
-                <td><span  class="info_data">{{vehicle.seats}}</span></td>
-            </tr>  
-                   
-        </table>
-         
-    </div>
-   
-    <div class="col-md-6">
-        <table class="info_table">            
-            <tr>
-                <td><span class="info_label"> <i class="fa-solid fa-cable-car cicon"></i> Transmission </span></td>
-                <td><span  class="info_data">{{vehicle.transmission}}</span></td>
-            </tr>       
-            <tr>
-                <td><span class="info_label"> <i class="fa-solid fa-road cicon"></i> Mileage </span></td>
-                <td><span  class="info_data">{{vehicle.mileage|intcomma}} Km</span></td>
-            </tr>           
-            <tr>
-                <td><span class="info_label"> <i class="fas fa-tachometer-alt cicon"></i> Engine Capacity </span></td>
-                <td><span  class="info_data">{{vehicle.engine_cc}} CC</span></td>
-            </tr>   
-            <tr>
-                <td><span class="info_label"><i class="fa-solid fa-droplet cicon"></i> Color </span></td>
-                <td><span  class="info_data">{{vehicle.color}}</span></td>
-            </tr>          
-        </table>        
-    </div>
-    <div class="jumbotron container">
-        <p>Vehicle Description</p>
-        <p>{{vehicle.description|safe}}</p>
-    </div>
-</div>
-
-<div class="row deals">
-    <h3>Similar Deals</h3>
-    {% for similar_vehicle in similar_vehicles %}
-    <div class="col-md-3">
-        <div class="card mb-3 car_cad">
-            <img src="{{ similar_vehicle.file.url }}" class="card-img-top" alt="Similar Vehicle Image">
-            <div class="card-body">
-                <p class="card-text">{{ similar_vehicle.YOM }} {{ similar_vehicle.make }}  {{ similar_vehicle.model }}</p>
-                <a href="{% url 'detail' similar_vehicle.id%}" class="btn btn-info">View Details</a>
-            </div>
-        </div>
-    </div>
-    {% empty %}
-    <p>No similar vehicles found.</p>
-    {% endfor %}
-</div>
-
-<!-- Bid Modal -->
-<!-- Bid Modal -->
-<div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="bidModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="bidModalLabel">Place Bid</h5>
-                <button class="btn btn-dark text-light" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full relative">
+            <!-- Modal Header -->
+            <div class="p-6 border-b border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-900">Place Bid</h3>
+                <button 
+                    onclick="document.getElementById('modal').classList.add('hidden')"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="image">
-                    <p>{{ vehicle.YOM }} | {{ vehicle.make }} | {{ vehicle.model }}</p>
-                    <img class="card-img-top thumbnail" src="{{ vehicle.file.url }}" style="height:250px" />
+
+            <!-- Modal Content -->
+            <div class="p-6">
+                <div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="bidModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="image">
+                                <p>{{ vehicle.YOM }} | {{ vehicle.make }} | {{ vehicle.model }}</p>
+                                <img class="card-img-top thumbnail w-full" src="{{ vehicle.file.url }}" style="height:250px " />
+                            </div>
+                            <form method="POST" action="{% url 'place_bid' vehicle.id %}" onsubmit="showSpinner(this)">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <p>Reserve Price: Ksh {{ vehicle.reserve_price|intcomma }}</p>
+                                    <input 
+                                    type="text" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none shadow-sm text-gray-900 placeholder-gray-400"
+                                    id="amount" 
+                                    name="amount" 
+                                    placeholder="Enter bid amount" 
+                                    required
+                                   
+                                >
+                                </div>
+            
+                                <!-- Accept Terms and Conditions Checkbox -->
+                                <div class="form-group form-check">
+                                    <input 
+                                        type="checkbox" 
+                                        class="form-check-input" 
+                                        id="acceptTerms" 
+                                        name="accept_terms" 
+                                        required>
+                                    <label class="form-check-label" for="acceptTerms">
+                                        I accept the <a href="{% url 'terms' %}" target="_blank" class="text-blue-800">Terms and Conditions</a>.
+                                    </label>
+                                </div>
+                                <div class="p-6 border-t border-gray-200 flex justify-end space-x-3">
+                                    <button
+                                      type="submit"
+                                      id="submitButton"
+                                      class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-200 flex items-center"
+                                    >
+                                      <!-- Spinner (hidden by default) -->
+                                      <span
+                                        id="spinner"
+                                        class="spinner-border spinner-border-sm text-light mr-2 hidden"
+                                        role="status"
+                                        aria-hidden="true"
+                                      ></span>
+                                      <span id="buttonText">Submit Bid</span>
+                                    </button>
+                                  </div>
+                                
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <form method="POST" action="{% url 'place_bid' vehicle.id %}" onsubmit="showSpinner(this)">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <p>Reserve Price: Ksh {{ vehicle.reserve_price|intcomma }}</p>
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            id="amount" 
-                            name="amount" 
-                            placeholder="Enter bid amount" 
-                            required>
-                    </div>
-
-                    <!-- Accept Terms and Conditions Checkbox -->
-                    <div class="form-group form-check">
-                        <input 
-                            type="checkbox" 
-                            class="form-check-input" 
-                            id="acceptTerms" 
-                            name="accept_terms" 
-                            required>
-                        <label class="form-check-label" for="acceptTerms">
-                            I accept the <a href="{% url 'terms' %}" target="_blank">Terms and Conditions</a>.
-                        </label>
-                    </div>
-
-                    <button type="submit" class="btn btn-dark">
-                        <span class="spinner-border spinner-border-sm text-light mr-2 d-none" role="status" aria-hidden="true"></span>
-                        Submit Bid
-                    </button>
-                </form>
             </div>
+            </div>
+
+           
         </div>
     </div>
-</div>
+    <!-- JavaScript for Carousel -->
+    <script>
+            // Function to show the spinner and update button text
+        function showSpinner() {
+        const spinner = document.getElementById('spinner');
+        const buttonText = document.getElementById('buttonText');
+        
+        spinner.classList.remove('hidden'); // Show the spinner
+        buttonText.textContent = 'Loading...'; // Change button text
+        }
 
+        // Function to hide the spinner and reset button text
+        function hideSpinner() {
+        const spinner = document.getElementById('spinner');
+        const buttonText = document.getElementById('buttonText');
+        
+        spinner.classList.add('hidden'); // Hide the spinner
+        buttonText.textContent = 'Submit Bid'; // Reset button text
+        }
 
-</div>
+        // Example: Simulate loading when the button is clicked
+        document.getElementById('submitButton').addEventListener('click', function() {
+        showSpinner(); // Show spinner when loading starts
 
-</div>
-<script>
-    function showSpinner(form) {
-        const button = form.querySelector('button[type="submit"]');
-        const spinner = button.querySelector('.spinner-border');
+        // Simulate a loading process (e.g., an API call)
+        setTimeout(() => {
+            hideSpinner(); // Hide spinner when loading is done
+        }, 3000); // Replace this with your actual loading logic
+        });
+        let currentImageIndex = 0;
+        const images = [
+            {% for image in vehicle.vehicleimage_set.all %}
+            "{{ image.image.url }}",
+            {% endfor %}
+        ];
 
-        // Show spinner and disable button
-        spinner.classList.remove('d-none');
-        button.disabled = true;
-    }
-</script>
+        // Function to update the main image
+        function updateMainImage() {
+            const mainImage = document.getElementById('main-image');
+            mainImage.src = images[currentImageIndex];
+        }
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    var amountInput = document.getElementById('amount');
+        // Show next image
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            updateMainImage();
+        }
 
-    amountInput.addEventListener('input', function (e) {
-        var value = amountInput.value;
-        // Remove non-digit characters except commas
-        value = value.replace(/[^\d]/g, '');
-        // Format the value with commas
-        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        amountInput.value = value;
-    });
+        // Show previous image
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+            updateMainImage();
+        }
 
-    document.querySelector('form').addEventListener('submit', function () {
-        // Remove commas before form submission
-        amountInput.value = amountInput.value.replace(/,/g, '');
-    });
-});
-</script>
+        // Show specific image from thumbnail
+        function showImage(index) {
+            currentImageIndex = index;
+            updateMainImage();
+        }
 
+        // Modal functionality
+        function openModal(imageSrc) {
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = imageSrc;
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('image-modal');
+            modal.classList.add('hidden');
+        }
+                // Function to format number with commas
+       
+    </script>
+</body>
+</html>
 {% endblock content %}

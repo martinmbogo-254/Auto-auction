@@ -1,47 +1,236 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Autobid</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoBid - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-<body>
-  
-  <nav class="bg-red-600 text-white py-4">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-        <div class="text-2xl font-bold">AutoBid</div>
-        <ul class="flex space-x-6">
-            <li><a href="homepage.html" class="hover:text-red-200">Home</a></li>
-            <li><a href="vehiclespage.html" class="hover:text-red-200">Vehicles</a></li>
-            <li><a href="about.html" class="hover:text-red-200">About Us</a></li>
-            <li><a href="contact.html" class="hover:text-red-200">Contact</a></li>
-        </ul>
-    </div>
-</nav>
-  
- 
-<footer class="bg-gray-900 text-white py-12">
-  <div class="container mx-auto px-4 grid md:grid-cols-3 gap-8">
-      <div>
-          <h4 class="text-xl font-bold mb-4">About Riverlong</h4>
-          <p>Innovative telematics and vehicle auction solutions in East Africa</p>
-      </div>
-      <div>
-          <h4 class="text-xl font-bold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-              <li><a href="#" class="hover:text-red-500">Home</a></li>
-              <li><a href="#" class="hover:text-red-500">Services</a></li>
-              <li><a href="#" class="hover:text-red-500">Contact</a></li>
-          </ul>
-      </div>
-      <div>
-          <h4 class="text-xl font-bold mb-4">Contact</h4>
-          <p>Email: info@riverlong.com</p>
-          <p>Phone: +254 700 000 000</p>
-      </div>
-  </div>
-</footer>
+<body class="bg-gray-100">
+    <!-- Header -->
+    <header class="bg-gray-900 text-white py-2">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center px-4">
+            <!-- Left Side: Email and Phone Number -->
+            <div class="flex space-x-6 text-sm my-2">
+                <span class="flex items-center">
+                    <i class="fa-solid fa-envelope mr-2"></i> <!-- Envelope Icon -->
+                    support@example.com
+                </span>
+                <span class="flex items-center">
+                    <i class="fa-solid fa-phone-alt mr-2"></i> <!-- Phone Icon -->
+                    +123 456 7890
+                </span>
+            </div>
+            
+            <!-- Right Side: Login and Register Buttons -->
+            <div class="flex space-x-4 my-2">
+                <a href="login.html" class="bg-red-600 text-white hover:text-gray-300 text-sm px-4 py-2 rounded-md text-sm font-semibold">Login</a>
+                <a href="register.html" class="bg-blue-800 text-white hover:bg-black-600 text-white px-4 py-2 rounded-md text-sm font-semibold">Register</a>
+            </div>
+        </div>
+    </header>
 
+    <!-- Navigation -->
+    <nav class="bg-white p-4 shadow-lg">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center">
+                <!-- Logo or Brand Name -->
+                <a href="#" class="text-black-800 text-2xl font-bold">AutoBid</a>
+            </div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6">
+                <a href="homepage.html" class="text-black hover:text-red-600">Home</a>
+                <a href="vehiclespage.html" class="text-black hover:text-red-600">Vehicles</a>
+                <a href="contact.html" class="text-black hover:text-red-600">Contact Us</a>
+                <a href="about.html" class="text-black hover:text-red-600">About Us</a>
+            </div>
+    
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden flex items-center">
+                <button id="menu-toggle" class="text-black=800 focus:outline-none">
+                    <i class="fa-solid fa-bars"></i> <!-- Hamburger Icon -->
+                </button>
+            </div>
+        </div>
+    
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-white text-black px-4 py-2 space-y-4">
+            <a href="{% url 'home' %}" class="block">Home</a>
+            <a href="{% url 'available_vehicles' %}" class="block">Vehicles</a>
+            <a href="{% url 'contactus' %}" class="block">Contact Us</a>
+            <a href="{% url 'about' %}" class="block">About Us</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Hot Sale Carousel -->
+        {% if hotsale %}
+        <div id="autobidCarousel" class="relative overflow-hidden rounded-lg shadow-lg">
+            <div class="carousel-inner">
+                {% for vehicle in hotsale %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %} bg-red-100 p-8">
+                    <div class="flex flex-col md:flex-row items-center justify-between">
+                        <!-- Text Content -->
+                        <div class="md:w-1/3 space-y-4">
+                            <div class="text-red-600 text-lg font-semibold uppercase tracking-widest animate-slideIn">
+                                Welcome To Autobid
+                            </div>
+                            <h1 class="text-5xl font-bold text-gray-900 uppercase animate-scaleIn">
+                                HOT SALE
+                                <span class="block text-xl text-gray-800 mt-2 font-normal">
+                                    {{ vehicle.YOM }} . {{ vehicle.make }} . {{ vehicle.model }}
+                                </span>
+                                <span class="block text-xl text-gray-800 mt-2 font-normal">
+                                    {{ vehicle.reserve_price|intcomma }} KSH
+                                </span>
+                            </h1>
+                            <div class="flex space-x-4 animate-fadeIn">
+                                <a href="{% url 'detail' vehicle.id %}" class="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold uppercase hover:bg-red-700 transition-all hover:-translate-y-1 hover:shadow-lg">
+                                    Check Vehicle
+                                </a>
+                                <a href="{% url 'available_vehicles' %}" class="bg-transparent border-2 border-red-600 text-red-600 px-6 py-3 rounded-lg font-semibold uppercase hover:bg-red-600 hover:text-white transition-all hover:-translate-y-1 hover:shadow-lg">
+                                    Explore
+                                </a>
+                            </div>
+                        </div>
+                        <!-- Image -->
+                        <div class="md:w-2/3 mt-8 md:mt-0">
+                            <img src="{{ vehicle.file.url }}" alt="{{ vehicle.registration_no }}" class="w-full h-96 object-cover rounded-lg shadow-xl">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Banner -->
+        <div class="text-center my-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">DRIVE HOME TODAY</h1>
+            <div class="space-x-4">
+                <a href="{% url 'available_vehicles' %}" class="bg-blue-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-all">
+                    <i class="fa-solid fa-eye mr-2"></i> Explore Vehicles
+                </a>
+                <a href="{% url 'contactus' %}" class="bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition-all">
+                    <i class="fa-solid fa-phone-volume mr-2"></i> Contact Us
+                </a>
+            </div>
+            <p class="text-gray-600 mt-4">Win a bid at your Price!</p>
+        </div>
+
+        <!-- About Section -->
+        <div class="bg-white p-8 rounded-lg shadow-lg my-12">
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Left Side -->
+                <div class="text-center">
+                    <span class="text-2xl font-bold text-red-600">Visit Us Today</span>
+                    <p class="text-gray-700 mt-4">
+                        Welcome to <b>AutoBid</b>, where passion meets possibility in every bid. Explore a world of curated auctions, where treasures await discovery and bidding is an art form. Unleash the thrill of winning as you navigate through our diverse marketplace of unique items. Join us on the journey where auctions become more than transactions – they become stories.
+                    </p>
+                </div>
+                <!-- Right Side -->
+                <div class="space-y-4">
+                    <span class="text-2xl font-bold text-gray-900">Your Ultimate Auction Car Destination</span>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                            <span class="text-gray-700"><b>Diverse Inventory:</b> Explore a wide range of vehicles.</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                            <span class="text-gray-700"><b>Live Auctions:</b> Immerse yourself in the excitement of real-time bidding.</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                            <span class="text-gray-700"><b>Transparency:</b> We believe in openness and award on merit.</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-check text-green-500 mr-2"></i>
+                            <span class="text-gray-700"><b>Secure Transactions:</b> Bid with confidence, knowing that your transactions are secure.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Banner -->
+        <div class="bg-cover bg-center h-96 rounded-lg shadow-lg my-12" style="background-image: url('{% static 'images/riverlong.jpg' %}');">
+            <div class="flex items-center justify-center h-full bg-black bg-opacity-50 rounded-lg">
+                <div class="text-center text-white">
+                    <h2 class="text-4xl font-bold" style="font-family: 'Brush Script MT', cursive;">One Stop Vehicle Solutions</h2>
+                    <h1 class="text-6xl font-bold mt-4" style="font-family: 'Comic Sans MS', cursive;">Riverlong Ltd</h1>
+                </div>
+            </div>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="my-12">
+            <div class="text-center">
+                <h3 class="text-red-600 text-2xl font-bold">Start Now</h3>
+                <h2 class="text-4xl font-bold text-gray-900">How It Works</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 mt-8">
+                <!-- Step 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-red-600">1</div>
+                        <h4 class="text-xl font-bold text-gray-900 mt-4">Create Your Account</h4>
+                        <p class="text-gray-700 mt-2">You will be required to create an account using your Name, ID, valid email address, and Telephone Number.</p>
+                    </div>
+                </div>
+                <!-- Step 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-red-600">2</div>
+                        <h4 class="text-xl font-bold text-gray-900 mt-4">Your Account Profile</h4>
+                        <p class="text-gray-700 mt-2">Your profile contains information on the vehicles you have bid, bid amounts, and your successful bids.</p>
+                    </div>
+                </div>
+                <!-- Step 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <div class="text-center">
+                        <div class="text-4xl font-bold text-red-600">3</div>
+                        <h4 class="text-xl font-bold text-gray-900 mt-4">Bid for a Vehicle</h4>
+                        <p class="text-gray-700 mt-2">Once you have registered and logged in, you can view the vehicle you would like to buy and place your OFFER AMOUNT. You can bid for as many vehicles as you like.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-xl font-bold mb-4">About AutoBid</h4>
+                <p class="text-sm text-gray-400">Your trusted platform for vehicle auctions with transparency and excitement.</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="#" class="hover:text-red-500">Home</a></li>
+                    <li><a href="#" class="hover:text-red-500">Vehicles</a></li>
+                    <li><a href="#" class="hover:text-red-500">How It Works</a></li>
+                    <li><a href="#" class="hover:text-red-500">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-4">Contact Us</h4>
+                <p class="text-sm text-gray-400">
+                    Email: support@autobid.com<br>
+                    Phone: +254 700 000 000<br>
+                    Address: Nairobi, Kenya
+                </p>
+            </div>
+        </div>
+        <div class="container mx-auto px-4 mt-8 border-t border-gray-700 pt-4 text-center">
+            <p class="text-sm text-gray-500">
+                &copy; 2024 AutoBid. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
 </body>
 </html>

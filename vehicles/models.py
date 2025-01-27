@@ -29,6 +29,7 @@ class VehicleMake(models.Model):
             return self.name
 
 class VehicleModel(models.Model):
+    make = models.ForeignKey(VehicleMake, related_name='models', on_delete=models.CASCADE,blank=True,null=True)
     name = models.CharField(max_length=255)
     class Meta:
         verbose_name_plural = "Models"

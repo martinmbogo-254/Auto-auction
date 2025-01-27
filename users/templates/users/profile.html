@@ -1,51 +1,70 @@
 {% extends 'vehicles/base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="card shadow">
-        <div class="card-header bg-dark text-white">
-            <h2 class="mb-0">{{ profile.user.username }}'s Profile</h2>
+<div class="container mx-auto mt-8 px-4">
+    <!-- Profile Section -->
+    <div class="bg-white shadow rounded-lg">
+        <div class="bg-gray-800 text-white px-6 py-4 rounded-t-lg">
+            <h2 class="text-xl font-semibold">{{ profile.user.username }}'s Profile</h2>
         </div>
-        <div class="card-body">
-            <!-- <h5 class="mb-3">Profile Details</h5> -->
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><strong>Username:</strong> {{ profile.user.username }}</li>
-                <li class="list-group-item"><strong>ID Number:</strong> {{ profile.id_number }}</li>
-                <li class="list-group-item"><strong>Phone Number:</strong> {{ profile.phone_number }}</li>
-                <li class="list-group-item"><strong>Location:</strong> {{ profile.location }}</li>
+        <div class="p-6">
+            <ul class="space-y-4">
+                <li>
+                    <strong class="text-gray-700">Username:</strong>
+                    <span class="text-gray-600">{{ profile.user.username }}</span>
+                </li>
+                <li>
+                    <strong class="text-gray-700">ID Number:</strong>
+                    <span class="text-gray-600">{{ profile.id_number }}</span>
+                </li>
+                <li>
+                    <strong class="text-gray-700">Phone Number:</strong>
+                    <span class="text-gray-600">{{ profile.phone_number }}</span>
+                </li>
+                <li>
+                    <strong class="text-gray-700">Location:</strong>
+                    <span class="text-gray-600">{{ profile.location }}</span>
+                </li>
             </ul>
         </div>
     </div>
 
-    <div class="card shadow mt-4">
-        <div class="card-header bg-dark text-white">
-            <h3 class="mb-0">Your Bids</h3>
+    <!-- Bids Section -->
+    <div class="bg-white shadow rounded-lg mt-8">
+        <div class="bg-gray-800 text-white px-6 py-4 rounded-t-lg">
+            <h3 class="text-lg font-semibold">Your Bids</h3>
         </div>
-        <div class="card-body">
+        <div class="p-6">
             {% if user_bids %}
                 {% regroup user_bids by vehicle as vehicle_bids %}
-                <div class="accordion" id="bidsAccordion">
+                <div id="bidsAccordion" class="space-y-4">
                     {% for group in vehicle_bids %}
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
-                                    {{ group.grouper.registration_no }} - {{group.grouper.YOM}} {{ group.grouper.make }} {{ group.grouper.model }}
+                        <div class="border rounded-lg">
+                            <h2>
+                                <button
+                                    class="w-full text-left px-4 py-3 bg-gray-100 hover:bg-gray-200 flex justify-between items-center"
+                                    data-target="#collapse{{ forloop.counter }}"
+                                >
+                                    <span class="font-medium text-gray-800">
+                                        {{ group.grouper.registration_no }} - {{ group.grouper.YOM }} {{ group.grouper.make }} {{ group.grouper.model }}
+                                    </span>
+                                    <i class="fa-solid fa-chevron-down text-gray-500"></i>
                                 </button>
                             </h2>
-                            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#bidsAccordion">
-                                <div class="accordion-body">
-                                    <table class="table table-striped table-hover">
+                            <div id="collapse{{ forloop.counter }}" class="hidden">
+                                <div class="p-4">
+                                    <table class="w-full text-left border-collapse">
                                         <thead>
-                                            <tr>
-                                                <th>Amount</th>
-                                                <th>Date</th>
+                                            <tr class="bg-gray-100">
+                                                <th class="border-b px-4 py-2">Amount</th>
+                                                <th class="border-b px-4 py-2">Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {% for bid in group.list %}
-                                                <tr>
-                                                    <td>Ksh {{ bid.amount }}</td>
-                                                    <td>{{ bid.bid_time|date:"Y-m-d H:i" }}</td>
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="border-b px-4 py-2">Ksh {{ bid.amount }}</td>
+                                                    <td class="border-b px-4 py-2">{{ bid.bid_time|date:"Y-m-d H:i" }}</td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -56,13 +75,31 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <p class="text-muted">You haven't placed any bids yet.</p>
+                <p class="text-gray-500">You haven't placed any bids yet.</p>
             {% endif %}
         </div>
     </div>
 
-    <div class="text-center mt-4 mb-3">
-        <a href="{% url 'available_vehicles' %}" class="btn btn-info btn-lg text-light">Explore More Vehicles</a>
+    <!-- Explore Vehicles Button -->
+    <div class="text-center mt-8">
+        <a href="{% url 'available_vehicles' %}" class="bg-blue-600 text-white py-3 px-6 rounded-lg shadow hover:bg-blue-700 transition">
+            Explore More Vehicles
+        </a>
     </div>
 </div>
+
+<!-- JavaScript for Accordion -->
+<script>
+    document.querySelectorAll('[data-target]').forEach(button => {
+        button.addEventListener('click', () => {
+            const target = document.querySelector(button.getAttribute('data-target'));
+
+            // Toggle visibility
+            target.classList.toggle('hidden');
+
+            // Rotate the chevron
+            button.querySelector('i').classList.toggle('rotate-180');
+        });
+    });
+</script>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render,redirect
-from .models import Vehicle, Bidding, VehicleView, Auction, AuctionHistory,NotificationRecipient
+from .models import Vehicle, Bidding, VehicleView, Auction, AuctionHistory,NotificationRecipient,VehicleMake,VehicleModel,ManufactureYear
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .forms import BidForm, AuctionForm
@@ -15,6 +15,8 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
+
 
 
 def reports(request):
@@ -63,6 +65,12 @@ def allvehiclespage(request):
     on_salecount = vehicles_on_sale.count()
     on_auctioncount = vehicles_on_auction.count()
 
+    # Fetch the available fields dynamically from your model
+    makes = VehicleMake.objects.all()
+    models = VehicleModel.objects.all()
+    years_of_manufacture = ManufactureYear.objects.all()
+    transmissions = Vehicle.TRANSMISSION_CHOICES
+
     paginator = Paginator(vehicles_on_sale,12 )  # Display 12 objects per page
 
     page = request.GET.get('page')
@@ -81,9 +89,19 @@ def allvehiclespage(request):
         'vehicles_on_auction' :vehicles_on_auction,
         'on_salecount' :on_salecount,
         'on_auctioncount' :on_auctioncount,
+         'makes': makes,
+        'models': models,
+        'years_of_manufacture': years_of_manufacture,
+        'transmissions': transmissions,
         
     }
     return render (request,'vehicles/vehicles.html', context)
+from django.http import JsonResponse
+from django.shortcuts import render
+from .models import Vehicle
+
+
+
 
 def vehicledetail(request, pk):
     vehicle = get_object_or_404(Vehicle, id=pk)

@@ -6,80 +6,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>RVAS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static 'vehicles/css/styles.css' %} ">
-    <link rel="stylesheet" href="{% static 'vehicles/css/footer.css' %} ">
-    <script src="{% static 'vehicles/js/index.js'%}"></script>
-
-    <!--<link rel="stylesheet" href="{% static 'vehicles/css/details_style1.css' %} ">-->
-    <meta charset="UTF-8">
-    <title>Vehicle {{ vehicle.registration_no }}</title>
-
-    <!-- Open Graph meta tags for sharing -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Vehicle {{ vehicle.registration_no }}">
-    <meta property="og:description" content="Check out this vehicle: {{ vehicle.registration_no }}!">
-    <meta property="og:image" content="{{ vehicle.image.url }}">
-    <meta property="og:url" content="{{ request.build_absolute_uri }}">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    
-    <link rel="icon" type="image/svg" href="{% static 'images/logo-autobid.svg' %}">
-    <title>Riverlong | Autobid</title>
   </head>
-  <footer class="footer bg-dark text-light py-4">
-    <div class="container">
-        <div class="row align-items-center">
-            <!-- Opening Hours Section -->
-            <div class="col-md-4 text-center text-md-left mb-3 mb-md-0">
-                <h6 class="font-weight-bold">Opening Hours</h6>
-                <p class="mb-1">Mon - Fri: 8:00 AM - 5:00 PM</p>
-                <p>Sat: 8:00 AM - 12:00 PM</p>
-            </div>
-
-            <!-- Social Media Icons -->
-            <div class="col-md-4 text-center mb-3 mb-md-0">
-                <h6 class="font-weight-bold">Follow Us</h6>
-                <div class="d-flex justify-content-center">
-                    <a href="#" class="text-light mx-2"><i class="fab fa-facebook fa-lg"></i></a>
-                    <a href="#" class="text-light mx-2"><i class="fab fa-instagram fa-lg"></i></a>
-                    <a href="#" class="text-light mx-2"><i class="fab fa-whatsapp fa-lg"></i></a>
-                    <a href="#" class="text-light mx-2"><i class="fab fa-twitter fa-lg"></i></a>
-                    <a href="#" class="text-light mx-2"><i class="fab fa-linkedin fa-lg"></i></a>
-                </div>
-            </div>
-
-            <!-- Contact Information -->
-            <div class="col-md-4 text-center text-md-right">
-                <h6 class="font-weight-bold">Contact Us</h6>
-                <ul class="list-unstyled mb-0">
-                    <li><i class="fas fa-map-marker-alt"></i> Fourways Junction, Kiambu Rd Total Petrol Station</li>
-                    <li><i class="fas fa-envelope"></i> <a href="mailto:info@riverlong.com" class="text-light">info@riverlong.com</a></li>
-                    <li><i class="fas fa-phone"></i> <a href="tel:+254701856557" class="text-light">+254 701 856557</a></li>
-                </ul>
-            </div>
+  <footer class="bg-gray-800 text-white py-12">
+    <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div>
+            <h4 class="text-xl font-bold mb-4">About AutoBid</h4>
+            <p class="text-sm text-gray-400">Your trusted platform for vehicle auctions with transparency and excitement.</p>
         </div>
-
-        <hr class="bg-light">
-
-        <!-- Footer Bottom -->
-        <div class="row">
-            <div class="col text-center">
-                <p class="mb-0">&copy; 2025 Riverlong Ltd. All Rights Reserved. Built by <a href="#" class="text-light font-weight-bold">Riverlong IT</a></p>
-            </div>
+        <div>
+            <h4 class="text-xl font-bold mb-4">Quick Links</h4>
+            <ul class="space-y-2">
+                <li><a href="{% url 'homepage' %}" class="hover:text-red-500">Home</a></li>
+                <li><a href="{% url 'available_vehicles' %}" class="hover:text-red-500">Vehicles</a></li>
+                <li><a href="{% url 'aboutus' %}" class="hover:text-red-500">About Us</a></li>
+                <li><a href="{% url 'contactus' %}" class="hover:text-red-500">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="text-xl font-bold mb-4">Contact Us</h4>
+            <p class="text-sm text-gray-400">
+                Email: autobid@riverlong.com<br>
+                Phone: +254 700 000 000<br>
+                Address: Fourways Junction,Kiambu Rd, Kenya
+            </p>
         </div>
     </div>
+    <div class="container mx-auto px-4 mt-8 border-t border-gray-700 pt-4 text-center">
+        <p class="text-sm text-gray-500">
+            &copy; 2025 AutoBid. All Rights Reserved.
+        </p>
+    </div>
 </footer>
-
-  
 
 {% endblock footer %}
