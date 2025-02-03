@@ -1,3 +1,4 @@
+{% load humanize %}
 <div style="background-color:#ffffff;max-width:600px;margin:20px auto;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
     <div style="background-color:#00529C;color:#ffffff;text-align:center;padding:20px;border-radius:8px 8px 0 0;">
         <h1 style="font-size:24px;font-weight:600;">🚗 New Bid Notification</h1>
@@ -8,13 +9,13 @@
         <div style="background-color:#F5F5F5;border-left:4px solid #FF6B00;padding:20px;margin-top:16px;border-radius:4px;">
             <p style="font-size:14px;"><strong>Vehicle:</strong> {{ vehicle.make }} {{ vehicle.model }}</p>
             <p style="font-size:14px;"><strong>Registration No:</strong> {{ vehicle.registration_no }}</p>
-            <!-- <p style="font-size:14px;"><strong>Reserved Price:</strong> KSH {{ vehicle.reserved_price|floatformat:0 }}</p> -->
-            <p style="font-size:20px;color:#FF6B00;font-weight:600;margin-top:8px;">Bid Amount: KSH {{ bid.amount|floatformat:0 }}</p>
+            <p style="font-size:20px;"><strong>Reserved Price:</strong> KSH {{ vehicle.reserve_price|intcomma }}</p>
+            <p style="font-size:20px;color:#FF6B00;font-weight:600;margin-top:8px;">Bid Amount: KSH {{ bid.amount|intcomma }}</p>
             <p style="font-size:14px;"><strong>User Email:</strong> {{ bid.user.email }}</p>
         </div>
         <!-- <p style="margin-top:16px;">Please log in to the system to review the bid details and take appropriate action.</p> -->
         <div style="text-align:center;margin-top:24px;">
-            <a href="#" style="display:inline-block;padding:12px 24px;background-color:#FF6B00;color:#ffffff;text-decoration:none;border-radius:4px;font-weight:600;">View Bid Details</a>
+            {% comment %} <a href="#" style="display:inline-block;padding:12px 24px;background-color:#FF6B00;color:#ffffff;text-decoration:none;border-radius:4px;font-weight:600;">View Bid Details</a> {% endcomment %}
         </div>
         <p style="margin-top:24px;">Best regards,<br>Riverlong Auction Team</p>
     </div>

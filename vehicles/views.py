@@ -154,9 +154,13 @@ def place_bid(request, pk):
             return redirect('detail', vehicle.id)
 
         # Check the current highest bid
-        current_highest_bid = Bidding.objects.filter(vehicle=vehicle).order_by('-amount').first()
+        current_highest_bid = Bidding.objects.filter(vehicle=vehicle,discarded=False).order_by('-amount').first()
+        #check if bid is discarded or not 
+        # if current_highest_bid.discarded == 'True':
+        #     messages.warning(request, f'Another Valid Bid already exists.')
+        #     return redirect('detail', vehicle.id)
 
-        if current_highest_bid and amount <= current_highest_bid.amount:
+        if current_highest_bid and amount <= current_highest_bid.amount :
             messages.warning(request, f'Your bid must be higher than the current highest bid.')
             return redirect('detail', vehicle.id)
 

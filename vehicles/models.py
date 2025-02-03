@@ -137,6 +137,7 @@ class Vehicle(models.Model):
 
     def is_available(self):
         return self.status == 'available'
+        
     def is_sold(self):
             return self.status == 'sold'
 
@@ -165,6 +166,7 @@ class Bidding(models.Model):
     amount = models.IntegerField()
     is_auction_bid = models.BooleanField(default=False) 
     awarded = models.BooleanField(default=False)  # To track awarded status
+    discarded = models.BooleanField(default=False)
     bid_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

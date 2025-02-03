@@ -59,8 +59,8 @@ class AwardHistoryAdmin(admin.ModelAdmin):
 @admin.register(Bidding)
 class BidAdmin(admin.ModelAdmin):
     search_fields = ('vehicle__registration_no', 'user__username')
-    list_display = ('vehicle', 'vehicle_details','vehicle_reserveprice', 'formatted_amount','user_email','user_phonenumber','awarded' , 'bid_time')
-    actions = ['generate_bid_report','award_bid']
+    list_display = ('vehicle', 'vehicle_details','vehicle_reserveprice', 'formatted_amount','user_email','user_phonenumber','awarded' ,'discarded', 'bid_time')
+    actions = ['generate_bid_report','award_bid','discard']
 
     # Method to extract user's full name (first_name + last_name)
     def user_full_name(self, obj):
@@ -95,7 +95,10 @@ class BidAdmin(admin.ModelAdmin):
         return '{:,.0f}'.format(obj.amount)
 
     formatted_amount.short_description = 'Offer Amount'  # This sets the column name in the admin list view
-
+    def discard(self, request, queryset):
+        updated = queryset.update(discarded='True')
+        self.message_user(request, f"{updated} bid(s) successfully marked as Discarded.")
+    discard.short_description = "Mark selected bids as Discarded"
     def award_bid(self, request, queryset):
     # Ensure only one bid is selected
         if queryset.count() != 1:
@@ -134,6 +137,7 @@ class BidAdmin(admin.ModelAdmin):
 
         # Mark the bid as awarded
         bid.awarded = True
+
         bid.save()
 
         # Update the associated vehicle's status
