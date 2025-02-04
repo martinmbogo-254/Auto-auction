@@ -516,7 +516,7 @@ class VehicleAdmin(admin.ModelAdmin):
     list_display = (
         'registration_no', 'Financier', 'make', 'model', 'YOM', 'formatted_mileage', 'engine_cc', 
         'body_type', 'color', 'yard', 'fuel_type', 'is_approved', 'status', 'formatted_reserve_price', 
-        'is_hotsale', 'created_at', 'updated_at', 'days_since_creation', 'current_auction_end_date', 'formatted_views'
+        'is_hotsale', 'created_at', 'updated_at', 'days_since_creation', 'current_auction_end_date', 'formatted_views','get_winning_bidder'
     )
 
     # Other configurations
@@ -528,6 +528,19 @@ class VehicleAdmin(admin.ModelAdmin):
     list_per_page = 15  # Items per page
     list_max_show_all = 1000  # Maximum items when showing all
     show_full_result_count = True  # Show total count in pagination
+
+    def get_winning_bidder(self, obj):
+        # Check if the vehicle is sold
+        if obj.status == 'sold':
+            # Get the winning bid for the vehicle
+            winning_bid = obj.bidding.filter(awarded=True).first()
+            if winning_bid:
+                return f"{winning_bid.user.first_name} {winning_bid.user.last_name}".strip()
+            return "No winning bidder"
+        return "Vehicle not sold"
+
+    get_winning_bidder.short_description = 'Highest Bidder'  # Column header
+
 
     # Custom action for generating reports
     def generate_vehicle_report(self, request, queryset):
