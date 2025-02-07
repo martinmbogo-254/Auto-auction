@@ -33,21 +33,33 @@ from reportlab.platypus import Image
 # Add a description to the custom action
 @admin.register(AwardHistory)
 class AwardHistoryAdmin(admin.ModelAdmin):
-    list_display = ('vehicle', 'user_full_name', 'user_email', 'amount', 'awarded_by','awarded_at')
+    list_display = ('vehicle', 'user_full_name', 'user_email', 'amount', 'awarded_by','awarded_at','referred_by')
     search_fields = ('vehicle__registration_no', 'user__username', 'user__email')
     list_filter = ('awarded_at',)
+
 
     def user_full_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}"
     user_full_name.short_description = 'User Full Name'
 
+    def referred_by(self, obj):
+        return obj.vehicle.bidding.last().referred_by if obj.vehicle.bidding.exists() else None
+    referred_by.short_description = 'Referred By'
     def user_email(self, obj):
         return obj.user.email
     user_email.short_description = 'User Email'
 
-    def awarded_by(self, obj):
-        return obj.user.email
-    awarded_by.short_description = 'Awarded By'
+    def referred_by(self, obj):
+        # Find the bid that was awarded (matches vehicle, user, and amount)
+        awarded_bid = Bidding.objects.filter(
+            vehicle=obj.vehicle,
+            user=obj.user,
+            amount=obj.amount,
+              # Ensure only awarded bids are considered
+        ).first()
+
+        return awarded_bid.referred_by if awarded_bid else None
+    referred_by.short_description = 'Referred By'
 
     def amount(self, obj):
         return f"Ksh {obj.amount:,}"
@@ -59,12 +71,16 @@ class AwardHistoryAdmin(admin.ModelAdmin):
 @admin.register(Bidding)
 class BidAdmin(admin.ModelAdmin):
     search_fields = ('vehicle__registration_no', 'user__username')
-    list_display = ('vehicle', 'vehicle_details','vehicle_reserveprice', 'formatted_amount','user_email','user_phonenumber','awarded' ,'discarded', 'bid_time')
-    actions = ['generate_bid_report','award_bid','discard']
+    list_display = ('vehicle', 'vehicle_details','vehicle_reserveprice', 'formatted_amount','user_email','user_phonenumber','awarded' , 'bid_time','referrer')
+    actions = ['generate_bid_report','award_bid']
+    readonly_fields = [field.name for field in Bidding._meta.fields]
 
     # Method to extract user's full name (first_name + last_name)
     def user_full_name(self, obj):
         return f"{obj.user.first_name} {obj.user.last_name}"
+
+    def referrer(self, obj):
+        return obj.referred_by
 
     user_full_name.short_description = 'User Full Name'  # This sets the column name in the admin list view
 
@@ -95,10 +111,7 @@ class BidAdmin(admin.ModelAdmin):
         return '{:,.0f}'.format(obj.amount)
 
     formatted_amount.short_description = 'Offer Amount'  # This sets the column name in the admin list view
-    def discard(self, request, queryset):
-        updated = queryset.update(discarded='True')
-        self.message_user(request, f"{updated} bid(s) successfully marked as Discarded.")
-    discard.short_description = "Mark selected bids as Discarded"
+
     def award_bid(self, request, queryset):
     # Ensure only one bid is selected
         if queryset.count() != 1:
@@ -137,7 +150,6 @@ class BidAdmin(admin.ModelAdmin):
 
         # Mark the bid as awarded
         bid.awarded = True
-
         bid.save()
 
         # Update the associated vehicle's status
@@ -529,19 +541,6 @@ class VehicleAdmin(admin.ModelAdmin):
     list_max_show_all = 1000  # Maximum items when showing all
     show_full_result_count = True  # Show total count in pagination
 
-    def get_winning_bidder(self, obj):
-        # Check if the vehicle is sold
-        if obj.status == 'sold':
-            # Get the winning bid for the vehicle
-            winning_bid = obj.bidding.filter(awarded=True).first()
-            if winning_bid:
-                return f"{winning_bid.user.first_name} {winning_bid.user.last_name}".strip()
-            return "No winning bidder"
-        return "Vehicle not sold"
-
-    get_winning_bidder.short_description = 'Highest Bidder'  # Column header
-
-
     # Custom action for generating reports
     def generate_vehicle_report(self, request, queryset):
         from django.http import HttpResponse
@@ -551,10 +550,16 @@ class VehicleAdmin(admin.ModelAdmin):
         response['Content-Disposition'] = 'attachment; filename="vehicle_report.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['Registration No', 'Financier', 'Make', 'Model', 'Year of Manufacture', 'Mileage', 'Transmission', 'Engine CC', 'Body Type', 'Seats', 'Color', 'Fuel Type', 'Storage Yard', 'Reserve Price', 'Status', 'Days Since Creation'])
+        writer.writerow(['Registration No', 'Financier', 'Make', 'Model', 'Year of Manufacture', 'Mileage', 'Transmission', 'Engine CC', 'Body Type', 'Seats', 'Color', 'Fuel Type', 'Storage Yard', 'Reserve Price', 'Status', 'Days Since Creation','Awarded Bidder'])
 
         # Iterate over the selected vehicles in the admin panel
         for vehicle in queryset:
+            # Determine the winning bidder
+            if vehicle.status == 'sold':
+                winning_bid = vehicle.bidding.filter(awarded=True).first()
+                awarded_bidder = f"{winning_bid.user.first_name} {winning_bid.user.last_name}".strip() if winning_bid else "No winning bidder"
+            else:
+                awarded_bidder = "Vehicle not sold"
             writer.writerow([
                 vehicle.registration_no,
                 vehicle.Financier,
@@ -572,12 +577,24 @@ class VehicleAdmin(admin.ModelAdmin):
                 vehicle.reserve_price,
                 vehicle.status,
                 vehicle.days_since_creation(),
+                awarded_bidder
             ])
         
         return response
 
     generate_vehicle_report.short_description = "Generate CSV report for selected vehicles"
 
+    def get_winning_bidder(self, obj):
+        # Check if the vehicle is sold
+        if obj.status == 'sold':
+            # Get the winning bid for the vehicle
+            winning_bid = obj.bidding.filter(awarded=True).first()
+            if winning_bid:
+                return f"{winning_bid.user.first_name} {winning_bid.user.last_name}".strip()
+            return "No winning bidder"
+        return "Vehicle not sold"
+
+    get_winning_bidder.short_description = 'Awarded Bidder'  # Column header
     # Admin action for marking vehicles as available
     def make_available(self, request, queryset):
         updated = queryset.update(status='available')

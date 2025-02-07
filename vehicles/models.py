@@ -164,6 +164,7 @@ class Bidding(models.Model):
     vehicle = models.ForeignKey(Vehicle, on_delete=models.CASCADE, related_name='bidding')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
+    referred_by = models.EmailField(null=True, blank=True)
     is_auction_bid = models.BooleanField(default=False) 
     awarded = models.BooleanField(default=False)  # To track awarded status
     discarded = models.BooleanField(default=False)

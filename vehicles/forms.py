@@ -8,7 +8,7 @@ class BidForm(forms.ModelForm):
 
     class Meta:
         model = Bidding
-        fields = ['amount']
+        fields = ['amount','referred_by']
 
 
 class AuctionForm(forms.ModelForm):
